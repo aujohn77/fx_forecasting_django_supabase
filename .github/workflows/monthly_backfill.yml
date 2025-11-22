@@ -1,0 +1,50 @@
+name: FX Monthly Backfill
+
+on:
+  workflow_dispatch:        # manual trigger
+  schedule:
+    - cron: "0 14 1 * *"    # optional: 1st day of each month at 14:00 UTC
+
+jobs:
+  monthly-backfill:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
+      # ----- EDIT THESE IF NEEDED -----
+      FX_BASE: "USD"
+      FX_QUOTES: "EUR,AUD,GBP"
+      FX_YEARS: "10"
+      # --------------------------------
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check DB connection
+        run: |
+          python manage.py db_check
+
+      - name: Run migrations
+        run: |
+          python manage.py migrate --noinput
+
+      - name: Monthly backfill (last N years)
+        run: |
+          python manage.py ingest_rates \
+            --monthly \
+            --years "$FX_YEARS" \
+            --base "$FX_BASE" \
+            --quotes "$FX_QUOTES"

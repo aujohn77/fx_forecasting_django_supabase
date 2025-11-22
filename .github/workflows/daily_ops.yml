@@ -1,9 +1,9 @@
 name: Daily FX Ops
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 13 * * *"
+    - cron: "0 13 * * *"   # run once per day at 13:00 UTC
+  workflow_dispatch:        # allow manual runs
 
 jobs:
   daily-ops:
@@ -12,6 +12,12 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
+      # ----- EDIT THESE IF YOU CHANGE MODELS OR PAIRS -----
+      FX_BASE: "USD"
+      FX_QUOTES: "EUR,AUD,GBP"
+      FX_MODELS: "naive arima"
+      # ----------------------------------------------------
 
     steps:
       - name: Check out repository
@@ -27,18 +33,38 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Check DB connection
+        run: |
+          python manage.py db_check
+
       - name: Run migrations
         run: |
           python manage.py migrate --noinput
 
       - name: Ingest daily FX rates
         run: |
-          python manage.py ingest_rates --daily
+          python manage.py ingest_rates --daily \
+            --base "$FX_BASE" \
+            --quotes "$FX_QUOTES"
 
-      - name: Run daily forecasts
+      - name: Run daily forecasts (for all models)
         run: |
-          python manage.py run_daily_forecasts --base USD --quotes EUR,AUD,GBP --model naive
+          for MODEL in $FX_MODELS; do
+            echo "=== Running daily forecasts: $MODEL ==="
+            python manage.py run_daily_forecasts \
+              --base "$FX_BASE" \
+              --quotes "$FX_QUOTES" \
+              --model "$MODEL"
+          done
 
-      - name: Run backtests
+      - name: Run backtests (for all models)
         run: |
-          python manage.py run_backtests --model naive --daily --window 60 --base USD --quotes EUR,AUD,GBP
+          for MODEL in $FX_MODELS; do
+            echo "=== Running daily backtests: $MODEL ==="
+            python manage.py run_backtests \
+              --model "$MODEL" \
+              --daily \
+              --window 60 \
+              --base "$FX_BASE" \
+              --quotes "$FX_QUOTES"
+          done
