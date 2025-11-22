@@ -1,0 +1,5 @@
+# Envs
+.env
+.env.*
+*.env
+.env.supabase
