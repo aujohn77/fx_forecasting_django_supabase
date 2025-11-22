@@ -2,7 +2,7 @@ name: Daily FX Ops
 
 on:
   schedule:
-    - cron: "0 13 * * *"   # run once per day at 13:00 UTC
+    - cron: "15 15 * * *"   # run once per day one hour after Frankfurter publishes new rates.
   workflow_dispatch:        # allow manual runs
 
 jobs:
