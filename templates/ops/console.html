@@ -1,0 +1,155 @@
+﻿{% extends "base.html" %}
+{% block title %}Ops Console{% endblock %}
+{% block content %}
+
+<section class="card">
+  <h2>Ops Console</h2>
+  {% if messages %}
+    <ul>
+      {% for m in messages %}
+        <li class="{{ m.tags }}">{{ m|safe }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <style>
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+    form.ops{display:flex;flex-direction:column;gap:.5rem;border:1px solid #1f2937;border-radius:12px;padding:.8rem}
+    form.ops h3{margin:.2rem 0 .4rem 0}
+    form.ops button{cursor:pointer;padding:.5rem .7rem;border-radius:10px;border:1px solid #334155;background:#0b1220;color:#e5e7eb}
+    form.ops label{display:flex;flex-direction:column;font-size:.9rem;color:#9ca3af}
+    form.ops input, form.ops select{margin-top:.2rem;padding:.45rem;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e5e7eb}
+  </style>
+
+  <div class="grid">
+
+    <!-- Ingest: daily -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Ingest – Daily Catch-up</h3>
+      <input type="hidden" name="action" value="ingest_daily">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <button>Run Daily Ingest</button>
+    </form>
+
+    <!-- Ingest: monthly backfill -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Ingest – Monthly Backfill</h3>
+      <input type="hidden" name="action" value="ingest_monthly">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label>Years <input type="number" min="1" max="25" name="years" value="10"></label>
+      <button>Run Monthly Backfill</button>
+    </form>
+
+    <!-- Ingest: custom range -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Ingest – Custom Range</h3>
+      <input type="hidden" name="action" value="ingest_range">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label>Start <input type="date" name="start" value="{{ today }}"></label>
+      <label>End <input type="date" name="end" value="{{ today }}"></label>
+      <button>Run Range Ingest</button>
+    </form>
+
+    <!-- Check missing -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Data Quality – Check Missing</h3>
+      <input type="hidden" name="action" value="check_missing">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <button>Scan for Gaps</button>
+    </form>
+
+    <!-- Forecasts: daily -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Forecasts – Daily (1-step)</h3>
+      <input type="hidden" name="action" value="forecast_daily">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label for="modelDaily"><strong>Model</strong></label>
+      <select id="modelDaily" name="model">
+        {% for m in model_choices %}
+          {% if default_model %}
+            <option value="{{ m }}" {% if m == default_model %}selected{% endif %}>{{ m }}</option>
+          {% else %}
+            <option value="{{ m }}" {% if forloop.first %}selected{% endif %}>{{ m }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <button>Run Daily Forecasts</button>
+    </form>
+
+    <!-- Forecasts: weekly -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Forecasts – Weekly (1-step)</h3>
+      <input type="hidden" name="action" value="forecast_weekly">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label for="modelWeekly"><strong>Model</strong></label>
+      <select id="modelWeekly" name="model">
+        {% for m in model_choices %}
+          {% if default_model %}
+            <option value="{{ m }}" {% if m == default_model %}selected{% endif %}>{{ m }}</option>
+          {% else %}
+            <option value="{{ m }}" {% if forloop.first %}selected{% endif %}>{{ m }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <button>Run Weekly Forecasts</button>
+    </form>
+
+    <!-- Backtests: daily -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Backtests – Daily</h3>
+      <input type="hidden" name="action" value="backtest_daily">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label for="modelBTDaily"><strong>Model</strong></label>
+      <select id="modelBTDaily" name="model">
+        {% for m in model_choices %}
+          {% if default_model %}
+            <option value="{{ m }}" {% if m == default_model %}selected{% endif %}>{{ m }}</option>
+          {% else %}
+            <option value="{{ m }}" {% if forloop.first %}selected{% endif %}>{{ m }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <label>Window (biz days) <input type="number" min="1" max="500" name="window" value="60"></label>
+      <label><input type="checkbox" name="newrun"> Create new run (don’t overwrite)</label>
+      <button>Run Daily Backtests</button>
+    </form>
+
+    <!-- Backtests: weekly -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Backtests – Weekly</h3>
+      <input type="hidden" name="action" value="backtest_weekly">
+      <label>Base <input type="text" name="base" value="USD"></label>
+      <label>Quotes (CSV) <input type="text" name="quotes" value="{{ default_quotes }}"></label>
+      <label for="modelBTWeekly"><strong>Model</strong></label>
+      <select id="modelBTWeekly" name="model">
+        {% for m in model_choices %}
+          {% if default_model %}
+            <option value="{{ m }}" {% if m == default_model %}selected{% endif %}>{{ m }}</option>
+          {% else %}
+            <option value="{{ m }}" {% if forloop.first %}selected{% endif %}>{{ m }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <label>Window (Fridays) <input type="number" min="1" max="500" name="window" value="60"></label>
+      <label><input type="checkbox" name="newrun"> Create new run (don’t overwrite)</label>
+      <button>Run Weekly Backtests</button>
+    </form>
+
+  </div>
+</section>
+{% endblock %}

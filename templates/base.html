@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}FX Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="page">
+  <header class="top">
+    <h1>FX Dashboard</h1>
+    <nav>
+      <a href="{% url 'overview' %}">Overview</a>
+      <a href="{% url 'forecast' %}">Forecasts</a>
+      <a href="{% url 'compare' %}">Compare</a>
+    </nav>
+  </header>
+  <main class="wrap">{% block content %}{% endblock %}</main>
+</body>
+</html>

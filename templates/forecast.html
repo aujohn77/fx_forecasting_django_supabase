@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Forecasts{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Actuals to last complete period + Forward Forecasts</h2>
+
+  <form method="get" class="controls" style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+    <label>Timeframe:
+      <select name="freq" onchange="this.form.submit()">
+        <option value="D" {% if selected_freq == "D" %}selected{% endif %}>Daily</option>
+        <option value="W" {% if selected_freq == "W" %}selected{% endif %}>Weekly</option>
+        <option value="M" {% if selected_freq == "M" %}selected{% endif %}>Monthly</option>
+      </select>
+    </label>
+
+    <label>Model:
+      <select name="model" onchange="this.form.submit()">
+        <option value="">(All)</option>
+        {% for m in model_codes %}
+          <option value="{{ m }}" {% if selected_model == m %}selected{% endif %}>{{ m }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Currency:
+      <select name="currency" onchange="this.form.submit()">
+        <option value="ALL" {% if selected_quote == "ALL" %}selected{% endif %}>(All)</option>
+        {% for q in all_quotes %}
+          <option value="{{ q }}" {% if selected_quote == q %}selected{% endif %}>{{ q }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Start Date:
+      <input type="date" name="start" value="{{ start_date }}" onchange="this.form.submit()">
+    </label>
+  </form>
+
+  <canvas id="fxForecast"></canvas>
+</section>
+
+<script id="chart-data" type="application/json">{{ chart_json|safe }}</script>
+<script id="freq-code"  type="application/json">"{{ selected_freq }}"</script>
+
+{% load static %}
+<script src="{% static 'js/forecast.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Overview{% endblock %}
+
+{% block content %}
+
+<!-- Forecast table FIRST -->
+<section class="card" style="margin-bottom:1rem;">
+  <h2>Currency Forecast</h2>
+
+  <div class="controls" style="display:flex; gap:1rem; align-items:center;">
+    <label>Timeframe:
+      <select id="timePick"></select>
+    </label>
+    <label>Model:
+      <select id="modelPick"></select>
+    </label>
+  </div>
+
+  <div id="overview-table" class="table" style="margin-top:1rem;"></div>
+</section>
+
+<!-- Metrics SECOND -->
+<section class="card">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+    <h2 style="margin:0;">Currency Metrics</h2>
+
+    <!-- Quote selector (reloads page with ?quote=...) -->
+    <form method="get" action="" style="display:flex; gap:.5rem; align-items:center;">
+      <label for="quotePick"><strong>Quote:</strong></label>
+      <select id="quotePick" name="quote" onchange="this.form.submit()">
+        {% with sel=selected_quote|default:'EUR' %}
+          {% for q in all_quotes %}
+            <option value="{{ q }}" {% if sel == q %}selected{% endif %}>{{ q }}</option>
+          {% endfor %}
+        {% endwith %}
+      </select>
+      <!-- keep space for more filters later -->
+    </form>
+  </div>
+
+  <!-- Tiles -->
+  <div class="metrics-grid" style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1rem;margin-top:1rem;">
+    <div class="card metric">
+      <div class="label">Daily Change (%)</div>
+      <div class="value">
+        {% if metrics.daily_pct != None %}
+          <span class="{% if metrics.daily_pct >= 0 %}up{% else %}down{% endif %}">
+            {{ metrics.daily_pct|floatformat:2 }}%
+          </span>
+        {% else %}–{% endif %}
+      </div>
+    </div>
+
+    <div class="card metric">
+      <div class="label">Weekly Change (%)</div>
+      <div class="value">
+        {% if metrics.weekly_pct != None %}
+          <span class="{% if metrics.weekly_pct >= 0 %}up{% else %}down{% endif %}">
+            {{ metrics.weekly_pct|floatformat:2 }}%
+          </span>
+        {% else %}–{% endif %}
+      </div>
+    </div>
+
+    <div class="card metric">
+      <div class="label">Monthly Change (%)</div>
+      <div class="value">
+        {% if metrics.monthly_pct != None %}
+          <span class="{% if metrics.monthly_pct >= 0 %}up{% else %}down{% endif %}">
+            {{ metrics.monthly_pct|floatformat:2 }}%
+          </span>
+        {% else %}–{% endif %}
+      </div>
+    </div>
+
+    <div class="card metric">
+      <div class="label">ROC (5d)</div>
+      <div class="value">
+        {% if metrics.roc5_pct != None %}
+          <span class="{% if metrics.roc5_pct >= 0 %}up{% else %}down{% endif %}">
+            {{ metrics.roc5_pct|floatformat:2 }}%
+          </span>
+        {% else %}–{% endif %}
+      </div>
+    </div>
+
+    <div class="card metric">
+      <div class="label">7d Volatility</div>
+      <div class="value">
+        {% if metrics.vol7 != None %}{{ metrics.vol7|floatformat:4 }}{% else %}–{% endif %}
+      </div>
+    </div>
+
+    <div class="card metric">
+      <div class="label">30d Volatility</div>
+      <div class="value">
+        {% if metrics.vol30 != None %}{{ metrics.vol30|floatformat:4 }}{% else %}–{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+    <div class="label">Positive Streak</div>
+    <div class="value"><strong>{{ metrics.streak_days|default:0 }}</strong> days ↑</div>
+  </div>
+
+  <!-- tiny inline styles for tiles -->
+  <style>
+    .metric .label{opacity:.85;margin-bottom:.25rem}
+    .metric .value{font-weight:700;font-size:1.15rem}
+    .up{color:#22c55e}
+    .down{color:#ef4444}
+    .metrics-grid .card{padding:0.75rem;border-radius:0.5rem;background:var(--panel, rgba(255,255,255,0.04))}
+  </style>
+</section>
+
+<!-- JSON payloads -->
+<script id="latest-actual" type="application/json">{{ latest_actual_json|safe }}</script>
+<script id="latest-forecast" type="application/json">{{ latest_forecast_json|safe }}</script>
+<script id="currency-names" type="application/json">{{ currency_names_json|safe }}</script>
+
+{% load static %}
+<script src="{% static 'js/overview.js' %}?v=5"></script>
+{% endblock %}
