@@ -1,30 +1,29 @@
 from __future__ import annotations
 from typing import Callable, Dict
 
-# Always-available baselines
-from . import naive, drift
+from . import naive, drift, arima, prophet
+from .r_model_adapter import make_r_predictor
+
 
 _REGISTRY: Dict[str, Callable[..., object]] = {
+    # Python models
     "naive": naive.predict,
     "drift": drift.predict,
+    "arima": arima.predict,
+    "prophet": prophet.predict,
+
+    # R models (explicit, strict)
+    "average_r": make_r_predictor("average_r.R"),
+    "drift_r": make_r_predictor("drift_r.R")
+    #"average_r": lambda y_train, steps, target_index=None: (predict_r_model("average_r.R", y_train, steps, target_index)),
+    #"average_r": lambda y, s, idx=None: predict_r_model("average_r.R", y, s, target_index=idx),
+
+    #"arima_r": lambda y, s, idx=None: predict_r_model("arima_r.R", y, s, idx),
+
+    # Add your next models here:
+    # "ets_r": lambda y, s, idx=None: predict_r_model("ets_r.R", y, s, idx),
+    # "tbats_r": lambda y, s, idx=None: predict_r_model("tbats_r.R", y, s, idx),
 }
-
-# Optional models — only register if deps import cleanly
-# ARIMA
-try:
-    from . import arima as _arima
-    _REGISTRY["arima"] = _arima.predict
-except Exception as _e:
-    # Leave unregistered if statsmodels isn't available, etc.
-    pass
-
-# Prophet
-try:
-    from . import prophet as _prophet
-    _REGISTRY["prophet"] = _prophet.predict
-except Exception as _e:
-    # Leave unregistered if prophet/cmdstanpy isn't available, etc.
-    pass
 
 
 def get_model(name: str) -> Callable[..., object]:
@@ -35,5 +34,4 @@ def get_model(name: str) -> Callable[..., object]:
 
 
 def list_models() -> list[str]:
-    """Return the models that are actually registered/usable."""
     return sorted(_REGISTRY.keys())
