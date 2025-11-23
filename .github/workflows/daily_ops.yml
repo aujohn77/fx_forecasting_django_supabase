@@ -29,6 +29,12 @@ jobs:
         with:
           r-version: '4.5.1'
 
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("jsonlite"), repos = "https://cloud.r-project.org")'
+
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
