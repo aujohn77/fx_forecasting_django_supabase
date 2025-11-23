@@ -12,6 +12,7 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      RSCRIPT_EXE: "Rscript"
 
       # ----- EDIT THESE IF YOU CHANGE MODELS OR PAIRS -----
       FX_BASE: "USD"
@@ -22,6 +23,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.1'
 
       - name: Set up Python
         uses: actions/setup-python@v5
