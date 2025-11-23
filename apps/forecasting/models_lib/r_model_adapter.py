@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -8,20 +9,21 @@ import pandas as pd
 
 from .types import ForecastResult
 
+# Base folder for all R scripts
+R_MODELS_DIR = Path(__file__).resolve().parent.parent / "r_models"
 
-# Full path to Rscript.exe (confirmed working)
-RSCRIPT_EXE = Path(r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe")
+# Path to Rscript:
+# - Locally (Windows): use RSCRIPT_EXE in your .env, e.g.
+#     RSCRIPT_EXE=C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe
+# - On GitHub Actions (Linux): we’ll set RSCRIPT_EXE=Rscript
+RSCRIPT_EXE = os.environ.get(
+    "RSCRIPT_EXE",
+    r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe",  # fallback for your laptop
+)
 
 
 def make_r_predictor(script_name: str):
-    """
-    Factory that returns a Python predictor function bound to a specific R script.
-
-    Example:
-        average_r_predict = make_r_predictor("average_r.R")
-        ets_r_predict     = make_r_predictor("ets_r.R")
-    """
-    r_script_path = Path(__file__).resolve().parent.parent / "r_models" / script_name
+    r_script_path = R_MODELS_DIR / script_name
 
     def _predict_r_model(
         y_train: pd.Series,
@@ -31,7 +33,6 @@ def make_r_predictor(script_name: str):
         if y_train.empty:
             raise ValueError("y_train is empty")
 
-        # If Django passes a target_index (for backtests), use it; otherwise build one
         idx = (
             target_index
             if target_index is not None
@@ -45,14 +46,13 @@ def make_r_predictor(script_name: str):
         }
 
         proc = subprocess.run(
-            [str(RSCRIPT_EXE), str(r_script_path), json.dumps(payload)],
+            [RSCRIPT_EXE, str(r_script_path), json.dumps(payload)],
             capture_output=True,
             text=True,
             check=True,
         )
 
         out = json.loads(proc.stdout)
-
         yhat = pd.Series(out["yhat"], index=idx, dtype=float)
 
         return ForecastResult(
@@ -66,7 +66,5 @@ def make_r_predictor(script_name: str):
         )
 
     return _predict_r_model
-
-
 
 
