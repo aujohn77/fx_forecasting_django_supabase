@@ -2,7 +2,7 @@ name: Daily FX Ops
 
 on:
   schedule:
-    - cron: "15 15 * * *"   # run once per day one hour after Frankfurter publishes new rates.
+    - cron: "20 6 * * *"   # run once per day one hour after Frankfurter publishes new rates.
   workflow_dispatch:        # allow manual runs
 
 jobs:
@@ -15,8 +15,8 @@ jobs:
 
       # ----- EDIT THESE IF YOU CHANGE MODELS OR PAIRS -----
       FX_BASE: "USD"
-      FX_QUOTES: "EUR,AUD,GBP"
-      FX_MODELS: "naive drift"
+      FX_QUOTES: "AUD"
+      FX_MODELS: "naive drift average_r drift_r"
       # ----------------------------------------------------
 
     steps:
