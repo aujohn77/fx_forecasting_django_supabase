@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
+import shutil  # for shutil.which
 
 import pandas as pd
 
@@ -12,14 +13,23 @@ from .types import ForecastResult
 # Base folder for all R scripts
 R_MODELS_DIR = Path(__file__).resolve().parent.parent / "r_models"
 
-# Path to Rscript:
-# - Locally (Windows): use RSCRIPT_EXE in your .env, e.g.
-#     RSCRIPT_EXE=C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe
-# - On GitHub Actions (Linux): we’ll set RSCRIPT_EXE=Rscript
-RSCRIPT_EXE = os.environ.get(
-    "RSCRIPT_EXE",
-    r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe",  # fallback for your laptop
-)
+# Resolve Rscript path:
+# Priority:
+#   1. RSCRIPT_EXE env var (local or CI)
+#   2. Whatever "Rscript" on PATH points to
+#   3. Fallback to your Windows installation path (local dev)
+_env_rscript = os.environ.get("RSCRIPT_EXE")
+if _env_rscript:
+    RSCRIPT_EXE = _env_rscript
+else:
+    _which_rscript = shutil.which("Rscript")
+    if _which_rscript:
+        RSCRIPT_EXE = _which_rscript
+    else:
+        RSCRIPT_EXE = r"C:\Program Files\R\R-4.5.1\bin\x64\Rscript.exe"
+
+# Optional: this will show in logs (useful on GitHub Actions)
+print(f"[r_model_adapter] Using Rscript at: {RSCRIPT_EXE}")
 
 
 def make_r_predictor(script_name: str):
@@ -45,12 +55,21 @@ def make_r_predictor(script_name: str):
             "cutoff": y_train.index.max().isoformat(),
         }
 
-        proc = subprocess.run(
-            [RSCRIPT_EXE, str(r_script_path), json.dumps(payload)],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
+        try:
+            proc = subprocess.run(
+                [RSCRIPT_EXE, str(r_script_path), json.dumps(payload)],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            # Surface R’s error in the GitHub Actions logs
+            print("\n[ERROR] Rscript failed for", script_name)
+            print("[R stdout]:")
+            print(e.stdout)
+            print("[R stderr]:")
+            print(e.stderr)
+            raise RuntimeError(f"Rscript failed with exit code {e.returncode}") from e
 
         out = json.loads(proc.stdout)
         yhat = pd.Series(out["yhat"], index=idx, dtype=float)
@@ -66,5 +85,6 @@ def make_r_predictor(script_name: str):
         )
 
     return _predict_r_model
+
 
 
