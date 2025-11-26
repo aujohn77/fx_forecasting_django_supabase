@@ -9,18 +9,64 @@
     <table>
       <thead>
         <tr>
-          <th>Currency</th>
-          <th>Latest Date</th>
-          <th>Rate</th>
+            <th>Currency</th>
+            <th>Latest Date</th>
+            <th>Rate</th>
+            <th>Daily %</th>
+            <th>Weekly %</th>
+            <th>Monthly %</th>
         </tr>
       </thead>
+
       <tbody>
         {% for row in table_rows %}
-          <tr>
+        <tr>
             <td>{{ row.label }}</td>
             <td>{{ row.date }}</td>
             <td>{{ row.rate|floatformat:4 }}</td>
-          </tr>
+
+            <td>
+                {% if row.daily_change is not None %}
+                {% if row.daily_change >= 0 %}
+                    <span style="color:#4ade80;">
+                    {{ row.daily_change|floatformat:2 }}%
+                    </span>
+                {% else %}
+                    <span style="color:#f87171;">
+                    {{ row.daily_change|floatformat:2 }}%
+                    </span>
+                {% endif %}
+                {% else %}-{% endif %}
+            </td>
+
+            <td>
+                {% if row.weekly_change is not None %}
+                {% if row.weekly_change >= 0 %}
+                    <span style="color:#4ade80;">
+                    {{ row.weekly_change|floatformat:2 }}%
+                    </span>
+                {% else %}
+                    <span style="color:#f87171;">
+                    {{ row.weekly_change|floatformat:2 }}%
+                    </span>
+                {% endif %}
+                {% else %}-{% endif %}
+            </td>
+
+            <td>
+                {% if row.monthly_change is not None %}
+                {% if row.monthly_change >= 0 %}
+                    <span style="color:#4ade80;">
+                    {{ row.monthly_change|floatformat:2 }}%
+                    </span>
+                {% else %}
+                    <span style="color:#f87171;">
+                    {{ row.monthly_change|floatformat:2 }}%
+                    </span>
+                {% endif %}
+                {% else %}-{% endif %}
+            </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>

@@ -262,16 +262,17 @@ def overview(request):
 
 
 
+
 def market_page(request):
     """
     Market view:
       - table of latest daily USD→quote rates for all quotes
-      - 5y history line chart with left/right navigation between currencies
+      - daily / weekly / monthly % changes
+      - 5y history line chart with carousel
     """
     base_code = "USD"
-
-    # Use the same quote universe as overview
-    all_quotes = ["EUR","GBP","AUD","NZD","JPY","CNY","CHF","CAD","MXN","INR","BRL","RUB","KRW"]
+    all_quotes = ["EUR","GBP","AUD","NZD","JPY","CNY","CHF",
+                  "CAD","MXN","INR","BRL","RUB","KRW"]
 
     today = date.today()
     five_years_ago = today - timedelta(days=5 * 365)
@@ -280,7 +281,9 @@ def market_page(request):
     latest_actual: dict[str, dict] = {}
     rows = (
         ExchangeRate.objects
-        .filter(base__code=base_code, timeframe=Timeframe.DAILY, quote__code__in=all_quotes)
+        .filter(base__code=base_code,
+                timeframe=Timeframe.DAILY,
+                quote__code__in=all_quotes)
         .order_by("quote__code", "-date")
         .values("quote__code", "date", "rate")
     )
@@ -288,9 +291,32 @@ def market_page(request):
         q = r["quote__code"]
         if q in latest_actual:
             continue
-        latest_actual[q] = {"date": str(r["date"]), "rate": float(r["rate"])}
+        latest_actual[q] = {"date": r["date"], "rate": float(r["rate"])}
 
-    # ---- Country / zone labels (reuse from overview)
+    # helpers for % changes
+    def get_prev_rate(code: str, days_back: int):
+        info = latest_actual.get(code)
+        if not info:
+            return None
+        ref_date = info["date"] - timedelta(days=days_back)
+        prev = (
+            ExchangeRate.objects
+            .filter(base__code=base_code,
+                    quote__code=code,
+                    timeframe=Timeframe.DAILY,
+                    date__lte=ref_date)
+            .order_by("-date")
+            .values("rate")
+            .first()
+        )
+        return float(prev["rate"]) if prev else None
+
+    def pct_change(curr: float, prev: float | None):
+        if prev is None or prev == 0:
+            return None
+        return (curr / prev - 1.0) * 100.0
+
+    # ---- Country / zone labels
     short_zone = {
         "EUR": "Eurozone",
         "GBP": "United Kingdom",
@@ -308,20 +334,30 @@ def market_page(request):
         "USD": "United States",
     }
     db_names = {c.code: c.name for c in Currency.objects.filter(code__in=all_quotes)}
-    currency_names = {code: short_zone.get(code, db_names.get(code, code)) for code in all_quotes}
+    currency_names = {code: short_zone.get(code, db_names.get(code, code))
+                      for code in all_quotes}
 
-    # ---- Build table rows
+    # ---- Build table rows (including % changes)
     table_rows = []
     for code in all_quotes:
         info = latest_actual.get(code)
         if not info:
             continue
+
+        rate = info["rate"]
+        d_prev = get_prev_rate(code, 1)
+        w_prev = get_prev_rate(code, 7)
+        m_prev = get_prev_rate(code, 30)
+
         table_rows.append(
             {
                 "code": code,
                 "label": f"{code} ({currency_names.get(code, code)})",
-                "date": info["date"],
-                "rate": info["rate"],
+                "date": str(info["date"]),
+                "rate": rate,
+                "daily_change": pct_change(rate, d_prev),
+                "weekly_change": pct_change(rate, w_prev),
+                "monthly_change": pct_change(rate, m_prev),
             }
         )
 
@@ -330,13 +366,11 @@ def market_page(request):
     for code in all_quotes:
         qs = (
             ExchangeRate.objects
-            .filter(
-                base__code=base_code,
-                quote__code=code,
-                timeframe=Timeframe.DAILY,
-                date__gte=five_years_ago,
-                date__lte=today,
-            )
+            .filter(base__code=base_code,
+                    quote__code=code,
+                    timeframe=Timeframe.DAILY,
+                    date__gte=five_years_ago,
+                    date__lte=today)
             .order_by("date")
             .values("date", "rate")
         )
@@ -345,16 +379,14 @@ def market_page(request):
             for r in qs
         ]
 
-
     ctx = {
         "table_rows": table_rows,
-        "all_quotes": all_quotes,  # (optional, for HTML if needed)
+        "all_quotes": all_quotes,
         "currency_names_json": json.dumps(currency_names),
         "series_json": json.dumps(series_payload),
-        "all_quotes_json": json.dumps(all_quotes),  # 👈 NEW
+        "all_quotes_json": json.dumps(all_quotes),
     }
     return render(request, "market.html", ctx)
-
 
 
 
