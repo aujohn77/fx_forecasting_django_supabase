@@ -47,18 +47,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Parse JSON safely so VS Code + browser are both happy
   const series = JSON.parse('{{ series_json|escapejs }}');
   const names  = JSON.parse('{{ currency_names_json|escapejs }}');
-  const codes  = JSON.parse('{{ all_quotes_json|escapejs }}');  // 👈 changed
+  const codes  = JSON.parse('{{ all_quotes_json|escapejs }}');
 
   const labelEl = document.getElementById('mk-currency-label');
   const ctx     = document.getElementById('mk-chart').getContext('2d');
   const prevBtn = document.getElementById('mk-prev');
   const nextBtn = document.getElementById('mk-next');
+  const cardEl  = document.getElementById('mk-card');
 
   let idx = 0;
   let chart = null;
+  let autoTimer = null;
 
   function renderChart() {
     if (!codes.length) return;
@@ -113,17 +114,47 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  prevBtn.addEventListener('click', () => {
+  function goNext() {
+    idx = (idx + 1) % codes.length;
+    renderChart();
+  }
+
+  function goPrev() {
     idx = (idx - 1 + codes.length) % codes.length;
     renderChart();
+  }
+
+  function startAuto() {
+    stopAuto();
+    // change currency every 8 seconds (adjust if you want)
+    autoTimer = setInterval(goNext, 8000);
+  }
+
+  function stopAuto() {
+    if (autoTimer !== null) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  prevBtn.addEventListener('click', () => {
+    goPrev();
+    startAuto();   // reset timer after manual click
   });
 
   nextBtn.addEventListener('click', () => {
-    idx = (idx + 1) % codes.length;
-    renderChart();
+    goNext();
+    startAuto();
   });
 
+  // Optional: pause auto-rotation while mouse is over the card
+  if (cardEl) {
+    cardEl.addEventListener('mouseenter', stopAuto);
+    cardEl.addEventListener('mouseleave', startAuto);
+  }
+
   renderChart();
+  startAuto();   // start automatic carousel
 });
 </script>
 
