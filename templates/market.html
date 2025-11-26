@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Market Overview{% endblock %}
+
+{% block content %}
+
+<section class="card" style="margin-bottom:1rem;">
+  <h2>Market – Latest USD Rates</h2>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Currency</th>
+          <th>Latest Date</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+          <tr>
+            <td>{{ row.label }}</td>
+            <td>{{ row.date }}</td>
+            <td>{{ row.rate|floatformat:4 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+    <h2 style="margin:0;">
+      5-Year History:
+      <span id="mk-currency-label"></span>
+    </h2>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+      <button id="mk-prev" type="button">◀ Prev</button>
+      <button id="mk-next" type="button">Next ▶</button>
+    </div>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <canvas id="mk-chart" height="80"></canvas>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Parse JSON safely so VS Code + browser are both happy
+  const series = JSON.parse('{{ series_json|escapejs }}');
+  const names  = JSON.parse('{{ currency_names_json|escapejs }}');
+  const codes  = JSON.parse('{{ all_quotes_json|escapejs }}');  // 👈 changed
+
+  const labelEl = document.getElementById('mk-currency-label');
+  const ctx     = document.getElementById('mk-chart').getContext('2d');
+  const prevBtn = document.getElementById('mk-prev');
+  const nextBtn = document.getElementById('mk-next');
+
+  let idx = 0;
+  let chart = null;
+
+  function renderChart() {
+    if (!codes.length) return;
+
+    const code = codes[idx];
+    const pts  = series[code] || [];
+    const labels = pts.map(p => p.date);
+    const data   = pts.map(p => p.rate);
+
+    const name = names[code] ? `${code} (${names[code]})` : code;
+    labelEl.textContent = name;
+
+    const cfg = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: name,
+          data: data,
+          borderWidth: 2,
+          tension: 0.1,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: {
+            ticks: { maxTicksLimit: 8 },
+            grid: { display: false }
+          },
+          y: {
+            ticks: { maxTicksLimit: 6 },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          }
+        }
+      }
+    };
+
+    if (chart === null) {
+      chart = new Chart(ctx, cfg);
+    } else {
+      chart.data.labels = labels;
+      chart.data.datasets[0].data = data;
+      chart.data.datasets[0].label = name;
+      chart.update();
+    }
+  }
+
+  prevBtn.addEventListener('click', () => {
+    idx = (idx - 1 + codes.length) % codes.length;
+    renderChart();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    idx = (idx + 1) % codes.length;
+    renderChart();
+  });
+
+  renderChart();
+});
+</script>
+
+{% endblock %}

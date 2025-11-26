@@ -2,7 +2,7 @@
 from __future__ import annotations
 import json
 import math
-from datetime import timedelta
+from datetime import date, timedelta
 
 import numpy as np
 import pandas as pd
@@ -257,6 +257,106 @@ def overview(request):
     }
 
     return render(request, "overview.html", ctx)
+
+
+
+
+
+def market_page(request):
+    """
+    Market view:
+      - table of latest daily USD→quote rates for all quotes
+      - 5y history line chart with left/right navigation between currencies
+    """
+    base_code = "USD"
+
+    # Use the same quote universe as overview
+    all_quotes = ["EUR","GBP","AUD","NZD","JPY","CNY","CHF","CAD","MXN","INR","BRL","RUB","KRW"]
+
+    today = date.today()
+    five_years_ago = today - timedelta(days=5 * 365)
+
+    # ---- Latest ACTUAL per quote (for the table)
+    latest_actual: dict[str, dict] = {}
+    rows = (
+        ExchangeRate.objects
+        .filter(base__code=base_code, timeframe=Timeframe.DAILY, quote__code__in=all_quotes)
+        .order_by("quote__code", "-date")
+        .values("quote__code", "date", "rate")
+    )
+    for r in rows:
+        q = r["quote__code"]
+        if q in latest_actual:
+            continue
+        latest_actual[q] = {"date": str(r["date"]), "rate": float(r["rate"])}
+
+    # ---- Country / zone labels (reuse from overview)
+    short_zone = {
+        "EUR": "Eurozone",
+        "GBP": "United Kingdom",
+        "AUD": "Australia",
+        "NZD": "New Zealand",
+        "JPY": "Japan",
+        "CNY": "China",
+        "CHF": "Switzerland",
+        "CAD": "Canada",
+        "MXN": "Mexico",
+        "INR": "India",
+        "BRL": "Brazil",
+        "RUB": "Russia",
+        "KRW": "South Korea",
+        "USD": "United States",
+    }
+    db_names = {c.code: c.name for c in Currency.objects.filter(code__in=all_quotes)}
+    currency_names = {code: short_zone.get(code, db_names.get(code, code)) for code in all_quotes}
+
+    # ---- Build table rows
+    table_rows = []
+    for code in all_quotes:
+        info = latest_actual.get(code)
+        if not info:
+            continue
+        table_rows.append(
+            {
+                "code": code,
+                "label": f"{code} ({currency_names.get(code, code)})",
+                "date": info["date"],
+                "rate": info["rate"],
+            }
+        )
+
+    # ---- 5y history per currency for the chart
+    series_payload: dict[str, list[dict]] = {}
+    for code in all_quotes:
+        qs = (
+            ExchangeRate.objects
+            .filter(
+                base__code=base_code,
+                quote__code=code,
+                timeframe=Timeframe.DAILY,
+                date__gte=five_years_ago,
+                date__lte=today,
+            )
+            .order_by("date")
+            .values("date", "rate")
+        )
+        series_payload[code] = [
+            {"date": str(r["date"]), "rate": float(r["rate"])}
+            for r in qs
+        ]
+
+
+    ctx = {
+        "table_rows": table_rows,
+        "all_quotes": all_quotes,  # (optional, for HTML if needed)
+        "currency_names_json": json.dumps(currency_names),
+        "series_json": json.dumps(series_payload),
+        "all_quotes_json": json.dumps(all_quotes),  # 👈 NEW
+    }
+    return render(request, "market.html", ctx)
+
+
+
 
 
 
