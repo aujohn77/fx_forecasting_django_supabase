@@ -55,11 +55,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const ctx     = document.getElementById('mk-chart').getContext('2d');
   const prevBtn = document.getElementById('mk-prev');
   const nextBtn = document.getElementById('mk-next');
-  const cardEl  = document.getElementById('mk-card');
+  const cardEl  = document.getElementById('mk-card');  // may be null; that's ok
 
   let idx = 0;
   let chart = null;
   let autoTimer = null;
+
+  // --- Color palette: one color per currency -------------------
+  const plotColors = {
+    EUR: '#4ade80', // green
+    GBP: '#60a5fa', // blue
+    AUD: '#facc15', // yellow
+    NZD: '#a78bfa', // purple
+    JPY: '#fb7185', // pink/red
+    CNY: '#34d399', // teal
+    CHF: '#f87171', // soft red
+    CAD: '#38bdf8', // cyan
+    MXN: '#fbbf24', // amber
+    INR: '#f472b6', // rose
+    BRL: '#10b981', // emerald
+    RUB: '#c084fc', // violet
+    KRW: '#22d3ee'  // sky
+  };
+
+  function getColor(code) {
+    return plotColors[code] || '#93c5fd'; // fallback blue
+  }
+  // --------------------------------------------------------------
 
   function renderChart() {
     if (!codes.length) return;
@@ -81,7 +103,9 @@ document.addEventListener('DOMContentLoaded', function () {
           data: data,
           borderWidth: 2,
           tension: 0.1,
-          pointRadius: 0
+          pointRadius: 0,
+          borderColor: getColor(code),
+          backgroundColor: 'transparent'
         }]
       },
       options: {
@@ -110,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
       chart.data.labels = labels;
       chart.data.datasets[0].data = data;
       chart.data.datasets[0].label = name;
+      chart.data.datasets[0].borderColor = getColor(code);
       chart.update();
     }
   }
