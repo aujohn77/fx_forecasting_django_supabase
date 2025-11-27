@@ -1,9 +1,10 @@
 # FILE: apps/forecasting/services/backtest_service.py
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Iterable, Dict, List, Tuple, Optional
+from typing import Iterable, Dict, List, Tuple, Optional, Set
 import numpy as np
 import pandas as pd
+from datetime import date
 
 from django.db import transaction
 from django.utils import timezone
@@ -94,15 +95,22 @@ def _spec_for(model_key: str, timeframe: str, horizon: int) -> ModelSpec:
 
 
 
-def _rolling_backtest(y: pd.Series, opts: BacktestOptions) -> Tuple[List[BacktestSlice], Dict[str, float]]:
+def _rolling_backtest(
+    y: pd.Series,
+    opts: BacktestOptions,
+    skip_dates: Iterable[date] | None = None,
+) -> Tuple[List[BacktestSlice], Dict[str, float]]:
     """
     Walk-forward backtest (ALL-PAST training):
       - For each target date dt among the *last N* points (N = opts.window):
         * train = y[ y.index < dt ]  (all history strictly before dt)
         * predict horizon steps starting at dt (usually 1 step)
+      - If skip_dates is provided, any target whose dt.date() is in skip_dates
+        will be skipped (used to avoid recomputing existing slices).
     """
     predictor = get_model(opts.model)
     params = opts.params or {}
+    skip_set: Set[date] = set(skip_dates or [])
 
     slices: List[BacktestSlice] = []
     y_true_vals: List[float] = []
@@ -114,7 +122,14 @@ def _rolling_backtest(y: pd.Series, opts: BacktestOptions) -> Tuple[List[Backtes
 
     # Limit evaluation to the LAST N targets available
     n_targets = min(max(1, opts.window), len(y) - 1)
-    target_dates = list(y.index[-n_targets:])
+    all_target_dates = list(y.index[-n_targets:])
+
+    # NEW: drop targets whose date is already in skip_set
+    target_dates = [dt for dt in all_target_dates if dt.date() not in skip_set]
+
+    if not target_dates:
+        # nothing new to evaluate
+        return slices, {"rmse": float("nan"), "mae": float("nan"), "mape": float("nan"), "n": 0}
 
     for dt in target_dates:
         # Train on ALL history strictly before the target
@@ -150,9 +165,6 @@ def _rolling_backtest(y: pd.Series, opts: BacktestOptions) -> Tuple[List[Backtes
                 forecast=pred,
             ))
 
-        # (Optional) If you want to ALSO store horizons >1 as slices, loop here:
-        # for h_dt in target_index: ... append more BacktestSlice rows
-
     metrics = {
         "rmse": float(np.sqrt(np.mean((np.array(y_true_vals) - np.array(y_pred_vals)) ** 2))) if y_true_vals else float("nan"),
         "mae":  float(np.mean(np.abs(np.array(y_true_vals) - np.array(y_pred_vals)))) if y_true_vals else float("nan"),
@@ -160,8 +172,6 @@ def _rolling_backtest(y: pd.Series, opts: BacktestOptions) -> Tuple[List[Backtes
         "n":    len(y_true_vals),
     }
     return slices, metrics
-
-
 
 
 
@@ -174,6 +184,10 @@ def run_backtests(opts: BacktestOptions) -> BacktestRun:
     """
     Create a BacktestRun + BacktestSlice(s) + BacktestMetric(s)
     aligned with your Django models.
+
+    Behaviour:
+    - For each (base, quote, model, timeframe, horizon), if a BacktestSlice
+      already exists for a given date, that date is skipped (no recomputation).
     """
     base = Currency.objects.get(code=opts.base_code.upper())
     spec = _spec_for(opts.model, opts.timeframe, opts.horizon)
@@ -198,16 +212,39 @@ def run_backtests(opts: BacktestOptions) -> BacktestRun:
         if y.empty or len(y) < opts.window + opts.horizon:
             continue
 
-        slices, metrics = _rolling_backtest(y, opts)
+        quote_obj = Currency.objects.get(code=q)
+
+        # --- candidate target dates for this run (last `window` dates) ---
+        y_sorted = y.sort_index()
+        n_targets = min(max(1, opts.window), len(y_sorted) - 1)
+        candidate_dates = [dt.date() for dt in list(y_sorted.index[-n_targets:])]
+
+        # --- dates already backtested for this base/quote/model/tf/horizon ---
+        existing_dates_qs = BacktestSlice.objects.filter(
+            base=base,
+            quote=quote_obj,
+            date__in=candidate_dates,
+            run__model=spec,
+            run__timeframe=opts.timeframe,
+            run__horizon_days=opts.horizon,
+        ).values_list("date", flat=True)
+        existing_dates = set(existing_dates_qs)
+
+        # --- run rolling backtest, skipping those existing dates ---
+        slices, metrics = _rolling_backtest(y, opts, skip_dates=existing_dates)
+        if not slices:
+            # nothing new to add for this quote in this run
+            continue
 
         # attach FKs
-        quote_obj = Currency.objects.get(code=q)
         for s in slices:
             s.run = run
             s.base = base
             s.quote = quote_obj
 
-        BacktestSlice.objects.bulk_create(slices, batch_size=1000, ignore_conflicts=True)
+        BacktestSlice.objects.bulk_create(
+            slices, batch_size=1000, ignore_conflicts=True
+        )
         all_slices.extend(slices)
 
         metrics_per_quote.append(dict(
@@ -218,13 +255,21 @@ def run_backtests(opts: BacktestOptions) -> BacktestRun:
             n=metrics["n"],
         ))
 
-    # Per-quote metrics rows
+    # Per-quote metrics rows (only for quotes that had new slices)
     bt_metrics = [
-        BacktestMetric(run=run, base=base, quote=m["quote"],
-                       mape=m["mape"], rmse=m["rmse"], mae=m["mae"], n=m["n"])
+        BacktestMetric(
+            run=run,
+            base=base,
+            quote=m["quote"],
+            mape=m["mape"],
+            rmse=m["rmse"],
+            mae=m["mae"],
+            n=m["n"],
+        )
         for m in metrics_per_quote
     ]
-    BacktestMetric.objects.bulk_create(bt_metrics, batch_size=100)
+    if bt_metrics:
+        BacktestMetric.objects.bulk_create(bt_metrics, batch_size=100)
 
     # Update run window bounds from actually produced slices
     if all_slices:
