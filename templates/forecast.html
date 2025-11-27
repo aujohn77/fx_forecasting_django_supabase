@@ -1,47 +1,152 @@
 {% extends "base.html" %}
 {% block title %}Forecasts{% endblock %}
+
 {% block content %}
+
 <section class="card">
-  <h2>Actuals to last complete period + Forward Forecasts</h2>
+  <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+    <h2>Forecast – Next Business Day</h2>
 
-  <form method="get" class="controls" style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
-    <label>Timeframe:
-      <select name="freq" onchange="this.form.submit()">
-        <option value="D" {% if selected_freq == "D" %}selected{% endif %}>Daily</option>
-        <option value="W" {% if selected_freq == "W" %}selected{% endif %}>Weekly</option>
-        <option value="M" {% if selected_freq == "M" %}selected{% endif %}>Monthly</option>
-      </select>
-    </label>
-
-    <label>Model:
-      <select name="model" onchange="this.form.submit()">
-        <option value="">(All)</option>
+    {% if model_codes %}
+    <form method="get" id="model-form" style="display:flex;align-items:center;gap:.4rem;">
+      <label for="model-select">Model:</label>
+      <select id="model-select" name="model" onchange="this.form.submit()">
         {% for m in model_codes %}
-          <option value="{{ m }}" {% if selected_model == m %}selected{% endif %}>{{ m }}</option>
+          <option value="{{ m }}" {% if m == selected_model %}selected{% endif %}>{{ m }}</option>
         {% endfor %}
       </select>
-    </label>
+      {% if chart_quote %}
+        <input type="hidden" name="quote" value="{{ chart_quote }}">
+      {% endif %}
+    </form>
+    {% endif %}
+  </header>
 
-    <label>Currency:
-      <select name="currency" onchange="this.form.submit()">
-        <option value="ALL" {% if selected_quote == "ALL" %}selected{% endif %}>(All)</option>
-        {% for q in all_quotes %}
-          <option value="{{ q }}" {% if selected_quote == q %}selected{% endif %}>{{ q }}</option>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Currency</th>
+          <th>Latest Date</th>
+          <th>Current</th>
+          <th>Forecast (Next Biz Day)</th>
+          <th>Δ %</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.label }}</td>
+          <td>{{ row.latest_date }}</td>
+          <td>{{ row.current_rate|floatformat:4 }}</td>
+          <td>
+            {% if row.forecast_rate %}
+              {{ row.forecast_rate|floatformat:4 }}
+            {% else %}
+              <span style="color:var(--muted)">n/a</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if row.delta_pct is not None %}
+              {% if row.delta_pct > 0 %}
+                <span class="up">+{{ row.delta_pct|floatformat:2 }}%</span>
+              {% elif row.delta_pct < 0 %}
+                <span class="down">{{ row.delta_pct|floatformat:2 }}%</span>
+              {% else %}
+                <span>{{ row.delta_pct|floatformat:2 }}%</span>
+              {% endif %}
+            {% else %}
+              <span style="color:var(--muted)">–</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="color:var(--muted)">No forecasts available.</td>
+        </tr>
         {% endfor %}
-      </select>
-    </label>
-
-    <label>Start Date:
-      <input type="date" name="start" value="{{ start_date }}" onchange="this.form.submit()">
-    </label>
-  </form>
-
-  <canvas id="fxForecast"></canvas>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-<script id="chart-data" type="application/json">{{ chart_json|safe }}</script>
-<script id="freq-code"  type="application/json">"{{ selected_freq }}"</script>
+<section class="card">
+  <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+    <h2>
+      Last 60 Business Days – {{ chart_quote }} (Model: {{ selected_model }})
+    </h2>
+    <div style="display:flex;gap:.4rem;">
+      {% if prev_quote %}
+        <a href="?model={{ selected_model }}&quote={{ prev_quote }}">« Prev</a>
+      {% endif %}
+      {% if next_quote %}
+        <a href="?model={{ selected_model }}&quote={{ next_quote }}">Next »</a>
+      {% endif %}
+    </div>
+  </header>
 
-{% load static %}
-<script src="{% static 'js/forecast.js' %}"></script>
+  <div class="chart-container">
+    <canvas id="forecastChart"></canvas>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Data from Django context (JSON as strings → parse in JS)
+  const labels = JSON.parse('{{ chart_labels|escapejs }}');
+  const actualData = JSON.parse('{{ chart_actual|escapejs }}');
+  const backtestData = JSON.parse('{{ chart_backtest|escapejs }}');
+
+  // Only draw if we have labels and Chart.js is loaded
+  if (Array.isArray(labels) && labels.length && window.Chart) {
+    const canvas = document.getElementById('forecastChart');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Actual',
+              data: actualData,
+              borderWidth: 2,
+              tension: 0.2
+            },
+            {
+              label: 'Backtest',
+              data: backtestData,
+              borderWidth: 2,
+              borderDash: [6, 4],
+              tension: 0.2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              labels: {
+                boxWidth: 12
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                maxTicksLimit: 10
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+</script>
+
 {% endblock %}

@@ -25,7 +25,7 @@ urlpatterns = [
     # dashboards
     path("home/", fviews.overview, name="overview"),
     path("forecast/", fviews.forecast_page, name="forecast"),
-    path("compare/", fviews.compare_page, name="compare"),
+    #path("compare/", fviews.compare_page, name="compare"),
     path("market/", fviews.market_page, name="market"),
 
     # NEW: ops console
