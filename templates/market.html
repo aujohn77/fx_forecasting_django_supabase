@@ -1,28 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Market Overview{% endblock %}
+{% block title %}Market {{ latest_date|date:"Y-m-d" }} USD Rates{% endblock %}
 
 {% block content %}
 
 <section class="card" style="margin-bottom:1rem;">
-  <h2>Market – Latest USD Rates</h2>
+  <h2>USD Market Snapshot — {{ latest_date|date:"Y/m/d" }}</h2>
   <div class="table">
     <table>
       <thead>
         <tr>
             <th>Currency</th>
-            <th>Latest Date</th>
             <th>Rate</th>
-            <th>Daily %</th>
-            <th>Weekly %</th>
-            <th>Monthly %</th>
+            <th>Daily Δ%</th>
+            <th>Weekly Δ%</th>
+            <th>Monthly Δ%</th>
         </tr>
       </thead>
 
       <tbody>
         {% for row in table_rows %}
-        <tr>
+        <!-- NOTE: mk-row class + data-code for JS to target -->
+        <tr class="mk-row" data-code="{{ row.code }}">
             <td>{{ row.label }}</td>
-            <td>{{ row.date }}</td>
             <td>{{ row.rate|floatformat:4 }}</td>
 
             <td>
@@ -76,12 +75,12 @@
 <section class="card">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
     <h2 style="margin:0;">
-      5-Year History:
+      5-Year Exchange Rate Trend —
       <span id="mk-currency-label"></span>
     </h2>
     <div style="display:flex;gap:.5rem;align-items:center;">
-      <button id="mk-prev" type="button">◀ Prev</button>
-      <button id="mk-next" type="button">Next ▶</button>
+      <button id="mk-prev" type="button">◀</button>
+      <button id="mk-next" type="button">▶</button>
     </div>
   </div>
 
@@ -103,6 +102,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const nextBtn = document.getElementById('mk-next');
   const cardEl  = document.getElementById('mk-card');  // may be null; that's ok
 
+  // all table rows we can highlight
+  const rows = document.querySelectorAll('.mk-row');
+
   let idx = 0;
   let chart = null;
   let autoTimer = null;
@@ -120,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
     MXN: '#fbbf24', // amber
     INR: '#f472b6', // rose
     BRL: '#10b981', // emerald
-    RUB: '#c084fc', // violet
     KRW: '#22d3ee'  // sky
   };
 
@@ -128,6 +129,17 @@ document.addEventListener('DOMContentLoaded', function () {
     return plotColors[code] || '#93c5fd'; // fallback blue
   }
   // --------------------------------------------------------------
+
+  // highlight the matching table row
+  function highlightRow(code) {
+    rows.forEach(tr => {
+      if (tr.dataset.code === code) {
+        tr.classList.add('mk-row-active');
+      } else {
+        tr.classList.remove('mk-row-active');
+      }
+    });
+  }
 
   function renderChart() {
     if (!codes.length) return;
@@ -139,6 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const name = names[code] ? `${code} (${names[code]})` : code;
     labelEl.textContent = name;
+
+    // update table highlight
+    highlightRow(code);
 
     const cfg = {
       type: 'line',

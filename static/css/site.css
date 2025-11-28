@@ -152,3 +152,17 @@ canvas{
   height: 100% !important;
   display: block;
 }
+
+
+/* Simple, flat cyan highlight for active row */
+.table tr.mk-row-active td {
+  background-color: rgba(56, 189, 248, 0.14);  /* soft cyan */
+  font-weight: 600;
+}
+
+
+/* Highlight active forecast row */
+.table tr.fc-row-active td {
+  background-color: rgba(56, 189, 248, 0.14);  /* soft cyan */
+  font-weight: 600;
+}

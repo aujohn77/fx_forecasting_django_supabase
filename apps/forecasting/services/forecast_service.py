@@ -24,7 +24,7 @@ from apps.forecasting.models import ForecastRun, Forecast, ModelSpec, ModelLibra
 DEFAULT_QUOTES = ["EUR", "GBP", "AUD"]
 # Default USD quote set used when --quotes is omitted
 DEFAULT_USD_QUOTES = [
-    "EUR","GBP","AUD","NZD","JPY","CNY","CHF","CAD","MXN","INR","BRL","RUB","KRW"
+    "EUR","GBP","AUD","NZD","JPY","CNY","CHF","CAD","MXN","INR","BRL","KRW"
 ]
 
 

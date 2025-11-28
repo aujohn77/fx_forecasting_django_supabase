@@ -25,7 +25,7 @@ from apps.forecasting.models_lib.registry import list_models  # dynamic model li
 # ──────────────────────────────────────────────────────────────────────────────
 DEFAULT_USD_QUOTES = [
     "EUR", "GBP", "AUD", "NZD", "JPY", "CNY", "CHF",
-    "CAD", "MXN", "INR", "BRL", "RUB", "KRW",
+    "CAD", "MXN", "INR", "BRL", "KRW",
 ]
 DEFAULT_QUOTES_CSV = ",".join(DEFAULT_USD_QUOTES)
 

@@ -1,11 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Forecasts{% endblock %}
+{% block title %}
+  Forecasts{% if forecast_date %} {{ forecast_date|date:"Y-m-d" }} USD Rates{% else %} – USD Rates{% endif %}
+{% endblock %}
 
 {% block content %}
 
 <section class="card">
   <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-    <h2>Forecast – Next Business Day</h2>
+    <h2>
+        USD Forecast Overview — {% if forecast_date %}{{ forecast_date|date:"Y/m/d" }}{% else %}N/A{% endif %}
+    </h2>
 
     {% if model_codes %}
     <form method="get" id="model-form" style="display:flex;align-items:center;gap:.4rem;">
@@ -27,17 +31,16 @@
       <thead>
         <tr>
           <th>Currency</th>
-          <th>Latest Date</th>
           <th>Current</th>
-          <th>Forecast (Next Biz Day)</th>
-          <th>Δ %</th>
+          <th>Forecast</th>
+          <th>Δ%</th>
         </tr>
       </thead>
       <tbody>
         {% for row in table_rows %}
-        <tr>
+        <!-- fc-row + data-code so JS can highlight like market page -->
+        <tr class="fc-row" data-code="{{ row.code }}">
           <td>{{ row.label }}</td>
-          <td>{{ row.latest_date }}</td>
           <td>{{ row.current_rate|floatformat:4 }}</td>
           <td>
             {% if row.forecast_rate %}
@@ -62,7 +65,7 @@
         </tr>
         {% empty %}
         <tr>
-          <td colspan="5" style="color:var(--muted)">No forecasts available.</td>
+          <td colspan="4" style="color:var(--muted)">No forecasts available.</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -72,16 +75,14 @@
 
 <section class="card">
   <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-    <h2>
-      Last 60 Business Days – {{ chart_quote }} (Model: {{ selected_model }})
+    <h2 style="margin:0;">
+      60-Day Trend —
+      <span id="fc-currency-label">{{ chart_quote }}</span>
+      (Model: {{ selected_model }})
     </h2>
-    <div style="display:flex;gap:.4rem;">
-      {% if prev_quote %}
-        <a href="?model={{ selected_model }}&quote={{ prev_quote }}">« Prev</a>
-      {% endif %}
-      {% if next_quote %}
-        <a href="?model={{ selected_model }}&quote={{ next_quote }}">Next »</a>
-      {% endif %}
+    <div style="display:flex;gap:.4rem;align-items:center;">
+      <button id="fc-prev" type="button">◀</button>
+      <button id="fc-next" type="button">▶</button>
     </div>
   </header>
 
@@ -92,61 +93,166 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // Data from Django context (JSON as strings → parse in JS)
-  const labels = JSON.parse('{{ chart_labels|escapejs }}');
-  const actualData = JSON.parse('{{ chart_actual|escapejs }}');
-  const backtestData = JSON.parse('{{ chart_backtest|escapejs }}');
+  const seriesPayload = JSON.parse('{{ chart_series_json|escapejs }}');
+  const codes = JSON.parse('{{ available_quotes_json|escapejs }}');
+  const names = JSON.parse('{{ currency_names_json|escapejs }}');
+  const initialCode = '{{ chart_quote }}';
 
-  // Only draw if we have labels and Chart.js is loaded
-  if (Array.isArray(labels) && labels.length && window.Chart) {
-    const canvas = document.getElementById('forecastChart');
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Actual',
-              data: actualData,
-              borderWidth: 2,
-              tension: 0.2
-            },
-            {
-              label: 'Backtest',
-              data: backtestData,
-              borderWidth: 2,
-              borderDash: [6, 4],
-              tension: 0.2
-            }
-          ]
+  const labelEl = document.getElementById('fc-currency-label');
+  const canvas = document.getElementById('forecastChart');
+  const prevBtn = document.getElementById('fc-prev');
+  const nextBtn = document.getElementById('fc-next');
+
+  // Forecast table rows for highlight
+  const fcRows = document.querySelectorAll('.fc-row');
+
+  function highlightForecastRow(code) {
+    fcRows.forEach(tr => {
+      if (tr.dataset.code === code) {
+        tr.classList.add('fc-row-active');
+      } else {
+        tr.classList.remove('fc-row-active');
+      }
+    });
+  }
+
+  // Same color palette as market page
+  const plotColors = {
+    EUR: '#4ade80', // green
+    GBP: '#60a5fa', // blue
+    AUD: '#facc15', // yellow
+    NZD: '#a78bfa', // purple
+    JPY: '#fb7185', // pink/red
+    CNY: '#34d399', // teal
+    CHF: '#f87171', // soft red
+    CAD: '#38bdf8', // cyan
+    MXN: '#fbbf24', // amber
+    INR: '#f472b6', // rose
+    BRL: '#10b981', // emerald
+    KRW: '#22d3ee'  // sky
+  };
+  function getColor(code) {
+    return plotColors[code] || '#93c5fd';
+  }
+
+  let idx = Math.max(0, codes.indexOf(initialCode));
+  let chart = null;
+  let autoTimer = null;
+
+  function renderChart() {
+    if (!canvas || !window.Chart || !codes.length) return;
+
+    const code = codes[idx];
+    const payload = seriesPayload[code] || { labels: [], actual: [], backtest: [] };
+    const labels = payload.labels || [];
+    const actual = payload.actual || [];
+    const backtest = payload.backtest || [];
+
+    const name = names[code] ? `${code} (${names[code]})` : code;
+    labelEl.textContent = name;
+
+    // 🔹 keep table highlight in sync with chart currency
+    highlightForecastRow(code);
+
+    const cfg = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Actual',
+            data: actual,
+            borderWidth: 2,
+            tension: 0.2,
+            borderColor: getColor(code),
+            backgroundColor: 'transparent',
+            pointRadius: 0,
+            pointHoverRadius: 3
+          },
+          {
+            label: 'Backtest',
+            data: backtest,
+            borderWidth: 2,
+            tension: 0.2,
+            borderColor: '#ffffff',
+            backgroundColor: 'transparent',
+            borderDash: [6, 4],
+            pointRadius: 0,
+            pointHoverRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            mode: 'index',
-            intersect: false
+        plugins: {
+          legend: {
+            labels: { boxWidth: 12 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { maxTicksLimit: 10 },
+            grid: { display: false }
           },
-          plugins: {
-            legend: {
-              labels: {
-                boxWidth: 12
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                maxTicksLimit: 10
-              }
-            }
+          y: {
+            grid: { color: 'rgba(255,255,255,0.05)' }
           }
         }
-      });
+      }
+    };
+
+    if (chart === null) {
+      chart = new Chart(canvas.getContext('2d'), cfg);
+    } else {
+      chart.data.labels = labels;
+      chart.data.datasets[0].data = actual;
+      chart.data.datasets[0].borderColor = getColor(code);
+      chart.data.datasets[1].data = backtest;
+      chart.update();
     }
   }
+
+  function goNext() {
+    if (!codes.length) return;
+    idx = (idx + 1) % codes.length;
+    renderChart();
+  }
+
+  function goPrev() {
+    if (!codes.length) return;
+    idx = (idx - 1 + codes.length) % codes.length;
+    renderChart();
+  }
+
+  function startAuto() {
+    if (autoTimer !== null) {
+      clearInterval(autoTimer);
+    }
+    if (codes.length > 1) {
+      autoTimer = setInterval(goNext, 8000); // rotate every 8s
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      goPrev();
+      startAuto();  // keep auto-rotation going
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      goNext();
+      startAuto();
+    });
+  }
+
+  renderChart();
+  startAuto();   // auto-rotate; we do NOT pause on hover
 </script>
 
 {% endblock %}
