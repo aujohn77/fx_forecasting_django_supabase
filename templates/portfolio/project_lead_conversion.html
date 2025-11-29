@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Lead Conversion Prediction{% endblock %}
+
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
+    FX Model Deployment Demo
+  </a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
+    Amazon-style Product Recommender
+  </a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link nav-link-active">
+    Lead Conversion Prediction
+  </a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
+    Customer Segmentation
+  </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Potential Customers Prediction (MIT IDSS – Capstone Project)</h2>
+
+  <p>
+    As part of an MIT-IDSS capstone, I built a predictive analytics system to identify leads
+    most likely to convert into paying customers for the fictional EdTech company ExtraaLearn.
+  </p>
+
+  <p>
+    I began with data cleaning — removing duplicates, reconciling inconsistencies,
+    validating ranges, and addressing anomalies — followed by univariate and bivariate
+    exploratory analysis.
+  </p>
+
+  <p>
+    I engineered features such as engagement scores, interaction ratios, and normalised
+    lead scores to better represent user behaviour, then evaluated multiple models:
+  </p>
+
+  <ul>
+    <li>Decision Trees, Random Forest, Gradient Boosting</li>
+    <li>Logistic Regression, SVM</li>
+  </ul>
+
+  <p>
+    I applied hyperparameter tuning, threshold optimisation, and precision–recall tradeoff
+    analysis. From the best model, I extracted feature-importance insights and developed
+    lead profiles to support targeted marketing.
+  </p>
+
+  <p><strong>Tech Used:</strong> Python, Scikit-learn, Pandas, Seaborn</p>
+
+  <h3 style="margin-top:2rem;">Notebook Preview</h3>
+
+  <div class="screenshot-grid">
+    <img src="{% static 'projects/lead_conversion/sc1.png' %}"
+         alt="Lead conversion notebook screenshot 1"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/lead_conversion/sc2.png' %}"
+         alt="Lead conversion notebook screenshot 2"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/lead_conversion/sc3.png' %}"
+         alt="Lead conversion notebook screenshot 3"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/lead_conversion/sc4.png' %}"
+         alt="Lead conversion notebook screenshot 4"
+         onclick="openScreenshotModal(this.src)">
+  </div>
+
+  <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
+    Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly,
+    but I can present it in person if needed.
+  </p>
+</section>
+
+<div id="screenshot-modal" class="screenshot-modal" onclick="closeScreenshotModal()">
+  <img id="screenshot-modal-img" alt="Notebook screenshot enlarged">
+</div>
+
+<script>
+function openScreenshotModal(src) {
+  const modal = document.getElementById('screenshot-modal');
+  const img   = document.getElementById('screenshot-modal-img');
+  img.src = src;
+  modal.style.display = 'flex';
+}
+function closeScreenshotModal() {
+  document.getElementById('screenshot-modal').style.display = 'none';
+}
+</script>
+
+{% endblock %}

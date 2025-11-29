@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Home – FX & ML Portfolio{% endblock %}
+
+{% block nav_home_active %}nav-link-active{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Welcome</h2>
+  <p>I’m João, working on FX forecasting and ML projects.</p>
+  <p><a href="{% url 'portfolio:projects' %}">View all projects →</a></p>
+</section>
+{% endblock %}
+

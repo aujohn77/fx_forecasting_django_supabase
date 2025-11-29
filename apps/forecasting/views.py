@@ -405,7 +405,10 @@ def market_page(request):
         "all_quotes_json": json.dumps(all_quotes),
         "latest_date": latest_date,  # 👈 new context variable
     }
-    return render(request, "market.html", ctx)
+    
+
+    return render(request, "forecasting/market.html", ctx)
+
 
 
 
@@ -627,4 +630,6 @@ def forecast_page(request):
         "currency_names_json": json.dumps(currency_names),
         "forecast_date": forecast_date,
     }
-    return render(request, "forecast.html", ctx)
+    
+    return render(request, "forecasting/forecast.html", ctx)
+

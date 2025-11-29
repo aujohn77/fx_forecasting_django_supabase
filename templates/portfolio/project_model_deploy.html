@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}FX Model Deployment Demo{% endblock %}
+
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
+    FX Model Deployment Demo
+  </a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
+    Amazon-style Product Recommender
+  </a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
+    Lead Conversion Prediction
+  </a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
+    Customer Segmentation
+  </a>
+</nav>
+{% endblock %}
+
+{% block nav_row3 %}
+<nav class="subnav">
+  <a href="{% url 'market' %}" class="nav-link">Market</a>
+  <a href="{% url 'forecast' %}" class="nav-link">Forecasts</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>FX Model Deployment Demo</h2>
+
+  <p>
+    This project is a full FX forecasting pipeline built with
+    <strong>Django</strong>, <strong>Supabase (Postgres)</strong>, and
+    <strong>Render</strong>.
+  </p>
+
+  <ul>
+    <li>Ingests daily FX rates from the Frankfurter API.</li>
+    <li>Stores 10+ years of history in Supabase.</li>
+    <li>Runs multiple forecasting models (Python and R) via scheduled jobs.</li>
+    <li>Serves interactive dashboards for Market and Forecasts.</li>
+  </ul>
+
+  <p>
+    You can explore the live FX views using the navigation above.
+  </p>
+</section>
+{% endblock %}

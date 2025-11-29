@@ -22,12 +22,17 @@ from apps.forecasting import views as fviews
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    # dashboards
-    path("home/", fviews.overview, name="overview"),
-    path("forecast/", fviews.forecast_page, name="forecast"),
-    #path("compare/", fviews.compare_page, name="compare"),
-    path("market/", fviews.market_page, name="market"),
+    # 🔹 Portfolio site at root (/ , /projects/, /about/, etc.)
+    path(
+        "",
+        include("apps.site_portfolio.urls", namespace="portfolio"),
+    ),
 
-    # NEW: ops console
+    # 🔹 Existing FX dashboards
+    path("home/",    fviews.overview,       name="overview"),
+    path("forecast/", fviews.forecast_page, name="forecast"),
+    path("market/",   fviews.market_page,   name="market"),
+
+    # 🔹 Ops console
     path("ops/", include("apps.forecasting.ops.urls")),
 ]

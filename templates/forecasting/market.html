@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 {% block title %}Market {{ latest_date|date:"Y-m-d" }} USD Rates{% endblock %}
 
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
+    FX Model Deployment Demo
+  </a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
+    Amazon-style Product Recommender
+  </a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
+    Lead Conversion Prediction
+  </a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
+    Customer Segmentation
+  </a>
+</nav>
+{% endblock %}
+
+{% block nav_row3 %}
+<nav class="subnav">
+  <a href="{% url 'market' %}" class="nav-link nav-link-active">Market</a>
+  <a href="{% url 'forecast' %}" class="nav-link">Forecasts</a>
+</nav>
+{% endblock %}
+
 {% block content %}
 
 <section class="card" style="margin-bottom:1rem;">
+
   <h2>USD Market Snapshot — {{ latest_date|date:"Y/m/d" }}</h2>
   <div class="table">
     <table>

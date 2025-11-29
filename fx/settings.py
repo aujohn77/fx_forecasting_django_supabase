@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.rates',
     'apps.forecasting',
+    "apps.site_portfolio",
 
 ]
 

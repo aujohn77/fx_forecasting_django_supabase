@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Customer Personality Segmentation{% endblock %}
+
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
+    FX Model Deployment Demo
+  </a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
+    Amazon-style Product Recommender
+  </a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
+    Lead Conversion Prediction
+  </a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link nav-link-active">
+    Customer Segmentation
+  </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Customer Personality Segmentation (MIT IDSS – Capstone Project)</h2>
+
+  <p>
+    As part of a machine learning capstone from MIT-IDSS, I developed a customer
+    segmentation project using a retail dataset containing demographic attributes,
+    purchase behaviour, campaign responses, and spending habits.
+  </p>
+
+  <p>
+    I started with data cleaning — handling duplicates, missing values, outliers,
+    and inconsistencies — followed by univariate and bivariate analysis to explore
+    patterns in customer behaviour.
+  </p>
+
+  <p>
+    I engineered features from purchase history, campaign responses, and household
+    data, then implemented and compared several clustering algorithms:
+  </p>
+
+  <ul>
+    <li>K-Means</li>
+    <li>K-Medoids</li>
+    <li>Agglomerative Clustering</li>
+    <li>Gaussian Mixture Models</li>
+  </ul>
+
+  <p>
+    Silhouette scores, the elbow method, and cluster interpretability guided model
+    selection. The final solution provided actionable customer profiles to assist
+    the marketing team in tailoring campaigns and retention strategies.
+  </p>
+
+  <p><strong>Tech Used:</strong> Python, Scikit-learn, Seaborn, Plotly, SciPy, Pandas</p>
+
+  <h3 style="margin-top:2rem;">Notebook Preview</h3>
+
+  <div class="screenshot-grid">
+    <img src="{% static 'projects/customer_segmentation/sc1.png' %}"
+         alt="Customer segmentation notebook screenshot 1"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/customer_segmentation/sc2.png' %}"
+         alt="Customer segmentation notebook screenshot 2"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/customer_segmentation/sc3.png' %}"
+         alt="Customer segmentation notebook screenshot 3"
+         onclick="openScreenshotModal(this.src)">
+    <img src="{% static 'projects/customer_segmentation/sc4.png' %}"
+         alt="Customer segmentation notebook screenshot 4"
+         onclick="openScreenshotModal(this.src)">
+  </div>
+
+  <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
+    Due to MIT-IDSS copyright restrictions, the notebook itself cannot be shared publicly,
+    but I can present it in person if needed.
+  </p>
+</section>
+
+<div id="screenshot-modal" class="screenshot-modal" onclick="closeScreenshotModal()">
+  <img id="screenshot-modal-img" alt="Notebook screenshot enlarged">
+</div>
+
+<script>
+function openScreenshotModal(src) {
+  const modal = document.getElementById('screenshot-modal');
+  const img = document.getElementById('screenshot-modal-img');
+  img.src = src;
+  modal.style.display = 'flex';
+}
+function closeScreenshotModal() {
+  document.getElementById('screenshot-modal').style.display = 'none';
+}
+</script>
+{% endblock %}
