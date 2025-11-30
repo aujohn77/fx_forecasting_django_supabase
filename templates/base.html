@@ -60,23 +60,93 @@
   <!-- Mobile slide-in navigation drawer -->
   <div id="mobile-nav" class="mobile-nav" onclick="toggleMobileNav()">
     <div class="mobile-nav-panel" onclick="event.stopPropagation();">
+
       <nav class="mobile-nav-links">
+
+        <!-- Home -->
         <a href="{% url 'portfolio:home' %}"
            class="nav-link"
            onclick="toggleMobileNav()">
           Home
         </a>
-        <a href="{% url 'portfolio:projects' %}"
-           class="nav-link"
-           onclick="toggleMobileNav()">
-          Projects
-        </a>
+
+        <!-- Projects collapsible -->
+        <div class="mobile-collapsible">
+
+          <button class="mobile-collapse-btn"
+                  type="button"
+                  onclick="toggleSection('projects-submenu')">
+            Projects ▸
+          </button>
+
+          <div id="projects-submenu" class="mobile-submenu">
+
+            <!-- FX Model Deployment Demo -->
+            <a href="{% url 'portfolio:project_model_deploy' %}"
+               class="nav-link"
+               onclick="toggleMobileNav()">
+              FX Model Deployment Demo
+            </a>
+
+            <!-- FX sections collapsible -->
+            <div class="mobile-collapsible inner-level">
+
+              <button class="mobile-collapse-btn inner-btn"
+                      type="button"
+                      onclick="toggleSection('fx-submenu')">
+                Sections ▸
+              </button>
+
+              <div id="fx-submenu" class="mobile-submenu inner-submenu">
+                <a href="{% url 'portfolio:project_model_deploy' %}"
+                   class="nav-link"
+                   onclick="toggleMobileNav()">
+                  Summary
+                </a>
+                <a href="{% url 'market' %}"
+                   class="nav-link"
+                   onclick="toggleMobileNav()">
+                  Market
+                </a>
+                <a href="{% url 'forecast' %}"
+                   class="nav-link"
+                   onclick="toggleMobileNav()">
+                  Forecasts
+                </a>
+              </div>
+            </div>
+
+            <!-- Other ML projects -->
+            <a href="{% url 'portfolio:project_amazon_recommender' %}"
+               class="nav-link"
+               onclick="toggleMobileNav()">
+              Amazon-style Product Recommender
+            </a>
+
+            <a href="{% url 'portfolio:project_lead_conversion' %}"
+               class="nav-link"
+               onclick="toggleMobileNav()">
+              Lead Conversion Prediction
+            </a>
+
+            <a href="{% url 'portfolio:project_customer_segmentation' %}"
+               class="nav-link"
+               onclick="toggleMobileNav()">
+              Customer Segmentation
+            </a>
+
+          </div>
+        </div>
+
+        <!-- About -->
         <a href="{% url 'portfolio:about' %}"
            class="nav-link"
            onclick="toggleMobileNav()">
           About
         </a>
+
       </nav>
+
     </div>
   </div>
 
@@ -90,6 +160,12 @@
       const nav = document.getElementById('mobile-nav');
       if (!nav) return;
       nav.classList.toggle('open');
+    }
+
+    function toggleSection(id) {
+      const submenu = document.getElementById(id);
+      if (!submenu) return;
+      submenu.classList.toggle('open');
     }
   </script>
 

@@ -249,11 +249,11 @@ canvas{
   border-radius:999px;
 }
 
-/* Mobile overlay + panel */
+/* Mobile overlay */
 .mobile-nav {
   position:fixed;
   inset:0;
-  background:rgba(15,23,42,0.55);   /* slightly lighter so panel stands out */
+  background:rgba(0,0,0,0.25);   /* lighter overlay */
   display:none;
   justify-content:flex-start;
   align-items:stretch;
@@ -264,24 +264,71 @@ canvas{
   display:flex;
 }
 
+/* Sidebar panel */
 .mobile-nav-panel {
-  width:70%;
-  max-width:280px;
-  background:var(--panel);          /* lighter than pure black */
+  width:75%;
+  max-width:310px;
+  background:#1e293b;          /* lighter, more visible panel */
   padding:1.2rem 1rem 2rem;
-  box-shadow:4px 0 24px rgba(0,0,0,.7);
+  box-shadow:4px 0 24px rgba(0,0,0,.5);
+  color:var(--ink);
+  overflow-y:auto;
 }
 
 .mobile-nav-links {
   display:flex;
   flex-direction:column;
-  gap:.6rem;
+  gap:.8rem;
 }
 
 .mobile-nav-links .nav-link {
   display:block;
   text-decoration:none;
   color:var(--ink);
+}
+
+/* Collapsible groups */
+.mobile-collapsible {
+  margin-top:0.2rem;
+}
+
+.mobile-collapse-btn {
+  background:none;
+  border:none;
+  color:var(--ink);
+  font-size:1rem;
+  text-align:left;
+  width:100%;
+  padding:0.4rem 0;
+  cursor:pointer;
+}
+
+/* Submenus (Projects, FX sections) */
+.mobile-submenu {
+  display:none;
+  padding-left:1rem;
+  margin-top:0.4rem;
+  border-left:2px solid rgba(255,255,255,0.15);
+}
+
+.mobile-submenu.open {
+  display:flex;
+  flex-direction:column;
+  gap:0.6rem;
+}
+
+/* Inner nested submenu (FX sections) */
+.inner-level {
+  margin-left:1rem;
+}
+
+.inner-btn {
+  font-size:0.9rem;
+}
+
+.inner-submenu {
+  padding-left:0.8rem;
+  border-left:1px dashed rgba(255,255,255,0.2);
 }
 
 /* =========================
