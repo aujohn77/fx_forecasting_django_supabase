@@ -72,20 +72,20 @@
     <div class="mobile-nav-panel" onclick="event.stopPropagation();">
       <nav class="mobile-nav-links">
         <a href="{% url 'portfolio:home' %}"
-           class="nav-link {% block nav_home_active %}{% endblock %}"
-           onclick="toggleMobileNav()">
+          class="nav-link"
+          onclick="toggleMobileNav()">
           Home
         </a>
 
         <a href="{% url 'portfolio:projects' %}"
-           class="nav-link {% block nav_projects_active %}{% endblock %}"
-           onclick="toggleMobileNav()">
+          class="nav-link"
+          onclick="toggleMobileNav()">
           Projects
         </a>
 
         <a href="{% url 'portfolio:about' %}"
-           class="nav-link {% block nav_about_active %}{% endblock %}"
-           onclick="toggleMobileNav()">
+          class="nav-link"
+          onclick="toggleMobileNav()">
           About
         </a>
       </nav>
