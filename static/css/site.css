@@ -23,7 +23,6 @@ body{
    ========================= */
 
 .top{
-  /* header background only – layout handled by nav-shell/nav-rows */
   background:#0b1220;
 }
 
@@ -93,75 +92,196 @@ canvas{
 }
 
 /* =========================
-   New 3-row navigation
+   Navigation (3-row shell + mobile drawer)
    ========================= */
 
-/* Header shell with fixed vertical space for up to 3 rows */
+/* Header shell */
 .nav-shell {
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
+  padding-top:0.6rem;
+  padding-bottom:0.6rem;
 }
 
 .nav-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  /* Reserve vertical space for 3 rows so header height is stable */
-  min-height: 4.5rem;
-  justify-content: flex-end;
+  display:flex;
+  flex-direction:column;
+  gap:0.25rem;
 }
 
 /* Each nav row */
 .nav-row {
-  min-height: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* Brand + main nav (row 1) */
-.nav-row-global {
-  justify-content: center;
+/* Row 1: global nav with inner flex wrapper */
+.nav-row-global { }
+
+.nav-global-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
 }
 
-
-.nav-brand .brand-link {
-  color: var(--ink);
-  font-weight: 600;
-  text-decoration: none;
+/* Row 2: breadcrumb (optional) */
+.nav-row-secondary{
+  font-size:0.9rem;
+  color:var(--muted);
+  min-height:1.2rem;    /* small height so no big empty gap */
 }
 
 /* Horizontal navs */
 .nav-main,
 .subnav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5rem;
 }
 
 /* Links */
 .nav-link {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.95rem;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:0.95rem;
 }
 
 .nav-link:hover {
-  color: var(--ink);
+  color:var(--ink);
 }
 
 /* Active link (highlight current) */
 .nav-link-active {
-  color: var(--ink);
-  font-weight: 600;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 0.05rem;
+  color:var(--ink);
+  font-weight:600;
+  border-bottom:2px solid var(--ink);
+  padding-bottom:0.05rem;
 }
 
-/* Keep secondary/tertiary rows subtle */
-.nav-row-secondary,
-.nav-row-tertiary {
-  font-size: 0.9rem;
+/* Optional breadcrumb helper */
+.breadcrumb{
+  font-size:0.9rem;
+  color:var(--muted);
+}
+
+/* =========================
+   Project screenshot gallery
+   ========================= */
+
+.screenshot-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+  margin-top:1.2rem;
+}
+
+.screenshot-grid img {
+  width:100%;
+  border-radius:10px;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
+  box-shadow:0 4px 18px rgba(0,0,0,.45);
+  object-fit:cover;
+}
+
+/* subtle zoom on hover */
+.screenshot-grid img:hover {
+  transform:scale(1.03);
+  box-shadow:0 8px 26px rgba(0,0,0,.6);
+}
+
+/* fullscreen modal */
+.screenshot-modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.screenshot-modal img {
+  max-width:92vw;
+  max-height:92vh;
+  border-radius:10px;
+  box-shadow:0 10px 40px rgba(0,0,0,.85);
+}
+
+/* Buttons for project links */
+.btn-link {
+  padding:.6rem 1rem;
+  background:#1e293b;
+  border-radius:8px;
+  color:#e2e8f0;
+  text-decoration:none;
+  font-weight:500;
+  box-shadow:0 3px 12px rgba(0,0,0,.3);
+  transition:background .18s ease, transform .18s ease;
+}
+
+.btn-link:hover {
+  background:#334155;
+  transform:translateY(-2px);
+}
+
+/* =========================
+   Mobile hamburger + drawer
+   ========================= */
+
+/* Hamburger button */
+.hamburger {
+  display:none;           /* hidden on desktop */
+  flex-direction:column;
+  justify-content:center;
+  gap:0.24rem;
+  width:2.1rem;
+  height:2.1rem;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+}
+
+.hamburger span {
+  height:2px;
+  width:100%;
+  background:var(--ink);
+  border-radius:999px;
+}
+
+/* Mobile overlay + panel */
+.mobile-nav {
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,0.55);   /* slightly lighter so panel stands out */
+  display:none;
+  justify-content:flex-start;
+  align-items:stretch;
+  z-index:9999;
+}
+
+.mobile-nav.open {
+  display:flex;
+}
+
+.mobile-nav-panel {
+  width:70%;
+  max-width:280px;
+  background:var(--panel);          /* lighter than pure black */
+  padding:1.2rem 1rem 2rem;
+  box-shadow:4px 0 24px rgba(0,0,0,.7);
+}
+
+.mobile-nav-links {
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+}
+
+.mobile-nav-links .nav-link {
+  display:block;
+  text-decoration:none;
+  color:var(--ink);
 }
 
 /* =========================
@@ -169,7 +289,7 @@ canvas{
    ========================= */
 
 /* Tablets / small laptops */
-@media (max-width: 768px) {
+@media (max-width:768px) {
 
   body{
     font-size:14px;
@@ -195,17 +315,17 @@ canvas{
     font-size:.85rem;
   }
 
-  /* Header: stack brand and nav nicely on smaller screens */
-  .nav-row-global {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
+  /* Hide desktop nav, show hamburger */
+  .nav-main{
+    display:none;
+  }
+  .hamburger{
+    display:flex;
   }
 
-  .nav-main,
-  .subnav {
-    gap: 0.75rem;
-    font-size: 0.9rem;
+  .subnav{
+    gap:0.75rem;
+    font-size:0.9rem;
   }
 
   /* Chart a bit taller on mobile so it’s readable */
@@ -215,7 +335,7 @@ canvas{
 }
 
 /* Very small phones */
-@media (max-width: 480px) {
+@media (max-width:480px) {
 
   body{
     font-size:13px;
@@ -230,148 +350,7 @@ canvas{
     font-size:.8rem;
   }
 
-  .nav-main,
-  .subnav {
-    gap: 0.5rem;
-  }
-}
-
-
-/* --- Project screenshot gallery --- */
-.screenshot-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1.2rem;
-}
-
-.screenshot-grid img {
-    width: 100%;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform .18s ease, box-shadow .18s ease;
-    box-shadow: 0 4px 18px rgba(0,0,0,.45);
-    object-fit: cover;
-}
-
-/* subtle zoom on hover */
-.screenshot-grid img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 26px rgba(0,0,0,.6);
-}
-
-/* fullscreen modal */
-.screenshot-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.screenshot-modal img {
-    max-width: 92vw;
-    max-height: 92vh;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.85);
-}
-
-
-.btn-link {
-    padding: .6rem 1rem;
-    background: #1e293b;
-    border-radius: 8px;
-    color: #e2e8f0;
-    text-decoration: none;
-    font-weight: 500;
-    box-shadow: 0 3px 12px rgba(0,0,0,.3);
-    transition: background .18s ease, transform .18s ease;
-}
-
-.btn-link:hover {
-    background: #334155;
-    transform: translateY(-2px);
-}
-
-
-/* --- Desktop layout helpers --- */
-.top-inner {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand a {
-  color:var(--ink);
-  font-weight:600;
-  text-decoration:none;
-}
-
-/* Keep your existing .top a, .nav-link etc. */
-
-/* --- Hamburger button --- */
-.hamburger {
-  display:none;           /* hidden on desktop */
-  flex-direction:column;
-  justify-content:center;
-  gap:0.24rem;
-  width:2.1rem;
-  height:2.1rem;
-  border:none;
-  background:transparent;
-  cursor:pointer;
-}
-
-.hamburger span {
-  height:2px;
-  width:100%;
-  background:var(--ink);
-  border-radius:999px;
-}
-
-/* --- Mobile drawer --- */
-.mobile-nav {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.55);
-  display:none;           /* default hidden */
-  justify-content:flex-start;
-  align-items:stretch;
-  z-index:9999;
-}
-
-.mobile-nav.open {
-  display:flex;
-}
-
-.mobile-nav-panel {
-  width:70%;
-  max-width:280px;
-  background:#020617;
-  padding:1.2rem 1rem 2rem;
-  box-shadow:4px 0 24px rgba(0,0,0,.7);
-}
-
-.mobile-nav-links {
-  display:flex;
-  flex-direction:column;
-  gap:.6rem;
-}
-
-.mobile-nav-links .nav-link {
-  display:block;
-  text-decoration:none;
-  color:var(--ink);
-}
-
-/* --- Responsive behaviour --- */
-@media (max-width: 768px) {
-  .main-nav {
-    display:none;       /* hide desktop links */
-  }
-  .hamburger {
-    display:flex;       /* show hamburger */
+  .subnav{
+    gap:0.5rem;
   }
 }
