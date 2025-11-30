@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from apps.forecasting import views as fviews
+from django.conf import settings   # ← IMPORTANT FOR DEBUG CHECK
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -36,3 +37,11 @@ urlpatterns = [
     # 🔹 Ops console
     path("ops/", include("apps.forecasting.ops.urls")),
 ]
+
+
+
+# =======================================
+# Debug Toolbar (development only)
+# =======================================
+if settings.DEBUG:
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]

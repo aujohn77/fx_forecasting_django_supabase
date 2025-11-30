@@ -180,3 +180,34 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+# ========================================
+# Django Debug Toolbar (development only)
+# ========================================
+
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+
+    # Insert middleware at the top (right after SecurityMiddleware ideally)
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+
+    # Allow toolbar only from local machine
+    INTERNAL_IPS = ["127.0.0.1"]
+
+
+
+
+# ========================================
+# Caching (in-memory for simplicity)
+# ========================================
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-portfolio-cache",
+    }
+}

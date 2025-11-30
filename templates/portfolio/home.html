@@ -1,13 +1,80 @@
 {% extends "base.html" %}
-{% block title %}Home – FX & ML Portfolio{% endblock %}
+{% load static %}
 
+{% block title %}Home – FX & ML Portfolio{% endblock %}
 {% block nav_home_active %}nav-link-active{% endblock %}
 
 {% block content %}
-<section class="card">
-  <h2>Welcome</h2>
-  <p>I’m João, working on FX forecasting and ML projects.</p>
-  <p><a href="{% url 'portfolio:projects' %}">View all projects →</a></p>
-</section>
-{% endblock %}
 
+<!-- HERO -->
+<section class="hero hero-bg">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <h1>Mathematician &amp; Data Analyst / ML Practitioner</h1>
+    <p>
+      I design FX forecasting systems and machine-learning solutions.
+      Explore some of my recent projects below.
+    </p>
+    <div class="hero-actions">
+      <!-- now scrolls to the projects section on this page -->
+      <a href="#projects" class="btn-primary">
+        View projects →
+      </a>
+      <a href="{% url 'market' %}" class="btn-secondary">
+        Open FX dashboard →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECTS (no carousel) -->
+<section class="card" id="projects">
+  <header style="margin-bottom:.75rem;">
+    <h2>Featured projects</h2>
+    <p class="muted" style="margin:0;">
+      Click any project to see the full case study, tech stack and screenshots.
+    </p>
+  </header>
+
+  <div class="project-grid">
+
+    <!-- FX Model Deployment -->
+    <a href="{% url 'portfolio:project_model_deploy' %}" class="project-thumb">
+      <figure>
+        <img src="{% static 'images/projects/model_deploy/banner.png' %}"
+             alt="FX Model Deployment Demo">
+        <figcaption>FX Model Deployment Demo</figcaption>
+      </figure>
+    </a>
+
+    <!-- Amazon Recommender -->
+    <a href="{% url 'portfolio:project_amazon_recommender' %}" class="project-thumb">
+      <figure>
+        <img src="{% static 'images/projects/amazon_recommender/banner.png' %}"
+             alt="Amazon-style Product Recommender">
+        <figcaption>Amazon-style Product Recommender</figcaption>
+      </figure>
+    </a>
+
+    <!-- Lead Conversion -->
+    <a href="{% url 'portfolio:project_lead_conversion' %}" class="project-thumb">
+      <figure>
+        <img src="{% static 'images/projects/lead_conversion/banner.png' %}"
+             alt="Lead Conversion Prediction">
+        <figcaption>Lead Conversion Prediction</figcaption>
+      </figure>
+    </a>
+
+        <!-- Customer Segmentation -->
+    <a href="{% url 'portfolio:project_customer_segmentation' %}" class="project-thumb">
+      <figure>
+        <img src="{% static 'images/projects/customer_segmentation/banner.png' %}"
+             alt="Customer Personality Segmentation">
+        <figcaption>Customer Personality Segmentation</figcaption>
+      </figure>
+    </a>
+
+  </div>
+</section>
+
+{% endblock %}

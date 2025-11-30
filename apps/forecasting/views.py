@@ -15,6 +15,8 @@ from apps.forecasting.models import (
 )
 from apps.rates.models import ExchangeRate  # <- actual market data (USD base)
 from apps.forecasting.services.metrics import compute_overview_metrics
+from django.views.decorators.cache import cache_page
+
 
 
 
@@ -274,28 +276,30 @@ def overview(request):
 
 
 
-
+@cache_page(60 * 45)  # 45 minutes
 def market_page(request):
     """
     Market view:
       - table of latest daily USD→quote rates for all quotes
       - daily / weekly / monthly % changes
-      - 5y history line chart with carousel
+      - 1-year history line chart with carousel
     """
     base_code = "USD"
-    all_quotes = ["EUR","GBP","AUD","NZD","JPY","CNY","CHF",
-                  "CAD","MXN","INR","BRL", "KRW"]
+    all_quotes = ["EUR", "GBP", "AUD", "NZD", "JPY", "CNY", "CHF",
+                  "CAD", "MXN", "INR", "BRL", "KRW"]
 
     today = date.today()
-    five_years_ago = today - timedelta(days=5 * 365)
+    one_year_ago = today - timedelta(days=365)
 
-    # ---- Latest ACTUAL per quote (for the table)
+    # ---- Latest ACTUAL per quote (for the table)  [QUERY 1]
     latest_actual: dict[str, dict] = {}
     rows = (
         ExchangeRate.objects
-        .filter(base__code=base_code,
-                timeframe=Timeframe.DAILY,
-                quote__code__in=all_quotes)
+        .filter(
+            base__code=base_code,
+            timeframe=Timeframe.DAILY,
+            quote__code__in=all_quotes,
+        )
         .order_by("quote__code", "-date")
         .values("quote__code", "date", "rate")
     )
@@ -303,39 +307,12 @@ def market_page(request):
         q = r["quote__code"]
         if q in latest_actual:
             continue
-        # keep date as a real date object here
         latest_actual[q] = {"date": r["date"], "rate": float(r["rate"])}
 
     # ---- Overall latest date (for page title / header)
-    if latest_actual:
-        latest_date = max(info["date"] for info in latest_actual.values())
-    else:
-        latest_date = None
+    latest_date = max((info["date"] for info in latest_actual.values()), default=None)
 
-    # helpers for % changes
-    def get_prev_rate(code: str, days_back: int):
-        info = latest_actual.get(code)
-        if not info:
-            return None
-        ref_date = info["date"] - timedelta(days=days_back)
-        prev = (
-            ExchangeRate.objects
-            .filter(base__code=base_code,
-                    quote__code=code,
-                    timeframe=Timeframe.DAILY,
-                    date__lte=ref_date)
-            .order_by("-date")
-            .values("rate")
-            .first()
-        )
-        return float(prev["rate"]) if prev else None
-
-    def pct_change(curr: float, prev: float | None):
-        if prev is None or prev == 0:
-            return None
-        return (curr / prev - 1.0) * 100.0
-
-    # ---- Country / zone labels
+    # ---- Country / zone labels  [QUERY 2]
     short_zone = {
         "EUR": "Eurozone",
         "GBP": "United Kingdom",
@@ -352,10 +329,51 @@ def market_page(request):
         "USD": "United States",
     }
     db_names = {c.code: c.name for c in Currency.objects.filter(code__in=all_quotes)}
-    currency_names = {code: short_zone.get(code, db_names.get(code, code))
-                      for code in all_quotes}
+    currency_names = {
+        code: short_zone.get(code, db_names.get(code, code))
+        for code in all_quotes
+    }
 
-    # ---- Build table rows (including % changes)
+    # ---- 1-year history for ALL currencies in ONE query  [QUERY 3]
+    history_qs = (
+        ExchangeRate.objects
+        .filter(
+            base__code=base_code,
+            quote__code__in=all_quotes,
+            timeframe=Timeframe.DAILY,
+            date__gte=one_year_ago,
+            date__lte=today,
+        )
+        .order_by("quote__code", "date")
+        .values("quote__code", "date", "rate")
+    )
+
+    # Group by currency code
+    rates_by_code: dict[str, list[tuple[date, float]]] = {code: [] for code in all_quotes}
+    for r in history_qs:
+        q = r["quote__code"]
+        rates_by_code.setdefault(q, []).append((r["date"], float(r["rate"])))
+
+    # ---- Helper: pct change
+    def pct_change(curr: float, prev: float | None):
+        if prev is None or prev == 0:
+            return None
+        return (curr / prev - 1.0) * 100.0
+
+    # ---- Helper: previous rate from the in-memory series (no more DB hits)
+    def get_prev_from_series(code: str, days_back: int) -> float | None:
+        info = latest_actual.get(code)
+        if not info:
+            return None
+        target_date = info["date"] - timedelta(days=days_back)
+        series = rates_by_code.get(code, [])
+        # series is sorted by date → scan backwards until we find <= target_date
+        for d, r in reversed(series):
+            if d <= target_date:
+                return r
+        return None
+
+    # ---- Build table rows with % changes
     table_rows = []
     for code in all_quotes:
         info = latest_actual.get(code)
@@ -363,15 +381,15 @@ def market_page(request):
             continue
 
         rate = info["rate"]
-        d_prev = get_prev_rate(code, 1)
-        w_prev = get_prev_rate(code, 7)
-        m_prev = get_prev_rate(code, 30)
+        d_prev = get_prev_from_series(code, 1)
+        w_prev = get_prev_from_series(code, 7)
+        m_prev = get_prev_from_series(code, 30)
 
         table_rows.append(
             {
                 "code": code,
                 "label": f"{code} ({currency_names.get(code, code)})",
-                "date": str(info["date"]),  # string for display in table (though you removed the column)
+                "date": str(info["date"]),
                 "rate": rate,
                 "daily_change": pct_change(rate, d_prev),
                 "weekly_change": pct_change(rate, w_prev),
@@ -379,22 +397,12 @@ def market_page(request):
             }
         )
 
-    # ---- 5y history per currency for the chart
+    # ---- Build chart payload from the same in-memory series
     series_payload: dict[str, list[dict]] = {}
-    for code in all_quotes:
-        qs = (
-            ExchangeRate.objects
-            .filter(base__code=base_code,
-                    quote__code=code,
-                    timeframe=Timeframe.DAILY,
-                    date__gte=five_years_ago,
-                    date__lte=today)
-            .order_by("date")
-            .values("date", "rate")
-        )
+    for code, series in rates_by_code.items():
         series_payload[code] = [
-            {"date": str(r["date"]), "rate": float(r["rate"])}
-            for r in qs
+            {"date": d.strftime("%Y-%m-%d"), "rate": r}
+            for d, r in series
         ]
 
     ctx = {
@@ -403,9 +411,8 @@ def market_page(request):
         "currency_names_json": json.dumps(currency_names),
         "series_json": json.dumps(series_payload),
         "all_quotes_json": json.dumps(all_quotes),
-        "latest_date": latest_date,  # 👈 new context variable
+        "latest_date": latest_date,
     }
-    
 
     return render(request, "forecasting/market.html", ctx)
 
@@ -420,7 +427,7 @@ def market_page(request):
 
 
 
-
+@cache_page(60 * 45)   # 45 minutes
 def forecast_page(request):
     """
     Forecasts page:
@@ -435,7 +442,9 @@ def forecast_page(request):
     all_quotes = ["EUR","GBP","AUD","NZD","JPY","CNY","CHF",
                   "CAD","MXN","INR","BRL","KRW"]
 
-    # --- Models that actually have DAILY forecasts ---
+    # ──────────────────────────────────────────────────────────────
+    # 1) Models that actually have DAILY forecasts  (1 query)
+    # ──────────────────────────────────────────────────────────────
     model_codes = list(
         Forecast.objects.filter(
             base__code=base_code,
@@ -458,13 +467,15 @@ def forecast_page(request):
             "currency_names_json": "{}",
             "forecast_date": None,
         }
-        return render(request, "forecast.html", ctx)
+        return render(request, "forecasting/forecast.html", ctx)
 
     selected_model = (request.GET.get("model") or model_codes[0]).strip()
     if selected_model not in model_codes:
         selected_model = model_codes[0]
 
-    # --- Latest ACTUAL per quote (for table + to know which quotes are usable) ---
+    # ──────────────────────────────────────────────────────────────
+    # 2) Latest ACTUAL per quote (1 query)
+    # ──────────────────────────────────────────────────────────────
     latest_actual: dict[str, dict] = {}
     rows = (
         ExchangeRate.objects
@@ -478,7 +489,7 @@ def forecast_page(request):
     )
     for r in rows:
         code = r["quote__code"]
-        if code in latest_actual:
+        if code in latest_actual:  # already have newest for this code
             continue
         latest_actual[code] = {"date": r["date"], "rate": float(r["rate"])}
 
@@ -504,9 +515,11 @@ def forecast_page(request):
             "currency_names_json": "{}",
             "forecast_date": forecast_date,
         }
-        return render(request, "forecast.html", ctx)
+        return render(request, "forecasting/forecast.html", ctx)
 
-    # --- Country/zone labels (same idea as in market_page) ---
+    # ──────────────────────────────────────────────────────────────
+    # 3) Country/zone labels  (1 query)
+    # ──────────────────────────────────────────────────────────────
     short_zone = {
         "EUR": "Eurozone",
         "GBP": "United Kingdom",
@@ -528,7 +541,39 @@ def forecast_page(request):
         for code in available_quotes
     }
 
-    # --- Top table: current vs next-biz-day forecast ---
+    # ──────────────────────────────────────────────────────────────
+    # 4) Top table forecasts – batch in ONE query
+    #    (instead of one Forecast query per currency)
+    # ──────────────────────────────────────────────────────────────
+    # target date may differ slightly per quote → map by code
+    target_dates = {
+        code: next_business_day(info["date"])
+        for code, info in latest_actual.items()
+        if code in available_quotes
+    }
+    target_dates_set = set(target_dates.values())
+
+    forecast_rows = (
+        Forecast.objects
+        .filter(
+            base__code=base_code,
+            quote__code__in=available_quotes,
+            run__timeframe=Timeframe.DAILY,
+            model__code=selected_model,
+            target_date__in=target_dates_set,
+        )
+        .order_by("quote__code", "-created_at")
+        .values("quote__code", "target_date", "yhat")
+    )
+
+    # keep newest (by created_at order) per (code, target_date)
+    best_forecast: dict[tuple[str, date], float] = {}
+    for r in forecast_rows:
+        key = (r["quote__code"], r["target_date"])
+        if key in best_forecast:
+            continue
+        best_forecast[key] = float(r["yhat"])
+
     table_rows: list[dict] = []
     for code in available_quotes:
         info = latest_actual.get(code)
@@ -537,27 +582,12 @@ def forecast_page(request):
 
         curr_date = info["date"]
         curr_rate = info["rate"]
-        target_date = next_business_day(curr_date)
+        target_date = target_dates.get(code)
 
-        f_row = (
-            Forecast.objects
-            .filter(
-                base__code=base_code,
-                quote__code=code,
-                run__timeframe=Timeframe.DAILY,
-                model__code=selected_model,
-                target_date=target_date,
-            )
-            .order_by("-created_at")
-            .values("yhat")
-            .first()
-        )
-
-        if f_row:
-            forecast_rate = float(f_row["yhat"])
-            delta_pct = (forecast_rate / curr_rate - 1.0) * 100.0 if curr_rate else None
+        forecast_rate = best_forecast.get((code, target_date)) if target_date else None
+        if forecast_rate is not None and curr_rate:
+            delta_pct = (forecast_rate / curr_rate - 1.0) * 100.0
         else:
-            forecast_rate = None
             delta_pct = None
 
         table_rows.append(
@@ -571,43 +601,66 @@ def forecast_page(request):
             }
         )
 
-    # --- Chart data: build series for ALL available quotes ---
+    # ──────────────────────────────────────────────────────────────
+    # 5) Chart data – batch actuals and backtests
+    #    (2 queries instead of 2 * len(available_quotes))
+    # ──────────────────────────────────────────────────────────────
+    # 5a) Actuals – one big query, then keep last 60 per code
+    qs_actual_all = (
+        ExchangeRate.objects
+        .filter(
+            base__code=base_code,
+            quote__code__in=available_quotes,
+            timeframe=Timeframe.DAILY,
+        )
+        .order_by("-date")
+        .values("quote__code", "date", "rate")
+    )
+
+    actual_by_code: dict[str, list[dict]] = {code: [] for code in available_quotes}
+    for r in qs_actual_all:
+        code = r["quote__code"]
+        buf = actual_by_code.get(code)
+        if buf is None or len(buf) >= 60:
+            continue
+        buf.append({"date": r["date"], "rate": float(r["rate"])})
+
+    # 5b) Backtests – one big query, keep last 60 per code
+    qs_bt_all = (
+        BacktestSlice.objects
+        .filter(
+            base__code=base_code,
+            quote__code__in=available_quotes,
+            run__model__code=selected_model,
+            run__timeframe=Timeframe.DAILY,
+            run__horizon_days=1,
+        )
+        .order_by("-date")
+        .values("quote__code", "date", "forecast")
+    )
+
+    bt_by_code: dict[str, list[dict]] = {code: [] for code in available_quotes}
+    for r in qs_bt_all:
+        code = r["quote__code"]
+        buf = bt_by_code.get(code)
+        if buf is None or len(buf) >= 60:
+            continue
+        buf.append({"date": r["date"], "forecast": float(r["forecast"])})
+
+    # Build final payload per quote
     chart_payload: dict[str, dict] = {}
     for code in available_quotes:
-        # Actuals: last 60 business days
-        qs_actual = (
-            ExchangeRate.objects
-            .filter(
-                base__code=base_code,
-                quote__code=code,
-                timeframe=Timeframe.DAILY,
-            )
-            .order_by("-date")
-            .values("date", "rate")[:60]
-        )
-        actual_rows = list(qs_actual)
-        actual_rows.reverse()  # chronological
+        actual_rows = actual_by_code.get(code, [])
+        bt_rows = bt_by_code.get(code, [])
+
+        # reverse to chronological
+        actual_rows = list(reversed(actual_rows))
+        bt_rows = list(reversed(bt_rows))
 
         labels = [str(r["date"]) for r in actual_rows]
-        actual = [float(r["rate"]) for r in actual_rows]
+        actual = [r["rate"] for r in actual_rows]
 
-        # Backtests aligned on the same dates
-        qs_bt = (
-            BacktestSlice.objects
-            .filter(
-                base__code=base_code,
-                quote__code=code,
-                run__model__code=selected_model,
-                run__timeframe=Timeframe.DAILY,
-                run__horizon_days=1,
-            )
-            .order_by("-date")
-            .values("date", "forecast")[:60]
-        )
-        bt_rows = list(qs_bt)
-        bt_rows.reverse()
-
-        bt_by_date = {str(r["date"]): float(r["forecast"]) for r in bt_rows}
+        bt_by_date = {str(r["date"]): r["forecast"] for r in bt_rows}
         backtest = [bt_by_date.get(d) for d in labels]
 
         chart_payload[code] = {
@@ -630,6 +683,5 @@ def forecast_page(request):
         "currency_names_json": json.dumps(currency_names),
         "forecast_date": forecast_date,
     }
-    
-    return render(request, "forecasting/forecast.html", ctx)
 
+    return render(request, "forecasting/forecast.html", ctx)

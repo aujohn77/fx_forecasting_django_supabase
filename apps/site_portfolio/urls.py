@@ -5,7 +5,6 @@ app_name = "portfolio"  # URL namespace
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("projects/", views.projects, name="projects"),
     path("about/", views.about, name="about"),
 
     path("projects/model-deployment/", views.project_model_deploy, name="project_model_deploy"),

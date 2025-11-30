@@ -8,6 +8,7 @@
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
     FX Model Deployment Demo
   </a>
+  
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
     Amazon-style Product Recommender
   </a>
@@ -47,5 +48,32 @@
   <p>
     You can explore the live FX views using the navigation above.
   </p>
+
+  <!-- NEW: Project Links section -->
+  <h3 style="margin-top:2rem;">Project Links</h3>
+
+  <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+
+    <!-- GitHub -->
+    <a href="https://github.com/aujohn77/fx_forecasting_django_supabase"
+       target="_blank"
+       class="project-cta">
+      GitHub Repository
+    </a>
+
+    <!-- Market -->
+    <a href="{% url 'market' %}"
+       class="project-cta project-cta-secondary">
+      Open Market Dashboard
+    </a>
+
+    <!-- Forecast -->
+    <a href="{% url 'forecast' %}"
+       class="project-cta project-cta-tertiary">
+      Open Forecast Dashboard
+    </a>
+
+  </div>
+
 </section>
 {% endblock %}
