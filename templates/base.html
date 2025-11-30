@@ -15,25 +15,43 @@
   <header class="top nav-shell">
     <div class="wrap nav-rows">
 
-      <!-- ROW 1 — Global Navigation (always visible) -->
+      <!-- ROW 1 — Global Navigation -->
       <div class="nav-row nav-row-global">
+        <div class="nav-global-inner">
 
-        <nav class="nav-main">
-          <a href="{% url 'portfolio:home' %}"
-             class="nav-link {% block nav_home_active %}{% endblock %}">
-            Home
-          </a>
+          <!-- Brand (left) -->
+          <div class="brand">
+            <a href="{% url 'portfolio:home' %}">FX &amp; ML Portfolio</a>
+          </div>
 
-          <a href="{% url 'portfolio:projects' %}"
-             class="nav-link {% block nav_projects_active %}{% endblock %}">
-            Projects
-          </a>
+          <!-- Hamburger button (mobile only, hidden on desktop via CSS) -->
+          <button class="hamburger" type="button"
+                  aria-label="Toggle navigation"
+                  onclick="toggleMobileNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
-          <a href="{% url 'portfolio:about' %}"
-             class="nav-link {% block nav_about_active %}{% endblock %}">
-            About
-          </a>
-        </nav>
+          <!-- Desktop nav (shown on desktop, hidden on mobile via CSS) -->
+          <nav class="nav-main">
+            <a href="{% url 'portfolio:home' %}"
+               class="nav-link {% block nav_home_active %}{% endblock %}">
+              Home
+            </a>
+
+            <a href="{% url 'portfolio:projects' %}"
+               class="nav-link {% block nav_projects_active %}{% endblock %}">
+              Projects
+            </a>
+
+            <a href="{% url 'portfolio:about' %}"
+               class="nav-link {% block nav_about_active %}{% endblock %}">
+              About
+            </a>
+          </nav>
+
+        </div>
       </div>
 
       <!-- ROW 2 — Section-level navigation (optional, space reserved) -->
@@ -49,10 +67,43 @@
     </div>
   </header>
 
+  <!-- Mobile slide-in navigation drawer -->
+  <div id="mobile-nav" class="mobile-nav" onclick="toggleMobileNav()">
+    <div class="mobile-nav-panel" onclick="event.stopPropagation();">
+      <nav class="mobile-nav-links">
+        <a href="{% url 'portfolio:home' %}"
+           class="nav-link {% block nav_home_active %}{% endblock %}"
+           onclick="toggleMobileNav()">
+          Home
+        </a>
+
+        <a href="{% url 'portfolio:projects' %}"
+           class="nav-link {% block nav_projects_active %}{% endblock %}"
+           onclick="toggleMobileNav()">
+          Projects
+        </a>
+
+        <a href="{% url 'portfolio:about' %}"
+           class="nav-link {% block nav_about_active %}{% endblock %}"
+           onclick="toggleMobileNav()">
+          About
+        </a>
+      </nav>
+    </div>
+  </div>
+
   <!-- Main content -->
   <main class="wrap">
     {% block content %}{% endblock %}
   </main>
+
+  <script>
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobile-nav');
+      if (!nav) return;
+      nav.classList.toggle('open');
+    }
+  </script>
 
 </body>
 </html>
