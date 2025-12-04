@@ -1,9 +1,36 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}About – João Reis{% endblock %}
-{% block nav_about_active %}nav-link-active{% endblock %}
+
 {% block content %}
 <section class="card">
   <h2>About Me</h2>
-  <p>Short bio here (PhD in Mathematics, IT student in Australia, focus on data science / ML / FX forecasting).</p>
+
+  <p><strong>João Eduardo Reis (John)</strong></p>
+
+ <p>
+  I'm an early-career data science learner with a PhD in Mathematics and a strong
+  interest in machine learning, forecasting, and practical problem-solving. I'm
+  currently studying Database Management in Australia as part of my transition
+  into the data/ML field.
+</p>
+
+<p>
+  I'm building real projects as I learn. This portfolio includes coursework projects
+  and a personal FX forecasting system where I applied Python, Django, R, and
+  Supabase to create an end-to-end solution.
+</p>
+
+
+  <p>
+    <a href="https://www.linkedin.com/in/YOUR_USERNAME/" target="_blank">LinkedIn</a> |
+    <a href="https://github.com/YOUR_USERNAME" target="_blank">GitHub</a> |
+    <a href="mailto:your_email@example.com">Email</a>
+  </p>
+
+  <p>
+    <a href="{% static 'files/joao_reis_cv.pdf' %}" download>Download CV</a>
+  </p>
 </section>
 {% endblock %}

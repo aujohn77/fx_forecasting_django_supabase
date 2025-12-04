@@ -37,7 +37,9 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-default")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True") == "True"
+# Use a dedicated env var; default = False (safe for production / CI)
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("1", "true", "yes")
+
 
 
 
@@ -189,13 +191,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ========================================
 
 if DEBUG:
-    INSTALLED_APPS += ["debug_toolbar"]
+    try:
+        import debug_toolbar  # noqa: F401
 
-    # Insert middleware at the top (right after SecurityMiddleware ideally)
-    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-
-    # Allow toolbar only from local machine
-    INTERNAL_IPS = ["127.0.0.1"]
+    except ImportError:
+        # Toolbar isn't installed (e.g. fresh env or CI) – just skip it
+        pass
+    else:
+        INSTALLED_APPS += ["debug_toolbar"]
+        # Insert middleware at the top (right after SecurityMiddleware)
+        MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+        INTERNAL_IPS = ["127.0.0.1"]
 
 
 
