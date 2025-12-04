@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Callable, Dict
 
-from . import naive, drift, arima, prophet
+from . import naive, drift, arima, prophet, my_arima
 from .r_model_adapter import make_r_predictor
 
 
@@ -11,6 +11,7 @@ _REGISTRY: Dict[str, Callable[..., object]] = {
     "drift": drift.predict,
     "arima": arima.predict,
     "prophet": prophet.predict,
+    "my_arima": my_arima.predict,
 
     # R models (explicit, strict)
     "average_r": make_r_predictor("average_r.R"),
