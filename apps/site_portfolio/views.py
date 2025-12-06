@@ -20,3 +20,7 @@ def project_lead_conversion(request):
 
 def project_customer_segmentation(request):
     return render(request, "portfolio/project_customer_segmentation.html")
+
+def kaggle_certs(request):
+    return render(request, "portfolio/kaggle_certs.html")
+

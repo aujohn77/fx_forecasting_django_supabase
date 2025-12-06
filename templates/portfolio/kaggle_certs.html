@@ -1,0 +1,198 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kaggle Certificates – João Eduardo Reis</title>
+
+  <style>
+    :root {
+      --bg: #e8f1ff;
+      --card-bg: #ffffff;
+      --ink: #111827;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .page-wrap {
+      max-width: 1100px;
+      margin: 2rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.7rem;
+    }
+
+    .subtitle {
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 6px 22px rgba(15, 23, 42, 0.18);
+      padding: 0.75rem 0.75rem 1rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .card-title {
+      margin-top: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .card-link:hover .card {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+    }
+
+    @media (max-width: 480px) {
+      .page-wrap {
+        margin-top: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrap">
+    <h1>Kaggle certificates</h1>
+    <p class="subtitle">
+      Click any card to open the corresponding Kaggle certificate.
+    </p>
+
+    <div class="grid">
+
+      <!-- Python -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/python"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/python.png' %}"
+               alt="Kaggle Python Certificate">
+          <div class="card-title">Python</div>
+        </div>
+      </a>
+
+      <!-- Intro to Machine Learning -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/intro-to-machine-learning"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/intro_ml.png' %}"
+               alt="Kaggle Intro to Machine Learning Certificate">
+          <div class="card-title">Intro to Machine Learning</div>
+        </div>
+      </a>
+
+      <!-- Pandas -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/pandas"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/pandas.png' %}"
+               alt="Kaggle Pandas Certificate">
+          <div class="card-title">Pandas</div>
+        </div>
+      </a>
+
+      <!-- Intermediate Machine Learning -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/intermediate-machine-learning"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/intermediate_ml.png' %}"
+               alt="Kaggle Intermediate Machine Learning Certificate">
+          <div class="card-title">Intermediate Machine Learning</div>
+        </div>
+      </a>
+
+      <!-- Data Visualization -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/data-visualization"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/data_visualisation.png' %}"
+               alt="Kaggle Data Visualization Certificate">
+          <div class="card-title">Data Visualization</div>
+        </div>
+      </a>
+
+      <!-- Feature Engineering -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/feature-engineering"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/feature_engineering.png' %}"
+               alt="Kaggle Feature Engineering Certificate">
+          <div class="card-title">Feature Engineering</div>
+        </div>
+      </a>
+
+      <!-- Intro to SQL -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/intro-to-sql"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/sql.png' %}"
+               alt="Kaggle Intro to SQL Certificate">
+          <div class="card-title">Intro to SQL</div>
+        </div>
+      </a>
+
+      <!-- Intro to Deep Learning -->
+      <a class="card-link"
+         href="https://www.kaggle.com/learn/certification/johnhayes77/intro-to-deep-learning"
+         target="_blank" rel="noopener">
+        <div class="card">
+          <img src="{% static 'images/kaggle/deep_learning.png' %}"
+               alt="Kaggle Intro to Deep Learning Certificate">
+          <div class="card-title">Intro to Deep Learning</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</body>
+</html>
