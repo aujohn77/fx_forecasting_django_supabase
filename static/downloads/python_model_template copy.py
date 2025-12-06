@@ -91,11 +91,12 @@ def predict(
     # ─────────────────────────────────────────
     # PART 3 — BUILD AND RETURN ForecastResult
     # Structure MUST be kept.
+    # You ONLY change the model_name string.
     # ─────────────────────────────────────────
     result = ForecastResult(
         target_index=target_index,   # <- KEEP THE WAY IT IS
         yhat=yhat,                   # <- KEEP THE WAY IT IS
-        model_name="my_arima",       # <---------------------------- CHOOSE A NAME FOR YOUR MODEL
+        model_name="my_arima",       # <---------------------------------------- SET YOUR MODEL NAME HERE
         cutoff=y_train.index.max()   # <- KEEP THE WAY IT IS
     )
 

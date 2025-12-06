@@ -1,12 +1,14 @@
 {% extends "base.html" %}
-{% block title %}FX Model Deployment Demo{% endblock %}
+{% load static %}
+
+{% block title %}ML Deployment Platform (FX Example){% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
-    FX Model Deployment Demo
+    ML Deployment Platform (FX Example)
   </a>
   
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
@@ -30,26 +32,35 @@
 
 {% block content %}
 <section class="card">
-  <h2>FX Model Deployment Demo</h2>
+  <h2>ML Deployment Platform (Independent Project)</h2>
 
   <p>
-    This project is a full FX forecasting pipeline built with
-    <strong>Django</strong>, <strong>Supabase (Postgres)</strong>, and
-    <strong>Render</strong>.
+    This project provides a lightweight ML deployment platform, illustrated with an FX forecasting example.
   </p>
 
+  <h3>Features</h3>
   <ul>
-    <li>Ingests daily FX rates from the Frankfurter API.</li>
-    <li>Stores 10+ years of history in Supabase.</li>
-    <li>Runs multiple forecasting models (Python and R) via scheduled jobs.</li>
-    <li>Serves interactive dashboards for Market and Forecasts.</li>
+    <li><strong>Infrastructure:</strong> Supabase database, Django web interface</li>
+    <li><strong>Automation:</strong> Ingestion + forecasting via GitHub Actions</li>
+    <li><strong>Model Layer:</strong> Registry system, Python/R execution</li>
+    <li><strong>Outputs:</strong> Prediction storage, visual backtests</li>
+  </ul>
+
+  <h3>Daily Workflow</h3>
+  <ul>
+    <li>Daily FX rates are collected automatically from the Frankfurter API through scheduled GitHub Actions jobs.</li>
+    <li>These rates are stored in a cloud Postgres database (Supabase), forming a long-term historical dataset.</li>
+    <li>Another scheduled GitHub Actions task sends the latest data to the forecasting models, which return the next-day predictions.</li>
+    <li>The forecasts are written back into the database, where they become available to the dashboards.</li>
+    <li>The front end (Market and Forecast pages) reads directly from the database and displays both the live FX data and the outputs of the models.</li>
+    <li>The system also runs backtests, which recreate past model predictions so they can be visualized on the charts.</li>
   </ul>
 
   <p>
-    You can explore the live FX views using the navigation above.
+    You can access the live FX views through the buttons below.
   </p>
 
-  <!-- NEW: Project Links section -->
+  <!-- Project Links section -->
   <h3 style="margin-top:2rem;">Project Links</h3>
 
   <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
@@ -63,17 +74,86 @@
 
     <!-- Market -->
     <a href="{% url 'market' %}"
+       target="_blank"
        class="project-cta project-cta-secondary">
-      Open Market Dashboard
+      Market Dashboard
     </a>
 
     <!-- Forecast -->
     <a href="{% url 'forecast' %}"
+       target="_blank"
        class="project-cta project-cta-tertiary">
-      Open Forecast Dashboard
+      Forecast Dashboard
     </a>
 
   </div>
+
+  <!-- How to Add Your Own Model -->
+  
+    <h3 style="margin-top:2rem;">Plug-and-Play Model Integration</h3>
+
+  <p>
+    You can plug in your own forecasting model by following these steps:
+  </p>
+
+  <!-- Download links OUTSIDE the <pre> -->
+  <div class="template-downloads">
+    <p>Download the template for your language:</p>
+    <ul class="download-list">
+      <li>
+        <a href="{% static 'downloads/python_model_template.py' %}" download>
+          Python model template (.py)
+        </a>
+      </li>
+      <li>
+        <a href="{% static 'downloads/r_model_template.R' %}" download>
+          R model template (.R)
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Only instructions inside the code-style box -->
+  <pre class="code-block">
+Open the template and edit only the section marked:
+"PART 2 — MODEL LOGIC (THIS IS YOUR AREA)"
+
+In "PART 3", you will see where to set your model name (e.g., 'my_model').
+
+Then:
+
+Python models
+-------------
+Save the file to:
+apps/forecasting/models_lib/
+
+Rename it to match your model name (e.g., my_model.py).
+
+Open:
+apps/forecasting/models_lib/registry.py
+
+Add at the top:
+from . import my_model
+
+Add this to _REGISTRY:
+"my_model": my_model.predict,
+
+
+R models
+--------
+Save the file to:
+apps/forecasting/r_models/
+
+Rename it to match your model name (e.g., my_model.R).
+
+Open:
+apps/forecasting/models_lib/registry.py
+
+(You do NOT add an import at the top for R models.)
+
+Add this to _REGISTRY:
+"my_model": make_r_predictor("my_model.R"),
+  </pre>
 
 </section>
 {% endblock %}

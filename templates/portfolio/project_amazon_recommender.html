@@ -23,40 +23,43 @@
 
 {% block content %}
 <section class="card">
-  <h2>Amazon Product Recommendation System (MIT IDSS – Capstone Project)</h2>
+  <h2>Amazon Product Recommender (MIT IDSS – Capstone Project)</h2>
 
-  <p>
-    As part of a machine learning capstone from MIT-IDSS, I developed a product recommendation
-    system using a real-world dataset of Amazon product reviews. The goal was to design a
-    recommender that improves customer engagement by suggesting relevant items based on user
-    behaviour.
-  </p>
+<p>
+  As part of a machine learning capstone from MIT-IDSS, this project developed a product
+  recommendation system using a real-world dataset of Amazon product reviews. The goal was
+  to design a recommender that improves customer engagement by suggesting relevant items
+  based on user behaviour.
+</p>
 
-  <p>
-    I began by cleaning and preprocessing the dataset — removing duplicates, handling missing
-    values, and addressing sparse user–item interactions. Through exploratory analysis, I
-    investigated cold-start issues and examined user and product activity distributions,
-    establishing minimum rating thresholds to reduce noise from infrequent interactions.
-  </p>
+<p>
+  The work began with cleaning and preprocessing the dataset — removing duplicates,
+  handling missing values, and addressing sparse user–item interactions. Through
+  exploratory analysis, cold-start issues were investigated and user and product activity
+  distributions were examined, establishing minimum rating thresholds to reduce noise from
+  infrequent interactions.
+</p>
 
-  <p>
-    I implemented and evaluated multiple models:
-  </p>
+<p>
+  Multiple models were implemented and evaluated, including:
+</p>
 
-  <ul>
-    <li>Rank-based recommender based on product popularity.</li>
-    <li>User-based and item-based collaborative filtering with tuned similarity metrics.</li>
-    <li>Matrix factorisation using SVD.</li>
-    <li>A hybrid approach combining strengths of different models.</li>
-  </ul>
+<ul>
+  <li>Rank-based recommender based on product popularity.</li>
+  <li>User-based and item-based collaborative filtering with tuned similarity metrics.</li>
+  <li>Matrix factorisation using SVD.</li>
+  <li>A hybrid approach combining strengths of different models.</li>
+</ul>
 
-  <p>
-    All models were evaluated using <strong>precision@k</strong> and <strong>recall@k</strong>.
-    The final solution was an on-demand, deployable recommender using <strong>precomputed
-    predictions</strong> for fast Streamlit inference.
-  </p>
+<p>
+  All models were evaluated using <strong>precision@k</strong> and <strong>recall@k</strong>.
+  The final solution was an on-demand, deployable recommender using
+  <strong>precomputed predictions</strong> for fast Streamlit inference.
+</p>
 
-  <p><strong>Tech Used:</strong> Python, Pandas, Surprise, Scikit-learn, NumPy, Matplotlib, Streamlit, gdown, Pickle</p>
+<p>
+  <strong>Tech used:</strong> Python, Google-Colab, Streamlit | Surprise and Pickle (main libraries).
+</p>
 
   <h3 style="margin-top:2rem;">Project Links</h3>
 
@@ -95,8 +98,7 @@
   </div>
 
   <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
-    Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly,
-    but I can present it in person if needed.
+    Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly. I am happy to discuss further details upon request.
   </p>
 </section>
 

@@ -1,128 +1,102 @@
-"""
-PYTHON MODEL TEMPLATE – FX FORECASTING PLATFORM
-===============================================
-
-HOW TO USE THIS TEMPLATE
-------------------------
-1. Download this file from the website.
-2. Move it into your project at:
-       apps/forecasting/models_lib/
-3. Rename the file to something meaningful, e.g.:
-       my_custom_model.py
-4. Open the file and:
-   - Change `model_name="my_custom_python_model"` to your model code
-   - Replace the "MODEL LOGIC" block with your own logic
-5. Register the model in:
-       apps/forecasting/models_lib/registry.py
-
-   Example registration (inside registry.py):
-
-       from . import my_custom_model
-
-       _REGISTRY = {
-           # existing models...
-           "my_custom_model": my_custom_model.predict,
-       }
-
-6. (Optional but recommended)
-   - Add a row in the ModelSpec table (Django admin) using the same
-     code "my_custom_model" so it appears nicely in the UI.
-
-AFTER THESE STEPS:
-------------------
-- Your model can be run through the existing management commands, e.g.:
-
-    python manage.py run_daily_forecasts --model my_custom_model
-    python manage.py run_backtests --model my_custom_model
-
-- The interface below MUST be preserved:
-    def predict(y_train, steps=1, target_index=None, **params) -> ForecastResult
-
-Do not change the function name or its parameters, only the internal logic.
-"""
-
 from __future__ import annotations
-
 import pandas as pd
-from .types import ForecastResult  # This import works once the file is in models_lib/
+from statsmodels.tsa.arima.model import ARIMA
+from .types import ForecastResult   # <- MUST keep this import (or equivalent)
 
 
+# ─────────────────────────────────────────────
+# DO NOT CHANGE: function name or parameters
+# ─────────────────────────────────────────────
 def predict(
     y_train: pd.Series,
     steps: int = 1,
-    target_index: pd.DatetimeIndex | None = None,
-    **params,
+    target_index: pd.DatetimeIndex | None = None
 ) -> ForecastResult:
-    """
-    Custom FX forecasting model template.
 
-    REQUIRED INTERFACE (do not change the function name or arguments):
-        - y_train: pandas Series with a DatetimeIndex and float values (FX rates)
-        - steps:   integer horizon (how many future points to forecast)
-        - target_index: optional DatetimeIndex for the forecast horizon.
-                        If None, you must create one inside this function.
 
-    RETURN:
-        ForecastResult object with:
-          - target_index: DatetimeIndex of future timestamps
-          - yhat:         pd.Series of forecasts, indexed by target_index
-          - model_name:   short string identifier for this model
-          - params:       dict of hyperparameters / options (optional)
-          - cutoff:       pd.Timestamp of last observed training date (optional)
-    """
-
-    # ──────────────────────────────────────────────────────────────────
-    # 1. Basic safety & preparation
-    # ──────────────────────────────────────────────────────────────────
+    # ─────────────────────────────────────────
+    # PART 1 — SAFETY & BASIC SETUP (KEEP IT)
+    # You should NOT remove these checks.
+    # You may *extend* them if needed, but not break them.
+    # ─────────────────────────────────────────
     if y_train is None or y_train.empty:
         raise ValueError("y_train is empty")
 
-    # Ensure series is sorted by date and has a datetime index
+    # Ensure series is sorted and indexed by date.
+    # You should generally keep this; if you change it,
+    # you must guarantee the index is still a proper DatetimeIndex.
     y_train = y_train.sort_index()
-    cutoff = y_train.index.max()
 
-    # If caller did not provide a target index, create one.
-    # You may change the frequency if your data uses business days, etc.
+
+    # Build target_index if none is provided.
     if target_index is None:
         target_index = pd.date_range(
-            start=cutoff + pd.Timedelta(days=1),
+            start=y_train.index.max() + pd.Timedelta(days=1),
             periods=int(steps),
-            freq="D",
+            freq="B"    # business-day frequency (Mon–Fri only)
+
         )
 
-    # ──────────────────────────────────────────────────────────────────
-    # 2. MODEL LOGIC – REPLACE THIS BLOCK WITH YOUR OWN MODEL
-    # ──────────────────────────────────────────────────────────────────
-    # Example placeholder: constant forecast equal to the last observed value.
-    # This is here only as an example; you should implement your own logic.
 
-    last_value = float(y_train.iloc[-1])
 
-    yhat = pd.Series(
-        [last_value] * len(target_index),
-        index=target_index,
-        dtype=float,
-    )
 
-    # If your model has hyperparameters, you can read them from `params`, e.g.:
-    #   window = params.get("window", 30)
-    #   alpha = params.get("alpha", 0.2)
-    # and so on.
-    # ──────────────────────────────────────────────────────────────────
 
-    # ──────────────────────────────────────────────────────────────────
-    # 3. Build and return ForecastResult
-    # ──────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────────
+
+
+    # ─────────────────────────────────────────
+    # PART 2 — MODEL LOGIC (THIS IS YOUR AREA)
+    # You CAN change anything inside this block.
+    #
+    # IMPORTANT:
+    #   • You RECEIVE:  y_train → pd.Series of historical FX values
+    #   • You MUST RETURN: yhat → pd.Series indexed by target_index
+    #
+    #   yhat and y_train MUST be pandas Series.
+    #   yhat.index MUST equal target_index.
+    #   
+    #   You must import whatever libraries your own model needs.
+
+    # Everything inside this section is UP TO YOU.
+    # ─────────────────────────────────────────
+
+
+    # Example ARIMA fit
+    model = ARIMA(y_train, order=(1,1,0))
+    fit = model.fit()
+
+    # Forecast values (must match the number of target timestamps)
+    fc = fit.forecast(steps=len(target_index))
+
+    # yhat MUST be a pandas Series indexed by target_index
+    yhat = pd.Series(fc.values, index=target_index, dtype=float)
+
+
+
+
+
+
+
+
+    # ──────────────────────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────────────
+
+
+
+    # ─────────────────────────────────────────
+    # PART 3 — BUILD AND RETURN ForecastResult
+    # Structure MUST be kept.
+    # You ONLY change the model_name string.
+    # ─────────────────────────────────────────
     result = ForecastResult(
-        target_index=target_index,
-        yhat=yhat,
-        model_name="my_custom_python_model",  # <-- change this slug
-        params=params or {},
-        cutoff=cutoff,
+        target_index=target_index,   # <- KEEP THE WAY IT IS
+        yhat=yhat,                   # <- KEEP THE WAY IT IS
+        model_name="my_model",       # <---------------------------------------- SET YOUR MODEL NAME HERE
+        cutoff=y_train.index.max()   # <- KEEP THE WAY IT IS
     )
 
-    # OPTIONAL: if your model produces intervals, you can attach them, e.g.:
-    #   setattr(result, "lo", lo_series)
-    #   setattr(result, "hi", hi_series)
 
-    return result
+    return result     # <- MUST return a ForecastResult instance

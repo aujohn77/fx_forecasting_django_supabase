@@ -74,7 +74,7 @@ yhat <- rep(avg_value, h)
 
 output <- list(
   yhat = yhat,                # <- KEEP THE WAY IT IS
-  model_name = "my_model",  # <---------------------------------------- SET YOUR MODEL NAME HERE
+  model_name = "my_r_model",  # <---------------------------------------- SET YOUR MODEL NAME HERE
   cutoff = input$cutoff       # <- KEEP THE WAY IT IS
 )
 

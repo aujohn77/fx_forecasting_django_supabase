@@ -239,18 +239,20 @@ canvas{
   box-shadow:0 6px 18px rgba(22,163,74,0.65);
 }
 
-/* Tertiary version – Forecast (purple) */
+/* Tertiary version – Forecast (yellow) */
 .project-cta.project-cta-tertiary {
-  background:#7c3aed !important;              /* purple */
-  color:#f9fafb;
-  box-shadow:0 4px 14px rgba(124,58,237,0.45);
+  background:#facc15 !important;              /* yellow */
+  color:#111827;                               /* dark text for contrast */
+  box-shadow:0 4px 14px rgba(250,204,21,0.45); /* yellow shadow */
 }
 
 .project-cta.project-cta-tertiary:hover {
-  background:#8b5cf6 !important;
+  background:#fde047 !important;               /* lighter yellow on hover */
   transform:translateY(-2px);
-  box-shadow:0 6px 18px rgba(124,58,237,0.65);
+  box-shadow:0 6px 18px rgba(250,204,21,0.65);
 }
+
+
 
 
 
@@ -524,3 +526,33 @@ canvas{
 
 
 
+.download-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.download-list li {
+  margin: 0.25rem 0;
+}
+
+.download-list a {
+  color: #7ab0ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.download-list a:hover {
+  text-decoration: underline;
+}
+
+
+.code-block {
+  white-space: pre-wrap;
+  background:#1e293b;
+  padding:1rem;
+  border-radius:8px;
+  font-size:0.9rem;
+  line-height:1.5;
+  margin-top:0.75rem;
+}
