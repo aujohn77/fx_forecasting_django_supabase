@@ -63,7 +63,7 @@ Register the model and it becomes available to the forecast pipeline
 
 Each day GitHub Actions:
 
-Fetches yesterday’s FX data
+Fetches FX data
 
 Runs all registered models
 
@@ -95,47 +95,50 @@ Forecast page: Today's predictions
 
 No comparison pages, no overview dashboards.
 
-📁 Repository Structure
+## 📁 Repository Structure
 
-🔹 ML Deployment Platform (Main System)
+### ML Deployment Platform (Main System)
 
+```
 fx_forecasting_django_supabase/
 │
 ├── apps/
-│   ├── core/                    # Core utilities (currencies, timeframes)
-│   ├── rates/                   # FX ingestion + storage (Supabase)
-│   ├── forecasting/             # Forecast logic + models + backtesting
-│   │   ├── models_lib/          # Python & R forecasting models
+│   ├── core/                     # Core utilities (currencies, timeframes)
+│   ├── rates/                    # FX ingestion + storage (Supabase)
+│   ├── forecasting/              # Forecast logic
+│   │   ├── models_lib/           # Python & R forecasting models
 │   │   │   ├── python_model_template.py
 │   │   │   ├── registry.py
-│   │   │   └── <your models>.py
-│   │   ├── services/            # Forecasting + backtesting engine
-│   │   ├── management/commands/ # CLI tasks (ingest, backtest, run_daily)
-│   │   └── views.py             # Forecast UI pages
+│   │   │   └── <your model>.py
+│   │   ├── services/             # Forecast execution engine
+│   │   ├── management/commands/  # CLI tasks (ingest, forecast)
+│   │   └── views.py              # Market & Forecast pages
 │   │
-│   ├── portfolio/               # Portfolio pages (isolated from forecasting)
+│   ├── portfolio/                # Portfolio pages (isolated)
 │   └── ...
 │
 ├── .github/workflows/
-│   ├── daily_ops.yml            # Daily ingest + forecast
-│   ├── backtest_runner.yml      # Backtesting automation
-│   └── deploy.yml               # Deploy to Render (optional)
+│   ├── daily_ops.yml             # Daily ingest + forecast
+│   ├── deploy.yml                # Render deploy (optional)
+│   └── backtest_runner.yml       # (legacy, safe to ignore)
 │
-├── fx/                          # Django project settings & routing
-├── templates/                   # UI templates
-├── static/                      # Static assets
+├── fx/                           # Django project settings & routing
+├── templates/                    # Base and project templates
+├── static/                       # Static assets
 │
 ├── requirements.txt
 ├── manage.py
 └── README.md
+```
 
+### Portfolio Website (Isolated, Optional)
 
-
-
-🔹 Portfolio Website (Isolated, Optional)
+```
 apps/portfolio/
 templates/portfolio/
 static/images/projects/
+```
+
 
 
 These folders do NOT affect forecasting.
