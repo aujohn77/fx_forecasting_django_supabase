@@ -32,7 +32,9 @@ However:
 Portfolio-related code lives in:
 
 apps/portfolio/
+
 static/images/projects/
+
 templates/portfolio/
 
 
