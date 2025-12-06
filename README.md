@@ -1,248 +1,245 @@
-FX Forecasting – Django + Supabase + Automated Daily Predictions
+# 🌍 FX Forecasting – Django + Supabase + Automated Daily Predictions
 
-A fully working ML deployment system for daily FX forecasting.
-This project lets you:
+A production-ready **ML deployment system** for automated **daily FX forecasting**.  
+This platform ingests currency data, runs forecasting models, stores predictions, and exposes everything through a Django interface — fully automated via GitHub Actions.
 
-Fetch daily exchange rate data
+Unlike experimentation platforms, this system focuses purely on **operational forecasting**, not model comparison or evaluation dashboards.
 
-Store data in Supabase
+---
 
-Register any Python or R forecasting model
+## ⚠️ Portfolio Website Notice
 
-Automatically run forecasts once per day
+This repository also contains code for a personal portfolio site, merged into the same Django project for hosting convenience.
 
-View results through Django pages
+- ✔ Portfolio pages are fully isolated  
+- ✔ They do **not** interact with forecasting logic  
+- ✔ They do **not** affect ingestion, automation, or database operations  
 
-Deploy everything to Render
+Portfolio-related files:
 
-Run everything via GitHub Actions
 
-No model comparison, no scoring metrics, and no evaluation dashboards — this system focuses purely on operational forecasting, not experimentation.
-
-⚠️ Note About Portfolio Pages
-
-This repository also contains my personal portfolio website, merged into the same Django project for hosting convenience.
-
-However:
-
-✔ The portfolio pages are completely isolated
-✔ They do NOT interact with any forecasting logic
-✔ They do NOT affect ingestion, forecasting, or database operations
-
-Portfolio-related code lives in:
-
+'''
 apps/portfolio/
-
 static/images/projects/
-
 templates/portfolio/
+'''
 
+These can be safely ignored if your focus is the ML Deployment System.
 
-You can safely ignore these directories if your only interest is the ML Deployment Platform.
+---
 
-🚀 Features
-1. Automated FX Data Ingestion
+## 🚀 Features
 
-Runs once per day via GitHub Actions
+### 1️⃣ Automated FX Data Ingestion
+- Runs daily via **GitHub Actions**  
+- Pulls FX rates from the **Frankfurter API**  
+- Writes data into **Supabase PostgreSQL**  
+- Supports historical backfilling  
 
-Uses the Frankfurter API
+---
 
-Writes data to Supabase
+### 2️⃣ Pluggable Forecasting Models
+Add models with *zero changes* to the core system:
 
-Supports backfilling historical data
+- Supports **Python** and **R**  
+- Each model uses a clean template  
+- Register once and it becomes available  
+- Pipeline is fully model-agnostic  
 
-2. Pluggable Forecasting Models
+---
 
-You can easily add your own models:
+### 3️⃣ Automated Daily Forecasting
 
-Python or R
+Every day, GitHub Actions:
 
-Write your logic using a clean template
+1. Fetches FX data  
+2. Runs **all registered models**  
+3. Stores predictions in Supabase  
+4. Logs execution details  
 
-Register the model and it becomes available to the forecast pipeline
+---
 
-3. Automated Daily Forecasting
+### 4️⃣ Production-Ready Architecture
 
-Each day GitHub Actions:
+Stable stack used in real deployments:
 
-Fetches FX data
+- Django  
+- Supabase PostgreSQL  
+- Render  
+- GitHub Actions  
+- Python (and optional R)  
 
-Runs all registered models
+---
 
-Stores predictions in Supabase
+### 5️⃣ Forecast Display Pages
 
-Logs execution
+Minimal UI that provides:
 
-4. Simple, Production-Ready Architecture
+- **Market page** — latest FX values  
+- **Forecast page** — today’s predictions  
 
-Used in real deployments:
+No scoring dashboards or comparison tools (by design).
 
-Django
-
-Supabase
-
-Render
-
-GitHub Actions
-
-Python (and optional R)
-
-5. Forecast Display Pages
-
-The project includes:
-
-Market page: Latest FX values
-
-Forecast page: Today's predictions
-
-No comparison pages, no overview dashboards.
+---
 
 ## 📁 Repository Structure
 
 ### ML Deployment Platform (Main System)
 
-```
+'''
 fx_forecasting_django_supabase/
 │
 ├── apps/
-│   ├── core/                     # Core utilities (currencies, timeframes)
-│   ├── rates/                    # FX ingestion + storage (Supabase)
-│   ├── forecasting/              # Forecast logic
-│   │   ├── models_lib/           # Python & R forecasting models
-│   │   │   ├── python_model_template.py
-│   │   │   ├── registry.py
-│   │   │   └── <your model>.py
-│   │   ├── services/             # Forecast execution engine
-│   │   ├── management/commands/  # CLI tasks (ingest, forecast)
-│   │   └── views.py              # Market & Forecast pages
-│   │
-│   ├── portfolio/                # Portfolio pages (isolated)
-│   └── ...
+│ ├── core/ # Currency + timeframe utilities
+│ ├── rates/ # FX ingestion + Supabase writes
+│ ├── forecasting/ # Forecast logic & models
+│ │ ├── models_lib/ # Python & R forecasting models
+│ │ │ ├── python_model_template.py
+│ │ │ ├── registry.py
+│ │ │ └── <your_model>.py
+│ │ ├── services/ # Forecast execution engine
+│ │ ├── management/commands/ # ingest_rates, run_forecasts
+│ │ └── views.py
+│ │
+│ ├── portfolio/ # Portfolio pages (isolated)
+│ └── ...
 │
 ├── .github/workflows/
-│   ├── daily_ops.yml             # Daily ingest + forecast
-│   ├── deploy.yml                # Render deploy (optional)
-│   └── backtest_runner.yml       # (legacy, safe to ignore)
+│ ├── daily_ops.yml # Daily ingest + forecast
+│ ├── deploy.yml # Deploy to Render
+│ └── backtest_runner.yml # Legacy workflow
 │
-├── fx/                           # Django project settings & routing
-├── templates/                    # Base and project templates
-├── static/                       # Static assets
+├── fx/ # Django settings & routing
+├── templates/ # HTML templates
+├── static/ # Static assets
 │
 ├── requirements.txt
 ├── manage.py
 └── README.md
-```
 
-### Portfolio Website (Isolated, Optional)
+'''
 
-```
+
+
+---
+
+### Portfolio Website (Isolated)
+
+
+'''
+
 apps/portfolio/
 templates/portfolio/
 static/images/projects/
-```
+
+'''
+
+
+These do **not** affect forecasting.
+
+---
+
+## 🧠 Adding Your Own Forecasting Model
+
+### 1. Choose Your Template
+
+**Python:**
+
+apps/forecasting/models_lib/python_model_template.py
+
+
+**R:**
+
+
+apps/forecasting/r_models/r_model_template.R
+
+
+Edit only:
 
 
 
-These folders do NOT affect forecasting.
-
-🧠 How to Add Your Own Forecasting Model
+PART 2 — MODEL LOGIC (THIS IS YOUR AREA)
 
 
-Download the template for your language:
+Set your model name in PART 3:
 
-• Python: python_model_template.py
-• R:      r_model_template.R
+```python
+model_name = "my_model"
 
-Open the template and edit only the section marked:
-"PART 2 — MODEL LOGIC (THIS IS YOUR AREA)"
+2. Python Model Registration
 
-In "PART 3", you will see where to set your model name (e.g., 'my_model').
+Save your model in:
 
-Then:
-
-Python models
--------------
-Save the file to:
 apps/forecasting/models_lib/
 
-Rename it to match your model name (e.g., my_model.py).
 
-Open:
-apps/forecasting/models_lib/registry.py
+Rename to match the model:
 
-Add at the top:
+my_model.py
+
+
+Register in registry.py:
+
 from . import my_model
 
-Add this to _REGISTRY:
+
+Add:
+
 "my_model": my_model.predict,
 
+3. R Model Registration
 
-R models
---------
-Save the file to:
+Save your file in:
+
 apps/forecasting/r_models/
 
-Rename it to match your model name (e.g., my_model.R).
 
-Open:
-apps/forecasting/models_lib/registry.py
+Add to registry:
 
-(You do NOT add an import at the top for R models.)
-
-Add this to _REGISTRY:
 "my_model": make_r_predictor("my_model.R")
-
-
 
 ⚙️ Running Locally
 1. Install dependencies
 pip install -r requirements.txt
 
-2. Set environment variables
+2. Create .env
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_KEY=
+DJANGO_SECRET_KEY=
+DJANGO_DEBUG=True
 
-Create .env with:
-
-SUPABASE_URL
-
-SUPABASE_ANON_KEY
-
-SUPABASE_SERVICE_KEY
-
-DJANGO_SECRET_KEY
-
-DJANGO_DEBUG=True (optional)
-
-3. Run the server
+3. Start the server
 python manage.py runserver
 
-4. Run ingestion manually
+4. Ingest rates manually
 python manage.py ingest_rates
 
-5. Run daily forecasts manually
+5. Run forecasts manually
 python manage.py run_forecasts
 
 🖥 Deployment
 
-This project supports full production deployment:
+Supports deployment to:
 
-Django → Render
+Render (Django hosting)
 
-Database → Supabase PostgreSQL
+Supabase PostgreSQL (database)
 
-Automation → GitHub Actions
+GitHub Actions (automation)
 
-Workflows included in:
+Workflows live in:
 
 .github/workflows/
 
-🌐 Included GitHub Actions
+🌐 GitHub Actions Included
 daily_ops.yml
 
-Fetch rates
+Fetch FX data
 
-Run forecasts
+Run all models
 
-Write to Supabase
+Store predictions
 
 deploy.yml
 
@@ -254,7 +251,7 @@ Python
 
 Django
 
-Supabase (PostgreSQL)
+Supabase PostgreSQL
 
 GitHub Actions
 
