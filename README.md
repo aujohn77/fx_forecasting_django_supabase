@@ -1,4 +1,4 @@
-# 🌍 FX Forecasting – Django + Supabase + Automated Daily Predictions
+# 🌍 ML Deployment Platform
 
 A production-ready **ML deployment system** for automated **daily FX forecasting**.  
 This platform ingests currency data, runs forecasting models, stores predictions, and exposes everything through a Django interface — fully automated via GitHub Actions.
