@@ -86,7 +86,7 @@ No scoring dashboards or comparison tools (by design).
 
 ### ML Deployment Platform (Main System)
 
-'''
+```
 fx_forecasting_django_supabase/
 │
 ├── apps/
@@ -117,7 +117,7 @@ fx_forecasting_django_supabase/
 ├── manage.py
 └── README.md
 
-'''
+```
 
 
 
@@ -126,13 +126,13 @@ fx_forecasting_django_supabase/
 ### Portfolio Website (Isolated)
 
 
-'''
+```
 
 apps/portfolio/
 templates/portfolio/
 static/images/projects/
 
-'''
+```
 
 
 These do **not** affect forecasting.
