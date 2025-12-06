@@ -18,11 +18,11 @@ This repository also contains code for a personal portfolio site, merged into th
 Portfolio-related files:
 
 
-'''
+```
 apps/portfolio/
 static/images/projects/
 templates/portfolio/
-'''
+```
 
 These can be safely ignored if your focus is the ML Deployment System.
 
@@ -163,7 +163,7 @@ PART 2 — MODEL LOGIC (THIS IS YOUR AREA)
 
 Set your model name in PART 3:
 
-```python
+python
 model_name = "my_model"
 
 2. Python Model Registration
