@@ -585,3 +585,11 @@ canvas{
         0 0 80px rgba(255, 255, 255, 0.16);
     transform: translateY(-4px);
 }
+
+
+.nav-main {
+    display: flex;
+    justify-content: center; /* centers Home + About */
+    gap: 3rem;               /* space between them */
+    width: 100%;
+}

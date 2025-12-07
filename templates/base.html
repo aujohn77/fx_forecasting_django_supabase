@@ -26,11 +26,6 @@
               Home
             </a>
 
-            <a href="{% url 'portfolio:project_model_deploy' %}"
-               class="nav-link {% block nav_projects_active %}{% endblock %}">
-              Projects
-            </a>
-
             <a href="{% url 'portfolio:about' %}"
                class="nav-link {% block nav_about_active %}{% endblock %}">
               About
@@ -49,9 +44,6 @@
         </div>
       </div>
 
-      <!-- ROW 2 — removed submenus; keep comment only if you like -->
-      <!-- Previously used for inline breadcrumb / second-row nav -->
-
     </div>
   </header>
 
@@ -64,12 +56,6 @@
            class="nav-link"
            onclick="toggleMobileNav()">
           Home
-        </a>
-
-        <a href="{% url 'portfolio:project_model_deploy' %}"
-           class="nav-link"
-           onclick="toggleMobileNav()">
-          Projects
         </a>
 
         <a href="{% url 'portfolio:about' %}"
