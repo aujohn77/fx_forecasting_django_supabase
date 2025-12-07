@@ -43,9 +43,10 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("1", "true", "yes")
 
 
 
-# Allow hosts for deployment
 ALLOWED_HOSTS = [
     ".onrender.com",
+    "port2.tech",
+    ".port2.tech",     # allows www.port2.tech and anything.port2.tech
     "localhost",
     "127.0.0.1",
 ]
