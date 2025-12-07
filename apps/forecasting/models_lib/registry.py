@@ -7,15 +7,16 @@ from .r_model_adapter import make_r_predictor
 
 _REGISTRY: Dict[str, Callable[..., object]] = {
     # Python models
-    "naive": naive.predict,
-    "drift": drift.predict,
-    "arima": arima.predict,
-    "prophet": prophet.predict,
+    #"naive": naive.predict,
+    #"drift": drift.predict,
+    #"arima": arima.predict,
+    #"prophet": prophet.predict,
     "my_arima": my_arima.predict,
 
     # R models (explicit, strict)
-    "average_r": make_r_predictor("average_r.R"),
-    "drift_r": make_r_predictor("drift_r.R")
+    #"average_r": make_r_predictor("average_r.R"),
+    "ets_r": make_r_predictor("ets_r.R"),
+    #"drift_r": make_r_predictor("drift_r.R")
     #"average_r": lambda y_train, steps, target_index=None: (predict_r_model("average_r.R", y_train, steps, target_index)),
     #"average_r": lambda y, s, idx=None: predict_r_model("average_r.R", y, s, target_index=idx),
 

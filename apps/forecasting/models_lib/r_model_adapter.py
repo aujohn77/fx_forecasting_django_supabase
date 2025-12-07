@@ -33,6 +33,9 @@ print(f"[r_model_adapter] Using Rscript at: {RSCRIPT_EXE}")
 
 
 def make_r_predictor(script_name: str):
+    """
+    Factory that returns a Python wrapper for a given R script.
+    """
     r_script_path = R_MODELS_DIR / script_name
 
     def _predict_r_model(
@@ -55,36 +58,56 @@ def make_r_predictor(script_name: str):
             "cutoff": y_train.index.max().isoformat(),
         }
 
-        try:
-            proc = subprocess.run(
-                [RSCRIPT_EXE, str(r_script_path), json.dumps(payload)],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-        except subprocess.CalledProcessError as e:
-            # Surface R’s error in the GitHub Actions logs
-            print("\n[ERROR] Rscript failed for", script_name)
-            print("[R stdout]:")
-            print(e.stdout)
-            print("[R stderr]:")
-            print(e.stderr)
-            raise RuntimeError(f"Rscript failed with exit code {e.returncode}") from e
+        json_arg = json.dumps(payload)
 
-        out = json.loads(proc.stdout)
+        # ---------- DEBUG: show exactly what we're sending to R ----------
+        print("\n====== RSCRIPT DEBUG START ======")
+        print(f"Script name: {script_name}")
+        print(f"R script path: {r_script_path}")
+        print(f"Using Rscript: {RSCRIPT_EXE}")
+        print("JSON payload (truncated):")
+        print(json_arg[:400] + ("..." if len(json_arg) > 400 else ""))
+
+        # Call Rscript
+        proc = subprocess.run(
+            [RSCRIPT_EXE, str(r_script_path), json_arg],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        print("\n------ R STDOUT ------")
+        print(proc.stdout)
+        print("------ R STDERR ------")
+        print(proc.stderr)
+        print("Exit code:", proc.returncode)
+        print("====== RSCRIPT DEBUG END ======\n")
+        # -----------------------------------------------------------------
+
+        if proc.returncode != 0:
+            # Surface R’s error clearly to Django / GitHub Actions logs
+            raise RuntimeError(
+                f"Rscript failed with exit code {proc.returncode} "
+                f"for script '{script_name}'.\n"
+                f"R STDERR:\n{proc.stderr}"
+            )
+
+        # Parse JSON response from R
+        try:
+            out = json.loads(proc.stdout)
+        except Exception as e:
+            raise RuntimeError(
+                "Invalid JSON returned from Rscript.\n"
+                f"STDOUT was:\n{proc.stdout}\n\nSTDERR was:\n{proc.stderr}"
+            ) from e
+
         yhat = pd.Series(out["yhat"], index=idx, dtype=float)
 
         return ForecastResult(
             target_index=idx,
             yhat=yhat,
-            model_name=out.get(
-                "model_name",
-                script_name.replace(".R", ""),
-            ),
+            model_name=out.get("model_name", script_name.replace(".R", "")),
             cutoff=pd.to_datetime(out["cutoff"]),
         )
 
     return _predict_r_model
-
-
-

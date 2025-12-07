@@ -14,11 +14,10 @@ jobs:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       RSCRIPT_EXE: "Rscript"
 
-      # ----- EDIT THESE IF YOU CHANGE MODELS OR PAIRS -----
+      # ----- EDIT THESE IF YOU CHANGE PAIRS OF CURRENCIES -----
       FX_BASE: "USD"
       FX_QUOTES: "AUD"
-      FX_MODELS: "naive drift average_r drift_r"
-      # ----------------------------------------------------
+      # --------------------------------------------------------
 
     steps:
       - name: Check out repository
@@ -32,7 +31,12 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c("jsonlite"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages(c(
+            "forecast",
+            "fable",
+            "tsibble",
+            "feasts"
+          ), repos = "https://cloud.r-project.org")'
 
 
       - name: Set up Python
@@ -59,24 +63,9 @@ jobs:
             --base "$FX_BASE" \
             --quotes "$FX_QUOTES"
 
-      - name: Run daily forecasts (for all models)
+      - name: Run daily forecasts + backtests (from ModelSpec)
         run: |
-          for MODEL in $FX_MODELS; do
-            echo "=== Running daily forecasts: $MODEL ==="
-            python manage.py run_daily_forecasts \
-              --base "$FX_BASE" \
-              --quotes "$FX_QUOTES" \
-              --model "$MODEL"
-          done
-
-      - name: Run backtests (for all models)
-        run: |
-          for MODEL in $FX_MODELS; do
-            echo "=== Running daily backtests: $MODEL ==="
-            python manage.py run_backtests \
-              --model "$MODEL" \
-              --daily \
-              --window 60 \
-              --base "$FX_BASE" \
-              --quotes "$FX_QUOTES"
-          done
+          python manage.py fx_daily_ops \
+            --base "$FX_BASE" \
+            --quotes "$FX_QUOTES" \
+            --window 60

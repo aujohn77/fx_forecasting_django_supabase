@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.dateparse import parse_date
 from django.views.decorators.csrf import csrf_protect
+from django.core.cache import cache
+
 
 from apps.forecasting.services.forecast_service import (
     run_daily_batch,
@@ -133,7 +135,8 @@ def run_action(request):
             newrun = bool(request.POST.get("newrun"))
             run = run_backtests_weekly(base_code=base, quotes=quotes, model=model, window=window, new_run=newrun)
             messages.success(request, f"Weekly backtests run ({model}, last {window} Fridays) → <a href='{_admin_link('backtestrun', run.id)}'>open in Admin</a>.", extra_tags="safe")
-
+        elif action == "clear_cache":        
+            cache.clear()
         else:
             messages.error(request, "Unknown action.")
 

@@ -56,7 +56,7 @@
       <button>Run Range Ingest</button>
     </form>
 
-    <!-- Check missing -->
+    <!-- Data Quality: check missing -->
     <form class="ops" method="post" action="{% url 'ops:run_action' %}">
       {% csrf_token %}
       <h3>Data Quality – Check Missing</h3>
@@ -148,6 +148,17 @@
       <label>Window (Fridays) <input type="number" min="1" max="500" name="window" value="60"></label>
       <label><input type="checkbox" name="newrun"> Create new run (don’t overwrite)</label>
       <button>Run Weekly Backtests</button>
+    </form>
+
+    <!-- Cache: clear all -->
+    <form class="ops" method="post" action="{% url 'ops:run_action' %}">
+      {% csrf_token %}
+      <h3>Cache – Clear All</h3>
+      <input type="hidden" name="action" value="clear_cache">
+      <p style="font-size:.85rem;color:#9ca3af;">
+        Flushes all Django caches (use after new backtests or ingestion while testing).
+      </p>
+      <button>Clear Django Cache</button>
     </form>
 
   </div>
