@@ -28,16 +28,18 @@ jobs:
         with:
           r-version: '4.4.1'
 
-
       - name: Install R packages
-        run: |
-          Rscript -e 'install.packages(c(
-            "forecast",
-            "fable",
-            "tsibble",
-            "feasts"
-          ), repos = "https://cloud.r-project.org")'
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::forecast
+            any::fable
+            any::tsibble
+            any::feasts
 
+      - name: Check R libraries
+        run: |
+          Rscript -e 'print(.libPaths()); print("forecast" %in% rownames(installed.packages()))'
 
       - name: Set up Python
         uses: actions/setup-python@v5
