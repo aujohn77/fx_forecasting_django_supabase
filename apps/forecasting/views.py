@@ -445,15 +445,28 @@ def forecast_page(request):
     # ──────────────────────────────────────────────────────────────
     # 1) Models that actually have DAILY forecasts  (1 query)
     # ──────────────────────────────────────────────────────────────
+
+    # 1) Allowed models: ACTIVE daily ModelSpecs
+    allowed_codes = list(
+        ModelSpec.objects.filter(
+            timeframe=Timeframe.DAILY,
+            active=True,
+        ).values_list("code", flat=True)
+    )
+
+    # 2) Models that actually have DAILY forecasts, restricted to allowed_codes
     model_codes = list(
         Forecast.objects.filter(
             base__code=base_code,
             run__timeframe=Timeframe.DAILY,
+            model__code__in=allowed_codes,
         )
         .values_list("model__code", flat=True)
         .distinct()
         .order_by("model__code")
     )
+
+
 
     if not model_codes:
         ctx = {

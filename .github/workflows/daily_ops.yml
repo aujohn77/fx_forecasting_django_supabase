@@ -16,7 +16,7 @@ jobs:
 
       # ----- EDIT THESE IF YOU CHANGE PAIRS OF CURRENCIES -----
       FX_BASE: "USD"
-      FX_QUOTES: "AUD"
+      FX_QUOTES: "EUR,GBP,AUD,NZD,JPY,CNY,CHF,CAD,MXN,INR,BRL,KRW"
       # --------------------------------------------------------
 
     steps:

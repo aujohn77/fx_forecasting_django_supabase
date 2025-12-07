@@ -16,10 +16,19 @@ class Currency(models.Model):
     name = models.CharField(max_length=64)
     symbol = models.CharField(max_length=8, blank=True, default="")
     decimals = models.PositiveSmallIntegerField(default=6)
-    def __str__(self): return self.code
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = "Currency"
+        verbose_name_plural = "Currencies"   # <-- FIXED PLURAL HERE
+
 
 class ExchangeSource(models.Model):
     code = models.CharField(max_length=32, unique=True)
     name = models.CharField(max_length=64)
     base_url = models.URLField(blank=True, default="")
-    def __str__(self): return self.name
+
+    def __str__(self):
+        return self.name
