@@ -209,8 +209,29 @@ But they still need a few adjustments to be fully ready. For now, I’d recommen
 
 
 <p><strong>• Dashboards are cached</strong><br>
-Rates come in every day around 5:15pm, and the dashboards stay cached for 45 minutes.
+Rates come in every day around 16:15 CET, and the dashboards stay cached for 45 minutes.
 If you’re tweaking a model and want to see the change immediately, just hit the “Clear Cache” button in the Ops Console.</p>
+
+
+<p><strong>• Dictionary vs Database (REGISTRY vs Model Specs)</strong><br>
+When you add a model to the <code>_REGISTRY</code> dictionary, it becomes available for GitHub Actions and you can also trigger 
+it from the Ops Console. After the model runs for the first time, its specifications are stored permanently in the <em>Model Spec</em> table inside the database. 
+If you want to completely remove a model from the platform, just deleting it from <code>_REGISTRY</code> is not enough — you also need to delete it from the Model Spec table in the database.</p>
+
+<!-- REGISTRY screenshot -->
+<div style="margin:1rem 0; text-align:center;">
+  <img src="{% static 'images/registry_dict.png' %}"
+       alt="REGISTRY dictionary screenshot"
+       style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
+</div>
+
+<!-- Model Spec screenshot -->
+<div style="margin:1rem 0 2rem 0; text-align:center;">
+  <img src="{% static 'images/model_specs_table.png' %}"
+       alt="Model Specs table screenshot"
+       style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
+</div>
+
 
 
 <p><strong>• A small note of gratitude</strong><br>
