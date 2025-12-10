@@ -72,6 +72,8 @@ INSTALLED_APPS = [
     'apps.rates',
     'apps.forecasting',
     "apps.site_portfolio",
+    "django_ratelimit",
+
 
 ]
 
@@ -218,3 +220,14 @@ CACHES = {
         "LOCATION": "unique-portfolio-cache",
     }
 }
+
+
+# Use the default cache for django-ratelimit
+RATELIMIT_USE_CACHE = "default"
+
+# Silence django-ratelimit checks about LocMemCache not being shared.
+# For this small portfolio site, in-memory cache is fine.
+SILENCED_SYSTEM_CHECKS = [
+    "django_ratelimit.E003",
+    "django_ratelimit.W001",
+]

@@ -89,7 +89,9 @@
   </div>
 
 
-  <!-- Plug-and-Play -->
+
+
+    <!-- Plug-and-Play -->
   <h3 style="margin-top:2rem;">Plug-and-Play Model Integration</h3>
 
   <p>You can plug in your own forecasting model by following these steps:</p>
@@ -98,17 +100,18 @@
     <p>Download the template for your language:</p>
     <ul class="download-list">
       <li>
-        <a href="{% static 'downloads/python_model_template.py' %}" download>
+        <a href="{% url 'portfolio:download_file' 'python_template' %}">
           Python model template (.py)
         </a>
       </li>
       <li>
-        <a href="{% static 'downloads/r_model_template.R' %}" download>
+        <a href="{% url 'portfolio:download_file' 'r_template' %}">
           R model template (.R)
         </a>
       </li>
     </ul>
   </div>
+
 
   <pre class="code-block">
 Open the template and edit only the section marked:

@@ -253,27 +253,6 @@ canvas{
 }
 
 
-/* Make project CTAs always clickable, even if something sits above */
-.project-cta {
-  position: relative;
-  z-index: 20;
-  pointer-events: auto;
-}
-
-
-/* Hero overlay should never block clicks */
-.hero-overlay {
-  pointer-events: none;
-}
-
-/* Mobile overlay only catches clicks when menu is open */
-.mobile-nav {
-  pointer-events: none;
-}
-
-.mobile-nav.open {
-  pointer-events: auto;
-}
 
 
 

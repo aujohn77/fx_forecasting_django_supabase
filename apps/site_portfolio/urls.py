@@ -14,4 +14,7 @@ urlpatterns = [
 
      # NEW KAGGLE CERTIFICATIONS PAGE
     path("kaggle-certifications/", views.kaggle_certs, name="kaggle_certs"),
+
+    path("download/<slug:file_key>/", views.download_file, name="download_file"),
+
 ]
