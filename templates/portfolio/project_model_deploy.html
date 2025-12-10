@@ -68,30 +68,33 @@
     <!-- GitHub -->
     <a href="https://github.com/aujohn77/fx_forecasting_django_supabase"
        target="_blank"
-       class="project-cta">
+       class="project-cta"
+       data-analytics="cta_button"
+       data-analytics-label="GitHub Repository">
       GitHub Repository
     </a>
 
     <!-- Market -->
     <a href="{% url 'market' %}"
        target="_blank"
-       class="project-cta project-cta-secondary">
+       class="project-cta project-cta-secondary"
+       data-analytics="cta_button"
+       data-analytics-label="Market Dashboard">
       Market Dashboard
     </a>
 
     <!-- Forecast -->
     <a href="{% url 'forecast' %}"
        target="_blank"
-       class="project-cta project-cta-tertiary">
+       class="project-cta project-cta-tertiary"
+       data-analytics="cta_button"
+       data-analytics-label="Forecast Dashboard">
       Forecast Dashboard
     </a>
 
   </div>
 
-
-
-
-    <!-- Plug-and-Play -->
+  <!-- Plug-and-Play -->
   <h3 style="margin-top:2rem;">Plug-and-Play Model Integration</h3>
 
   <p>You can plug in your own forecasting model by following these steps:</p>
@@ -100,18 +103,21 @@
     <p>Download the template for your language:</p>
     <ul class="download-list">
       <li>
-        <a href="{% url 'portfolio:download_file' 'python_template' %}">
+        <a href="{% url 'portfolio:download_file' 'python_template' %}"
+           data-track-download
+           data-download-name="Python model template (.py)">
           Python model template (.py)
         </a>
       </li>
       <li>
-        <a href="{% url 'portfolio:download_file' 'r_template' %}">
+        <a href="{% url 'portfolio:download_file' 'r_template' %}"
+           data-track-download
+           data-download-name="R model template (.R)">
           R model template (.R)
         </a>
       </li>
     </ul>
   </div>
-
 
   <pre class="code-block">
 Open the template and edit only the section marked:
@@ -154,100 +160,90 @@ Add this to _REGISTRY:
 "my_model": make_r_predictor("my_model.R"),
   </pre>
 
-
   <!-- ============================= -->
   <!-- Friendly Notes for Developers -->
   <!-- ============================= -->
 
   <h3 style="margin-top:2rem;">A Few Notes If You Want to Use or Build on This Platform</h3>
 
-<p><strong>• One model, all currencies</strong><br>
-Just a heads-up: to keep things simple, any model you add will automatically forecast all currencies. In real FX work you’d normally have one model per currency pair, but I simplified it here so you don’t have to manage dozens of models.</p>
+  <p><strong>• One model, all currencies</strong><br>
+  Just a heads-up: to keep things simple, any model you add will automatically forecast all currencies. In real FX work you’d normally have one model per currency pair, but I simplified it here so you don’t have to manage dozens of models.</p>
 
-<p><strong>• Models run from their logic (not serialized files)</strong><br>
-FX data changes fast, so instead of freezing a trained model and loading it later, this platform runs the model directly from its logic every day.
-That’s actually how most FX forecasting agencies do it.</p>
+  <p><strong>• Models run from their logic (not serialized files)</strong><br>
+  FX data changes fast, so instead of freezing a trained model and loading it later, this platform runs the model directly from its logic every day.
+  That’s actually how most FX forecasting agencies do it.</p>
 
-<p><strong>• Don’t forget the packages</strong><br>
-If your model needs extra libraries, just add them:<br>
-– Python packages → <code>requirements.txt</code><br>
-– R packages → inside the GitHub Actions workflow<br>
-Otherwise the CI will complain 🙂</p>
+  <p><strong>• Don’t forget the packages</strong><br>
+  If your model needs extra libraries, just add them:<br>
+  – Python packages → <code>requirements.txt</code><br>
+  – R packages → inside the GitHub Actions workflow<br>
+  Otherwise the CI will complain 🙂</p>
 
-<p><strong>• The default models are just placeholders</strong><br>
-The models that come with the system are super basic — just enough to demonstrate the workflow.
-They usually just repeat yesterday’s rate, which is why the variation column is usually zero. So don’t use them for anything serious.</p>
+  <p><strong>• The default models are just placeholders</strong><br>
+  The models that come with the system are super basic — just enough to demonstrate the workflow.
+  They usually just repeat yesterday’s rate, which is why the variation column is usually zero. So don’t use them for anything serious.</p>
 
-<p><strong>• Historical data is available</strong><br>
-You can download the last 10 years of FX rates right from the platform.
-That way you can experiment, build your model offline, and then plug it into the system.
-Future versions will probably pull extra predictors automatically.</p>
+  <p><strong>• Historical data is available</strong><br>
+  You can download the last 10 years of FX rates right from the platform.
+  That way you can experiment, build your model offline, and then plug it into the system.
+  Future versions will probably pull extra predictors automatically.</p>
 
-<p><strong>• How to evaluate your own models</strong><br>
-If you want to measure performance, feel free to use whatever you like: MAPE, MAE, RMSE, etc.
-There’s no comparison page in the project (on purpose), but you can run these metrics in your own notebook.
-You can also look at AICc, which Hyndman & Athanasopoulos recommend in their forecasting <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">book</a>. </p>
+  <p><strong>• How to evaluate your own models</strong><br>
+  If you want to measure performance, feel free to use whatever you like: MAPE, MAE, RMSE, etc.
+  There’s no comparison page in the project (on purpose), but you can run these metrics in your own notebook.
+  You can also look at AICc, which Hyndman & Athanasopoulos recommend in their forecasting <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">book</a>. </p>
 
+  <p><strong>• Use the Ops Console for full control</strong><br>
+  There’s a small Ops Console where you can:<br>
+  – pull new FX rates<br>
+  – run forecasts<br>
+  – run backtests<br>
+  It writes directly to the database, so it’s password-protected and only enabled locally.</p>
 
-<p><strong>• Use the Ops Console for full control</strong><br>
-There’s a small Ops Console where you can:<br>
-– pull new FX rates<br>
-– run forecasts<br>
-– run backtests<br>
-It writes directly to the database, so it’s password-protected and only enabled locally.</p>
+  <!-- Ops Console Screenshot -->
+  <div style="margin:1rem 0 2rem 0; text-align:center;">
+    <img src="{% static 'images/ops_console.png' %}" 
+         alt="Ops Console Screenshot"
+         style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
+  </div>
 
-<!-- Ops Console Screenshot -->
-<div style="margin:1rem 0 2rem 0; text-align:center;">
-  <img src="{% static 'images/ops_console.png' %}" 
-       alt="Ops Console Screenshot"
-       style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
-</div>
+  <p><strong>• About timeframes (Daily, Weekly, Monthly)</strong><br>
+  The original idea was to support three timeframes — daily, weekly, and monthly. 
+  Most of the backend work for weekly and monthly is already there, which is why you’ll see “Week” options in the Ops Console. 
+  But they still need a few adjustments to be fully ready. For now, I’d recommend sticking to the daily timeframe — it’s the most complete and stable.</p>
 
+  <p><strong>• Dashboards are cached</strong><br>
+  Rates come in every day around 16:15 CET, and the dashboards stay cached for 45 minutes.
+  If you’re tweaking a model and want to see the change immediately, just hit the “Clear Cache” button in the Ops Console.</p>
 
+  <p><strong>• Dictionary vs Database (REGISTRY vs Model Specs)</strong><br>
+  When you add a model to the <code>_REGISTRY</code> dictionary, it becomes available for GitHub Actions and you can also trigger 
+  it from the Ops Console. After the model runs for the first time, its specifications are stored permanently in the <em>Model Spec</em> table inside the database. 
+  If you want to completely remove a model from the platform, just deleting it from <code>_REGISTRY</code> is not enough — you also need to delete it from the Model Spec table in the database.</p>
 
-<p><strong>• About timeframes (Daily, Weekly, Monthly)</strong><br>
-The original idea was to support three timeframes — daily, weekly, and monthly. 
-Most of the backend work for weekly and monthly is already there, which is why you’ll see “Week” options in the Ops Console. 
-But they still need a few adjustments to be fully ready. For now, I’d recommend sticking to the daily timeframe — it’s the most complete and stable.</p>
+  <!-- REGISTRY screenshot -->
+  <div style="margin:1rem 0; text-align:center;">
+    <img src="{% static 'images/registry_dict.png' %}"
+         alt="REGISTRY dictionary screenshot"
+         style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
+  </div>
 
+  <!-- Model Spec screenshot -->
+  <div style="margin:1rem 0 2rem 0; text-align:center;">
+    <img src="{% static 'images/model_specs_table.png' %}"
+         alt="Model Specs table screenshot"
+         style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
+  </div>
 
-<p><strong>• Dashboards are cached</strong><br>
-Rates come in every day around 16:15 CET, and the dashboards stay cached for 45 minutes.
-If you’re tweaking a model and want to see the change immediately, just hit the “Clear Cache” button in the Ops Console.</p>
+  <p><strong>• A small note of gratitude</strong><br>
+  I also want to thank everyone who has ever contributed code to the world — from 
+  the early days of computing up to today. Modern AI was trained on the combined 
+  work of generations of people who took the time to write and share their code, 
+  and we all benefit from their effort. Thanks as well to the many scientists whose 
+  work laid the foundations of machine learning. Without their 
+  contributions, and without today’s AI tools, a project like this would have taken me far longer than just a few months.</p>
 
-
-<p><strong>• Dictionary vs Database (REGISTRY vs Model Specs)</strong><br>
-When you add a model to the <code>_REGISTRY</code> dictionary, it becomes available for GitHub Actions and you can also trigger 
-it from the Ops Console. After the model runs for the first time, its specifications are stored permanently in the <em>Model Spec</em> table inside the database. 
-If you want to completely remove a model from the platform, just deleting it from <code>_REGISTRY</code> is not enough — you also need to delete it from the Model Spec table in the database.</p>
-
-<!-- REGISTRY screenshot -->
-<div style="margin:1rem 0; text-align:center;">
-  <img src="{% static 'images/registry_dict.png' %}"
-       alt="REGISTRY dictionary screenshot"
-       style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
-</div>
-
-<!-- Model Spec screenshot -->
-<div style="margin:1rem 0 2rem 0; text-align:center;">
-  <img src="{% static 'images/model_specs_table.png' %}"
-       alt="Model Specs table screenshot"
-       style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
-</div>
-
-
-
-<p><strong>• A small note of gratitude</strong><br>
-I also want to thank everyone who has ever contributed code to the world — from 
-the early days of computing up to today. Modern AI was trained on the combined 
-work of generations of people who took the time to write and share their code, 
-and we all benefit from their effort. Thanks as well to the many scientists whose 
-work laid the foundations of machine learning. Without their 
-contributions, and without today’s AI tools, a project like this would have taken me far longer than just a few months.</p>
-
-
-<p><em>Thanks for reading through this page — hope you have fun building and deploying your own models!</em></p>
-
+  <p><em>Thanks for reading through this page — hope you have fun building and deploying your own models!</em></p>
 
 </section>
 {% endblock %}

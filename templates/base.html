@@ -9,6 +9,137 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
+
+
+
+<script>
+  (function() {
+    const endpoint = "{% url 'analytics_event' %}";
+
+    function sendAnalyticsEvent(payload) {
+      const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(endpoint, blob);
+      } else {
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        });
+      }
+    }
+
+    const pagePath = window.location.pathname;
+    const referrer = document.referrer || "";
+    const pageLoadTime = performance.now();
+    let maxScroll = 0;
+
+    // 1) Page view
+    sendAnalyticsEvent({
+      event_type: "page_view",
+      page_path: pagePath,
+      referrer: referrer,
+      metadata: {}
+    });
+
+    // 2) Scroll depth – track max percentage reached
+    window.addEventListener("scroll", function() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        const scrolled = (scrollTop / docHeight) * 100;
+        if (scrolled > maxScroll) {
+          maxScroll = scrolled;
+        }
+      }
+    });
+
+    // 3) Before leaving the page: time on page + scroll depth
+    window.addEventListener("beforeunload", function() {
+      const now = performance.now();
+      const timeOnPageSeconds = Math.round((now - pageLoadTime) / 1000);
+
+      // time on page
+      sendAnalyticsEvent({
+        event_type: "time_on_page",
+        page_path: pagePath,
+        referrer: referrer,
+        metadata: { seconds: timeOnPageSeconds }
+      });
+
+      // scroll depth
+      if (maxScroll > 0) {
+        sendAnalyticsEvent({
+          event_type: "scroll_depth",
+          page_path: pagePath,
+          referrer: referrer,
+          metadata: { percent: Math.round(maxScroll) }
+        });
+      }
+    });
+
+    // 4) Click tracking: downloads + home thumbnails + CTA buttons
+    document.addEventListener("click", function(e) {
+      // 4a) Downloads (CV, Python/R templates, etc.)
+      const downloadLink = e.target.closest("a[data-track-download]");
+      if (downloadLink) {
+        const filename =
+          downloadLink.getAttribute("data-download-name") ||
+          downloadLink.getAttribute("href");
+
+        sendAnalyticsEvent({
+          event_type: "download",
+          page_path: pagePath,
+          referrer: referrer,
+          metadata: { filename: filename }
+        });
+      }
+
+      // 4b) Home thumbnails → project_click
+      const projectLink = e.target.closest("a[data-analytics='project_thumb']");
+      if (projectLink) {
+        const label = projectLink.getAttribute("data-analytics-label") || "";
+        const targetHref = projectLink.getAttribute("href") || "";
+
+        sendAnalyticsEvent({
+          event_type: "project_click",
+          page_path: pagePath,
+          referrer: referrer,
+          metadata: {
+            project_label: label,
+            target_href: targetHref
+          }
+        });
+      }
+
+      // 4c) CTA buttons (GitHub / Market / Forecast)
+      const cta = e.target.closest("[data-analytics='cta_button']");
+      if (cta) {
+        const label = cta.getAttribute("data-analytics-label") || "";
+        const targetHref = cta.getAttribute("href") || "";
+
+        console.log("CTA click tracked:", label, "→", targetHref);
+
+        sendAnalyticsEvent({
+          event_type: "cta_click",
+          page_path: pagePath,  // where the button was clicked (e.g. /projects/model-deployment/)
+          referrer: referrer,
+          metadata: {
+            label: label,
+            target_href: targetHref
+          }
+        });
+      }
+    });
+  })();
+</script>
+
+
+
+
+
 <body class="page">
 
   <!-- Navigation shell -->

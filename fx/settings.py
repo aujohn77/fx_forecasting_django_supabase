@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'apps.forecasting',
     "apps.site_portfolio",
     "django_ratelimit",
+    "apps.analytics.apps.AnalyticsConfig",
 
 
 ]

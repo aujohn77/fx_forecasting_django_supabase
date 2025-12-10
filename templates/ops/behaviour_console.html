@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Behaviour Console{% endblock %}
+
+{% block content %}
+<h1>Behaviour Console (last 30 days)</h1>
+
+<h2>Top Pages by Views</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Page</th>
+      <th>Views</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in page_views %}
+      <tr>
+        <td>{{ row.page_path }}</td>
+        <td>{{ row.count }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">No data yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Top Downloads</h2>
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Downloads</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in downloads %}
+      <tr>
+        <td>{{ row.metadata__filename }}</td>
+        <td>{{ row.count }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">No data yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Pages by Average Time on Page</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Page</th>
+      <th>Avg Time (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in slow_pages %}
+      <tr>
+        <td>{{ row.page_path }}</td>
+        <td>{{ row.avg_seconds|floatformat:1 }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">No data yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Top Project Thumbnails (last 30 days)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Clicks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in project_clicks %}
+      <tr>
+        <td>{{ row.metadata__project_label }}</td>
+        <td>{{ row.clicks }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="2">No clicks tracked yet.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<h2>Pages by Average Scroll Depth (%)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Page</th>
+      <th>Avg Depth (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in scroll_depth %}
+      <tr>
+        <td>{{ row.page_path }}</td>
+        <td>{{ row.avg_percent|floatformat:1 }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="2">No scroll data yet.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>CTA Clicks (GitHub / Market / Forecast)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Label</th>
+      <th>Page</th>
+      <th>Clicks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in cta_clicks %}
+      <tr>
+        <td>{{ row.metadata__label }}</td>
+        <td>{{ row.page_path }}</td>
+        <td>{{ row.clicks }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="3">No CTA clicks yet.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}

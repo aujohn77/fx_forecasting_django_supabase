@@ -28,41 +28,52 @@
 
   <div class="project-grid">
 
-    <!-- FX Model Deployment -->
-    <a href="{% url 'portfolio:project_model_deploy' %}" class="project-thumb">
+
+        <!-- FX Model Deployment -->
+    <a href="{% url 'portfolio:project_model_deploy' %}"
+      class="project-thumb"
+      data-analytics="project_thumb"
+      data-analytics-label="ML Deployment Platform">
       <figure>
         <img src="{% static 'images/projects/model_deploy/banner.png' %}"
-             alt="FX Model Deployment Demo">
-        
+            alt="FX Model Deployment Demo">
       </figure>
     </a>
 
     <!-- Amazon Recommender -->
-    <a href="{% url 'portfolio:project_amazon_recommender' %}" class="project-thumb">
+    <a href="{% url 'portfolio:project_amazon_recommender' %}"
+      class="project-thumb"
+      data-analytics="project_thumb"
+      data-analytics-label="Amazon Product Recommender">
       <figure>
         <img src="{% static 'images/projects/amazon_recommender/banner.png' %}"
-             alt="Amazon-style Product Recommender">
-        
+            alt="Amazon-style Product Recommender">
       </figure>
     </a>
 
     <!-- Lead Conversion -->
-    <a href="{% url 'portfolio:project_lead_conversion' %}" class="project-thumb">
+    <a href="{% url 'portfolio:project_lead_conversion' %}"
+      class="project-thumb"
+      data-analytics="project_thumb"
+      data-analytics-label="Lead Conversion Prediction">
       <figure>
         <img src="{% static 'images/projects/lead_conversion/banner.png' %}"
-             alt="Lead Conversion Prediction">
-        
+            alt="Lead Conversion Prediction">
       </figure>
     </a>
 
-        <!-- Customer Segmentation -->
-    <a href="{% url 'portfolio:project_customer_segmentation' %}" class="project-thumb">
+    <!-- Customer Segmentation -->
+    <a href="{% url 'portfolio:project_customer_segmentation' %}"
+      class="project-thumb"
+      data-analytics="project_thumb"
+      data-analytics-label="Customer Personality Segmentation">
       <figure>
         <img src="{% static 'images/projects/customer_segmentation/banner.png' %}"
-             alt="Customer Personality Segmentation">
-        
+            alt="Customer Personality Segmentation">
       </figure>
     </a>
+
+
 
   </div>
 </section>
