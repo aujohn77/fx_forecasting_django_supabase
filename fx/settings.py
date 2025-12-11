@@ -122,6 +122,12 @@ DATABASES = {
 }
 
 
+# This makes sure Django closes connections after each request, keeping the pool very relaxed.
+if not DEBUG:
+    DATABASES["default"]["CONN_MAX_AGE"] = 0
+
+
+
 '''
 DATABASES = {
     "default": {
