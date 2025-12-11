@@ -34,26 +34,28 @@
 <section class="card">
   <h2>ML Deployment Platform (Independent Project)</h2>
 
+  <!-- AUTOPILOT BADGE -->
+  <div class="autopilot-badge">
+    Fully automated • No manual steps
+  </div>
+
   <p>
-    This project provides a lightweight ML deployment platform applied to FX forecasting.
+    This project is a fully automated ML deployment platform for FX forecasting.
+    Every model registered in the system runs on autopilot: new FX closing rates are ingested daily,
+    all models are executed automatically via GitHub Actions, and their predictions are stored and pushed
+    straight into a live dashboard. The result is a hands-free, production-grade forecasting workflow —
+    built end-to-end from data ingestion to model execution, storage, and visualization.
   </p>
+
+  <!-- FLOWING PIPELINE LINE -->
+  <div class="pipeline-line"></div>
 
   <h3>Features</h3>
   <ul>
-    <li><strong>Infrastructure:</strong> Supabase database, Django web interface</li>
-    <li><strong>Automation:</strong> Ingestion + forecasting via GitHub Actions</li>
-    <li><strong>Model Layer:</strong> Registry system, Python/R execution</li>
-    <li><strong>Outputs:</strong> Prediction storage, visual backtests</li>
-  </ul>
-
-  <h3>Daily Workflow</h3>
-  <ul>
-    <li>Daily FX rates are collected automatically from the Frankfurter API through scheduled GitHub Actions jobs.</li>
-    <li>These rates are stored in a cloud Postgres database (Supabase), forming a long-term historical dataset.</li>
-    <li>Another scheduled GitHub Actions task sends the latest data to the forecasting models, which return the next-day predictions.</li>
-    <li>The forecasts are written back into the database, where they become available to the dashboards.</li>
-    <li>The front end (Market and Forecast pages) reads directly from the database and displays both the live FX data and the outputs of the models.</li>
-    <li>The system also runs backtests, which recreate past model predictions so they can be visualized on the charts.</li>
+    <li><strong>Infrastructure:</strong> Supabase Postgres + Django web interface</li>
+    <li><strong>Automation:</strong> Daily ingestion and forecasting pipelines via GitHub Actions</li>
+    <li><strong>Model Layer:</strong> Plug-and-play registry for Python and R models</li>
+    <li><strong>Outputs:</strong> Stored predictions, live dashboards, and visualized backtests</li>
   </ul>
 
   <p>
@@ -164,7 +166,7 @@ Add this to _REGISTRY:
   <!-- Friendly Notes for Developers -->
   <!-- ============================= -->
 
-  <h3 style="margin-top:2rem;">A Few Notes If You Want to Use or Build on This Platform</h3>
+  <h3 style="margin-top:2rem;">A few notes before you start using or expanding this platform</h3>
 
   <p><strong>• One model, all currencies</strong><br>
   Just a heads-up: to keep things simple, any model you add will automatically forecast all currencies. In real FX work you’d normally have one model per currency pair, but I simplified it here so you don’t have to manage dozens of models.</p>
@@ -176,8 +178,8 @@ Add this to _REGISTRY:
   <p><strong>• Don’t forget the packages</strong><br>
   If your model needs extra libraries, just add them:<br>
   – Python packages → <code>requirements.txt</code><br>
-  – R packages → inside the GitHub Actions workflow<br>
-  Otherwise the CI will complain 🙂</p>
+  – R packages → inside the GitHub Actions workflow.<br>
+  </p>
 
   <p><strong>• The default models are just placeholders</strong><br>
   The models that come with the system are super basic — just enough to demonstrate the workflow.
@@ -188,10 +190,13 @@ Add this to _REGISTRY:
   That way you can experiment, build your model offline, and then plug it into the system.
   Future versions will probably pull extra predictors automatically.</p>
 
-  <p><strong>• How to evaluate your own models</strong><br>
-  If you want to measure performance, feel free to use whatever you like: MAPE, MAE, RMSE, etc.
-  There’s no comparison page in the project (on purpose), but you can run these metrics in your own notebook.
-  You can also look at AICc, which Hyndman & Athanasopoulos recommend in their forecasting <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">book</a>. </p>
+  <p><strong>• Evaluating Your Own Models</strong><br>
+  This project intentionally does not include a model-comparison page.
+  Any evaluation or comparison between models should be performed in your own notebook.
+  For forecasting theory, the book by Hyndman and Athanasopoulos has helped me a lot,
+  and I strongly recommend it. In that book, the authors highlight the use of AICc as a practical criterion for selecting models. <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">(link)</a>
+</p>
+
 
   <p><strong>• Use the Ops Console for full control</strong><br>
   There’s a small Ops Console where you can:<br>
@@ -217,9 +222,12 @@ Add this to _REGISTRY:
   If you’re tweaking a model and want to see the change immediately, just hit the “Clear Cache” button in the Ops Console.</p>
 
   <p><strong>• Dictionary vs Database (REGISTRY vs Model Specs)</strong><br>
-  When you add a model to the <code>_REGISTRY</code> dictionary, it becomes available for GitHub Actions and you can also trigger 
-  it from the Ops Console. After the model runs for the first time, its specifications are stored permanently in the <em>Model Spec</em> table inside the database. 
-  If you want to completely remove a model from the platform, just deleting it from <code>_REGISTRY</code> is not enough — you also need to delete it from the Model Spec table in the database.</p>
+  When you add a model to the <code>_REGISTRY</code> dictionary, it immediately becomes available in the Ops Console.
+  From there, you should run a forecast (or any model task) at least once — this first run automatically creates an entry 
+  for the model in the <em>ModelSpec</em> table in the database. Once the model exists in <em>ModelSpec</em>, it becomes an 
+  official part of the platform and will be executed automatically by GitHub Actions on the daily schedule. If you want to 
+  completely remove a model from the platform, deleting it from <code>_REGISTRY</code> is not enough — you must also delete its 
+  entry from the <em>ModelSpec</em> table in the database.</p>
 
   <!-- REGISTRY screenshot -->
   <div style="margin:1rem 0; text-align:center;">
@@ -235,15 +243,18 @@ Add this to _REGISTRY:
          style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
   </div>
 
-  <p><strong>• A small note of gratitude</strong><br>
-  I also want to thank everyone who has ever contributed code to the world — from 
-  the early days of computing up to today. Modern AI was trained on the combined 
-  work of generations of people who took the time to write and share their code, 
-  and we all benefit from their effort. Thanks as well to the many scientists whose 
-  work laid the foundations of machine learning. Without their 
-  contributions, and without today’s AI tools, a project like this would have taken me far longer than just a few months.</p>
 
-  <p><em>Thanks for reading through this page — hope you have fun building and deploying your own models!</em></p>
+<p><strong>• A small note of gratitude</strong><br>
+  I want to thank everyone who has ever contributed code to the world. Modern AI may have been 
+  created by scientists, but it was trained on the code written and shared by generations of 
+  developers, hobbyists, and open-source contributors. We all benefit from their work. I’m also 
+  grateful for the scientists whose research laid the foundations of machine learning. Without 
+  their contributions—and without today’s AI tools—a project like this would have taken me far 
+  longer than just a few months.</p>
+
+<p><em>Thanks for reading through this page — hope you have fun building and deploying your own models!</em> 🙂</p>
+
+
 
 </section>
 {% endblock %}

@@ -595,3 +595,43 @@ canvas{
     gap: 3rem;               /* space between them */
     width: 100%;
 }
+
+
+
+/* --- FX Platform automation visuals --- */
+
+.autopilot-badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  margin-bottom: 0.9rem;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: linear-gradient(90deg, #22f2c9, #18b4ff);
+  color: #020617; /* very dark text for contrast */
+  animation: autopilot-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes autopilot-pulse {
+  0%   { transform: translateY(0);    opacity: 0.75; box-shadow: 0 0 0 0 rgba(34,242,201,0.4); }
+  50%  { transform: translateY(-1px); opacity: 1;    box-shadow: 0 0 15px 0 rgba(34,242,201,0.45); }
+  100% { transform: translateY(0);    opacity: 0.75; box-shadow: 0 0 0 0 rgba(34,242,201,0.0); }
+}
+
+.pipeline-line {
+  height: 3px;
+  width: 100%;
+  margin: 0.75rem 0 1.75rem 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22f2c9, #18b4ff, #22f2c9);
+  background-size: 200% 100%;
+  animation: pipeline-flow 4s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes pipeline-flow {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
