@@ -16,8 +16,17 @@ class AnalyticsSession(models.Model):
     user_agent = models.TextField(blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
 
+
+    # 🔹 NEW
+    country = models.CharField(max_length=64, blank=True)
+    region = models.CharField(max_length=64, blank=True)  # state / province
+    city = models.CharField(max_length=64, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.session_id)
+
+
 
 
 class AnalyticsEvent(models.Model):
@@ -46,3 +55,8 @@ class AnalyticsEvent(models.Model):
 
     def __str__(self):
         return f"{self.event_type} @ {self.created_at}"
+    
+
+
+
+
