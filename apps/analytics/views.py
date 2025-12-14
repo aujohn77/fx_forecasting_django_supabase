@@ -15,12 +15,16 @@ import requests
 
 
 
+
 def _get_client_ip(request):
+    """
+    Get the best-guess client IP, handling proxies.
+    """
     xff = request.META.get("HTTP_X_FORWARDED_FOR")
     if xff:
+        # In case of multiple IPs, take the first one (original client)
         return xff.split(",")[0].strip()
     return request.META.get("REMOTE_ADDR")
-
 
 
 def _populate_geo(session: AnalyticsSession):
@@ -34,8 +38,28 @@ def _populate_geo(session: AnalyticsSession):
 
     ip = session.ip_address
 
-    # Skip obvious local/private IPs
-    if ip.startswith("127.") or ip.startswith("10.") or ip.startswith("192.168."):
+    # Skip obvious local/private IPs (local dev, internal networks)
+    if (
+        ip.startswith("127.")
+        or ip.startswith("10.")
+        or ip.startswith("192.168.")
+        or ip.startswith("172.16.")
+        or ip.startswith("172.17.")
+        or ip.startswith("172.18.")
+        or ip.startswith("172.19.")
+        or ip.startswith("172.20.")
+        or ip.startswith("172.21.")
+        or ip.startswith("172.22.")
+        or ip.startswith("172.23.")
+        or ip.startswith("172.24.")
+        or ip.startswith("172.25.")
+        or ip.startswith("172.26.")
+        or ip.startswith("172.27.")
+        or ip.startswith("172.28.")
+        or ip.startswith("172.29.")
+        or ip.startswith("172.30.")
+        or ip.startswith("172.31.")
+    ):
         return
 
     try:
@@ -44,7 +68,11 @@ def _populate_geo(session: AnalyticsSession):
         if resp.status_code == 200:
             data = resp.json()
             session.country = data.get("country_name", "") or ""
-            session.region = data.get("region", "") or data.get("region_name", "") or ""
+            session.region = (
+                data.get("region", "")
+                or data.get("region_name", "")
+                or ""
+            )
             session.city = data.get("city", "") or ""
             session.save(update_fields=["country", "region", "city"])
     except Exception:
@@ -52,16 +80,15 @@ def _populate_geo(session: AnalyticsSession):
         pass
 
 
-
-
-
-
 def _get_or_create_session(request):
+    """
+    Return an existing AnalyticsSession for this browser (by cookie),
+    or create a new one. Respects the opt-out cookie.
+    """
 
-     # If this browser opted out, don't create or use a session
+    # If this browser opted out, don't create or use a session
     if request.COOKIES.get("fx_analytics_optout") == "1":
         return None
-    
 
     cookie_name = "fx_analytics_sid"
     sid = request.COOKIES.get(cookie_name)
@@ -79,7 +106,8 @@ def _get_or_create_session(request):
             user_agent=request.META.get("HTTP_USER_AGENT", ""),
             ip_address=_get_client_ip(request),
         )
-        _populate_geo(session)  # NEW: enrich geo on creation
+        # NEW: enrich geo info on first creation
+        _populate_geo(session)
 
     return session
 
