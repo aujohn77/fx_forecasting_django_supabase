@@ -14,7 +14,8 @@
 
 <script>
   (function() {
-    const endpoint = "{% url 'analytics_event' %}";
+    const endpoint = "{% url 'analytics:analytics_event' %}";
+
 
     function sendAnalyticsEvent(payload) {
       const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });

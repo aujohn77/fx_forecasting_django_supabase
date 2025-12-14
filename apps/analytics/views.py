@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.db.models import Count, Avg, FloatField
 from django.db.models.functions import Cast
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -57,6 +57,12 @@ def _populate_geo(session: AnalyticsSession):
 
 
 def _get_or_create_session(request):
+
+     # If this browser opted out, don't create or use a session
+    if request.COOKIES.get("fx_analytics_optout") == "1":
+        return None
+    
+
     cookie_name = "fx_analytics_sid"
     sid = request.COOKIES.get(cookie_name)
     session = None
@@ -82,6 +88,11 @@ def _get_or_create_session(request):
 def analytics_event(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST only"}, status=405)
+    
+
+    # 🔹 If this browser opted out, ignore the event
+    if request.COOKIES.get("fx_analytics_optout") == "1":
+        return JsonResponse({"ok": True, "ignored": True})
 
     session = _get_or_create_session(request)
 
@@ -223,3 +234,36 @@ def behaviour_console(request):
         "au_cities": au_cities,
     }
     return render(request, "ops/behaviour_console.html", context)
+
+
+
+
+def analytics_optout(request):
+    """
+    Set a long-lived cookie so this browser is excluded from analytics.
+    Visit /analytics/optout/ once on each of your devices.
+    """
+    response = HttpResponse(
+        "Analytics tracking has been DISABLED for this browser. "
+        "You can re-enable it at /analytics/optin/."
+    )
+    response.set_cookie(
+        "fx_analytics_optout",
+        "1",
+        max_age=60 * 60 * 24 * 365 * 5,  # 5 years
+        samesite="Lax",
+    )
+    return response
+
+
+
+
+def analytics_optin(request):
+    """
+    Remove the opt-out cookie so this browser is tracked again.
+    """
+    response = HttpResponse(
+        "Analytics tracking has been RE-ENABLED for this browser."
+    )
+    response.delete_cookie("fx_analytics_optout")
+    return response

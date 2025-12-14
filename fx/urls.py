@@ -38,7 +38,8 @@ urlpatterns = [
     path("ops/", include("apps.forecasting.ops.urls")),
 
     # 🔹 Analytics event tracking
-    path("analytics/", include("apps.analytics.urls")),
+    path("analytics/", include("apps.analytics.urls", namespace="analytics")),
+
 ]
 
 
