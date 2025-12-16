@@ -635,3 +635,29 @@ canvas{
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+
+
+.project-banner {
+  margin: 1.5rem auto 2rem auto;
+  max-width: 1100px;          /* prevents it from stretching too wide */
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b1220;
+  border: 1px solid #1f2937;
+}
+
+
+.project-banner img {
+  width: 100%;
+  max-height: 420px;          /* 👈 adjust between 360–450 if needed */
+  object-fit: contain;        /* keeps full diagram visible */
+  display: block;
+}
+
+
+@media (max-width: 768px) {
+  .project-banner img {
+    max-height: 260px;
+  }
+}
