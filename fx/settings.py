@@ -116,15 +116,12 @@ WSGI_APPLICATION = 'fx.wsgi.application'
 DATABASES = {
     "default": dj_database_url.config(
         env="DATABASE_URL",
-        conn_max_age=600,
+        conn_max_age=0,   # <--- Close DB connections after each request to prevent Supabase pool exhaustion (local + prod)
         ssl_require=True,
     )
 }
 
 
-# This makes sure Django closes connections after each request, keeping the pool very relaxed.
-if not DEBUG:
-    DATABASES["default"]["CONN_MAX_AGE"] = 0
 
 
 
