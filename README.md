@@ -20,6 +20,7 @@ Portfolio-related files:
 
 ```
 apps/portfolio/
+apps/analytics/
 static/images/projects/
 templates/portfolio/
 ```
