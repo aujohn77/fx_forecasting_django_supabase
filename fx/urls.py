@@ -40,6 +40,11 @@ urlpatterns = [
     # 🔹 Analytics event tracking
     path("analytics/", include("apps.analytics.urls", namespace="analytics")),
 
+    # 🔹 Data Observability Platform
+    path("observability/", include("dop_apps.observability.urls")),
+
+
+
 ]
 
 

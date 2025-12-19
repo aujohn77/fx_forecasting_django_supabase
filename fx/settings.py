@@ -25,6 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env.supabase")
 
 
+# Add external apps to sys.path
+sys.path.append(str(BASE_DIR / "external_apps" / "data_observability"))
+
+
 
 sys.path.append(os.path.join(BASE_DIR, "apps"))
 
@@ -72,6 +76,9 @@ INSTALLED_APPS = [
     'apps.rates',
     'apps.forecasting',
     "apps.site_portfolio",
+    "dop_apps.observability",    # <--- Data Observability Platform
+
+
     "django_ratelimit",
     "apps.analytics.apps.AnalyticsConfig",
 
