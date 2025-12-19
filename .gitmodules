@@ -1,0 +1,3 @@
+[submodule "external_apps/data_observability"]
+	path = external_apps/data_observability
+	url = https://github.com/aujohn77/data-observability-platform.git
