@@ -53,6 +53,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+
+
+
+
+      - name: Debug submodule contents
+        run: |
+          pwd
+          ls -la
+          ls -la external_apps || true
+          ls -la external_apps/data_observability || true
+          find external_apps/data_observability -maxdepth 2 -type d -print || true
+
+
+
+
+
+
+
+          
+
       - name: Check DB connection
         run: |
           python manage.py db_check
