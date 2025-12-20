@@ -22,8 +22,12 @@ jobs:
       # --------------------------------------------------------
 
     steps:
-      - name: Check out repository
+
+      - name: Checkout repo (with submodules)
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
