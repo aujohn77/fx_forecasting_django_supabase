@@ -1,16 +1,24 @@
 """
 WSGI config for fx project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
 import os
+import sys
+from pathlib import Path
 
-from django.core.wsgi import get_wsgi_application
+# --- Make submodule apps importable at runtime (Render) ---
+BASE_DIR = Path(__file__).resolve().parent.parent
+external = BASE_DIR / "external_apps"
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fx.settings')
+# Find the folder that CONTAINS dop_apps/
+matches = list(external.rglob("dop_apps"))
+if matches:
+    sys.path.insert(0, str(matches[0].parent))
+else:
+    raise RuntimeError(f"dop_apps not found under {external}. Is the submodule pulled on Render?")
+
+from django.core.wsgi import get_wsgi_application  # noqa: E402
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fx.settings")
 
 application = get_wsgi_application()
