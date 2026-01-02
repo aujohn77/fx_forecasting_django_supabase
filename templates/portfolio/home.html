@@ -18,7 +18,7 @@
 <!-- FEATURED PROJECTS (no carousel) -->
 <section class="card" id="projects">
   <header style="margin-bottom:.75rem;">
-    <h2>Featured projects</h2>
+    <h2>Projects</h2>
     <p class="muted" style="margin:0;">
       
     </p>
@@ -27,49 +27,49 @@
   <div class="project-grid">
 
 
-        <!-- FX Model Deployment -->
+
+    <!-- Data Observability -->
+    <a href="/observability/overview/"
+      class="proj-card"
+      data-analytics="project_thumb"
+      data-analytics-label="Data Observability">
+      <span class="proj-title">Data Observability Platform</span>
+    </a>
+
+    <!-- FX Model Deployment -->
     <a href="{% url 'portfolio:project_model_deploy' %}"
-      class="project-thumb"
+      class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="ML Deployment Platform">
-      <figure>
-        <img src="{% static 'images/projects/model_deploy/banner.png' %}"
-            alt="FX Model Deployment Demo">
-      </figure>
+      <span class="proj-title">ML Deployment Platform</span>
     </a>
 
     <!-- Amazon Recommender -->
     <a href="{% url 'portfolio:project_amazon_recommender' %}"
-      class="project-thumb"
+      class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Amazon Product Recommender">
-      <figure>
-        <img src="{% static 'images/projects/amazon_recommender/banner.png' %}"
-            alt="Amazon-style Product Recommender">
-      </figure>
+      <span class="proj-title">Amazon Product<br>Recommender</span>
     </a>
 
     <!-- Lead Conversion -->
     <a href="{% url 'portfolio:project_lead_conversion' %}"
-      class="project-thumb"
+      class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Lead Conversion Prediction">
-      <figure>
-        <img src="{% static 'images/projects/lead_conversion/banner.png' %}"
-            alt="Lead Conversion Prediction">
-      </figure>
+      <span class="proj-title">Lead Conversion<br>Prediction</span>
     </a>
 
     <!-- Customer Segmentation -->
     <a href="{% url 'portfolio:project_customer_segmentation' %}"
-      class="project-thumb"
+      class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Customer Personality Segmentation">
-      <figure>
-        <img src="{% static 'images/projects/customer_segmentation/banner.png' %}"
-            alt="Customer Personality Segmentation">
-      </figure>
+      <span class="proj-title">Customer Personality<br>Segmentation</span>
     </a>
+
+
+
 
 
 

@@ -437,39 +437,75 @@ canvas{
 }
 
 
-/* ===== Hero ===== */
+/* ===== Hero (UPDATED: taller + show more icons) ===== */
 .hero{
   position:relative;
   border-radius:14px;
   overflow:hidden;
-  min-height:260px;
+
+  min-height:340px;          /* ✅ taller (try 300–420) */
   margin-bottom:1.2rem;
-  background-size:cover;
+
+  /* hero-bg controls the image; keep these neutral */
+  background-repeat:no-repeat;
   background-position:center;
 }
-.hero-overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,rgba(15,23,42,.88),rgba(15,23,42,.6));
-}
+
 .hero-inner{
   position:relative;
-  padding:3rem 2.5rem;
+  padding:3rem 2.5rem;       /* ✅ more room like before */
 }
+
 .hero-inner h1{
   margin:0 0 .6rem;
   font-size:1.9rem;
 }
-.hero-inner p{
-  margin:0 0 1.4rem;
-  max-width:36rem;
-  color:var(--muted);
+
+.hero-inner h3{
+  margin:0;
+  font-size:1.05rem;
+  color: rgba(229,231,235,.9);
 }
-.hero-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.75rem;
+
+/* Move only the title + subtitle down */
+.hero-inner h1,
+.hero-inner h3{
+  position: relative;
+  top: 3.94rem;
 }
+
+
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  /* ✅ lighter so icons are visible */
+  background:linear-gradient(90deg,
+    rgba(2,8,18,.55) 0%,
+    rgba(2,8,18,.40) 45%,
+    rgba(2,8,18,.18) 100%);
+}
+
+.hero-bg{
+  background-image:url("/static/images/hero_ml.png");
+  background-repeat:no-repeat;
+
+  /* ✅ key change: shows more of the artwork (less cropping) */
+  background-size:contain;
+  background-position:center;
+
+  /* ✅ fills any empty space nicely */
+  background-color:#0b1220;
+}
+
+
+
+
+
+
+
+
+
 
 /* Buttons */
 .btn-primary,
@@ -492,10 +528,32 @@ canvas{
 .btn-secondary:hover{background:#111827;}
 
 /* ===== Featured projects grid ===== */
+/* ===== Featured projects grid (3 + 2 centered) ===== */
 .project-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  display:flex;
+  flex-wrap:wrap;
   gap:1rem;
+  justify-content:center;   /* ✅ centers the last row (2 cards) */
+}
+
+.project-grid .project-thumb{
+  flex:0 0 260px;   /* ✅ no shrink → prevents 4 per row */
+}
+
+/* Tablet: 2 per row */
+@media (max-width: 62em){
+  .project-grid .project-thumb{
+    flex:0 1 240px;
+    max-width:340px;
+  }
+}
+
+/* Mobile: 1 per row */
+@media (max-width: 40em){
+  .project-grid .project-thumb{
+    flex:1 1 100%;
+    max-width:520px;
+  }
 }
 
 .project-thumb{
@@ -660,4 +718,97 @@ canvas{
   .project-banner img {
     max-height: 260px;
   }
+}
+
+
+
+
+
+
+
+
+
+.proj-card{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+  width:18rem;
+  height:7.5rem;
+  padding:1rem;
+
+  /* ✅ Metallic BLUE */
+  background:
+    radial-gradient(120% 140% at 20% 20%, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(135deg,
+      #030914 0%,
+      #061426 18%,
+      #083a86 42%,
+      #052a62 62%,
+      #020812 100%);
+
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+
+  color:#f3f4f6;
+  text-decoration:none;
+
+  position:relative;
+  overflow:hidden;
+
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+/* subtle “metal sheen” sweep */
+.proj-card::after{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:linear-gradient(120deg,
+    rgba(255,255,255,0) 35%,
+    rgba(255,255,255,.12) 50%,
+    rgba(255,255,255,0) 65%);
+  transform:rotate(10deg);
+  pointer-events:none;
+  opacity:.7;
+}
+
+/* ✅ hover gloss (a soft back-light) */
+.proj-card::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  background:radial-gradient(circle at 30% 30%,
+    rgba(120,190,255,0) 0%,
+    rgba(120,190,255,.18) 35%,
+    rgba(120,190,255,0) 70%);
+  opacity:0;
+  transform:scale(.95);
+  transition:opacity .18s ease, transform .18s ease;
+  pointer-events:none;
+}
+
+.proj-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.22);
+  box-shadow:0 14px 34px rgba(0,0,0,.45);
+}
+
+/* turn the gloss on only on hover */
+.proj-card:hover::before{
+  opacity:1;
+  transform:scale(1);
+}
+
+.proj-title{
+  font-weight:800;
+  font-size:1.25rem;
+  line-height:1.2;
+  letter-spacing:.2px;
+  padding:0 .5rem;
+  position:relative;
+  z-index:1;
+  text-shadow:0 2px 10px rgba(0,0,0,.45);
 }

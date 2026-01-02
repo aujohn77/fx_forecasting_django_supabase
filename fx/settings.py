@@ -26,7 +26,12 @@ load_dotenv(BASE_DIR / ".env.supabase")
 
 
 # Add external apps to sys.path
-sys.path.append(str(BASE_DIR / "external_apps" / "data_observability"))
+# sys.path.append(str(BASE_DIR / "external_apps" / "data_observability"))
+CHILD_OBS_PATH = r"C:\django\observability\data-observability-platform"
+if CHILD_OBS_PATH not in sys.path:
+    sys.path.insert(0, CHILD_OBS_PATH)
+
+
 
 
 
