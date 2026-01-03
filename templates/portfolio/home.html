@@ -18,7 +18,7 @@
 <!-- FEATURED PROJECTS (no carousel) -->
 <section class="card" id="projects">
   <header style="margin-bottom:.75rem;">
-    <h2>Projects</h2>
+    <h2 style="text-align:center;">Projects</h2>
     <p class="muted" style="margin:0;">
       
     </p>
@@ -26,6 +26,14 @@
 
   <div class="project-grid">
 
+
+    <!-- FX Model Deployment -->
+    <a href="{% url 'portfolio:project_model_deploy' %}"
+      class="proj-card"
+      data-analytics="project_thumb"
+      data-analytics-label="ML Deployment Platform">
+      <span class="proj-title">ML Deployment Platform</span>
+    </a>
 
 
     <!-- Data Observability -->
@@ -36,13 +44,6 @@
       <span class="proj-title">Data Observability Platform</span>
     </a>
 
-    <!-- FX Model Deployment -->
-    <a href="{% url 'portfolio:project_model_deploy' %}"
-      class="proj-card"
-      data-analytics="project_thumb"
-      data-analytics-label="ML Deployment Platform">
-      <span class="proj-title">ML Deployment Platform</span>
-    </a>
 
     <!-- Amazon Recommender -->
     <a href="{% url 'portfolio:project_amazon_recommender' %}"
