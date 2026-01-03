@@ -25,11 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env.supabase")
 
 
-# Add external apps to sys.path
-# sys.path.append(str(BASE_DIR / "external_apps" / "data_observability"))
-CHILD_OBS_PATH = r"C:\django\observability\data-observability-platform"
-if CHILD_OBS_PATH not in sys.path:
-    sys.path.insert(0, CHILD_OBS_PATH)
+# Add external apps (data_observability submodule) to sys.path
+OBS_SUBMODULE_PATH = BASE_DIR / "external_apps" / "data_observability"
+
+if OBS_SUBMODULE_PATH.exists():
+    sys.path.insert(0, str(OBS_SUBMODULE_PATH))
+else:
+    # Optional: raise a clearer error in CI
+    raise RuntimeError(f"Observability submodule not found at: {OBS_SUBMODULE_PATH}")
 
 
 
