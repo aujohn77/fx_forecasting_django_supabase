@@ -27,12 +27,12 @@ load_dotenv(BASE_DIR / ".env.supabase")
 
 # Add external apps (data_observability submodule) to sys.path
 OBS_SUBMODULE_PATH = BASE_DIR / "external_apps" / "data_observability"
+DOP_APPS_PATH = OBS_SUBMODULE_PATH / "dop_apps"
 
-if OBS_SUBMODULE_PATH.exists():
+if DOP_APPS_PATH.exists():
     sys.path.insert(0, str(OBS_SUBMODULE_PATH))
 else:
-    # Optional: raise a clearer error in CI
-    raise RuntimeError(f"Observability submodule not found at: {OBS_SUBMODULE_PATH}")
+    raise RuntimeError(f"dop_apps not found. Expected: {DOP_APPS_PATH}")
 
 
 
