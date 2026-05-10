@@ -79,3 +79,7 @@ def download_file(request, file_key: str):
         as_attachment=True,
         filename=config["download_name"],
     )
+
+
+def project_trade_crm(request):
+    return render(request, "portfolio/project_trade_crm.html")

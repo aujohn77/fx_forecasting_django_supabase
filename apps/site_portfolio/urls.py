@@ -11,10 +11,12 @@ urlpatterns = [
     path("projects/amazon-recommender/", views.project_amazon_recommender, name="project_amazon_recommender"),
     path("projects/lead-conversion/", views.project_lead_conversion, name="project_lead_conversion"),
     path("projects/customer-segmentation/", views.project_customer_segmentation, name="project_customer_segmentation"),
+    path("projects/trade-crm/", views.project_trade_crm, name="project_trade_crm"),
 
      # NEW KAGGLE CERTIFICATIONS PAGE
     path("kaggle-certifications/", views.kaggle_certs, name="kaggle_certs"),
 
     path("download/<slug:file_key>/", views.download_file, name="download_file"),
+    
 
 ]

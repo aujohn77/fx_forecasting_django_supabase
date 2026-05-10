@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Trade CRM — Multi-Tenant SaaS CRM MVP{% endblock %}
+
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
+    ML Deployment Platform
+  </a>
+  <a href="{% url 'portfolio:project_trade_crm' %}" class="nav-link nav-link-active">
+    Trade CRM
+  </a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
+    Amazon-style Product Recommender
+  </a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
+    Lead Conversion Prediction
+  </a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
+    Customer Segmentation
+  </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Trade CRM — Multi-Tenant SaaS CRM MVP</h2>
+
+  <p>
+    Trade CRM is a Django-based multi-tenant CRM MVP for trade/service businesses.
+    It supports tenant signup, authentication, role-based permissions, clients,
+    jobs, staff workflows, and a dynamic pricebook with custom fields.
+  </p>
+
+
+
+    <h3>Demo: Creating a New Tenant</h3>
+
+    <p>
+        This short clip shows the demo signup flow for creating a new tenant workspace.
+    </p>
+
+    <video autoplay muted loop playsinline controls preload="metadata" class="project-video">
+        <source src="{% static 'videos/trade_crm/creating_a_new_tenant.mp4' %}" type="video/mp4">
+    </video>
+
+
+    <h3>Demo: Creating Staff</h3>
+
+    <p>
+    This short clip shows how a new staff member is added to the tenant workspace.
+    </p>
+
+    <video autoplay muted loop playsinline controls preload="metadata" class="project-video">
+    <source src="{% static 'videos/trade_crm/creating_staff.mp4' %}" type="video/mp4">
+    </video>
+
+
+  <div style="display:flex; gap:1rem; margin:1.5rem 0; flex-wrap:wrap;">
+    <a href="https://trade-crm-demo.onrender.com"
+       target="_blank"
+       class="project-cta">
+      Live Demo
+    </a>
+
+    <span class="project-cta project-cta-secondary">
+      Private repo available on request
+    </span>
+  </div>
+
+  <h3>Completed Features</h3>
+  <ul>
+    <li>Multi-tenant signup and tenant-scoped data isolation.</li>
+    <li>Session authentication with protected internal CRM pages.</li>
+    <li>Role-based permissions for owner, admin, manager, and staff users.</li>
+    <li>Client list, create, detail, and edit workflows.</li>
+    <li>Job list, create, detail, notes, and activity timeline.</li>
+    <li>Pricebook items, categories, item detail/edit, archive/unarchive.</li>
+    <li>Dynamic category-specific custom fields for pricebook items.</li>
+    <li>Demo warning banner and automated demo-data reset workflow.</li>
+  </ul>
+
+  <h3>In Progress / Missing Features</h3>
+  <ul>
+    <li>Quotes and invoices modules.</li>
+    <li>Advanced reporting and dashboard analytics.</li>
+    <li>Email/SMS notifications.</li>
+    <li>Production-grade subscription/billing layer.</li>
+    <li>More complete mobile-first UI refinement.</li>
+  </ul>
+
+  <h3>Tech Stack</h3>
+  <ul>
+    <li>Django, Django REST Framework, PostgreSQL / Neon.</li>
+    <li>Django templates, vanilla JavaScript, modular CSS.</li>
+    <li>Render deployment and GitHub Actions automation.</li>
+  </ul>
+
+  <h3>Architecture Highlights</h3>
+  <ul>
+    <li>API-first design: Django templates call backend APIs through JavaScript.</li>
+    <li>Service layer owns business logic, permissions, and tenant filtering.</li>
+    <li>Backend is the source of truth; UI visibility is not trusted for security.</li>
+    <li>Custom-field system allows category-specific pricebook data.</li>
+  </ul>
+
+  <h3>Security / Demo Sandbox</h3>
+  <p>
+    This is a public demo environment. Demo data is automatically reset every day.
+    The repository is private because it contains a full SaaS-style implementation,
+    but access can be provided on request.
+  </p>
+
+  <h3 style="margin-top:2rem;">Demo Preview</h3>
+
+  <div class="video-grid">
+    <video autoplay muted loop playsinline controls>
+      <source src="{% static 'videos/trade_crm/demo-overview.mp4' %}" type="video/mp4">
+    </video>
+  </div>
+</section>
+{% endblock %}

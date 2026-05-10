@@ -24,10 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     # 🔹 Portfolio site at root (/ , /projects/, /about/, etc.)
-    path(
-        "",
-        include("apps.site_portfolio.urls", namespace="portfolio"),
-    ),
+    path("", include("apps.site_portfolio.urls", namespace="portfolio")),
 
     # 🔹 Existing FX dashboards
     path("home/",    fviews.overview,       name="overview"),
@@ -42,6 +39,8 @@ urlpatterns = [
 
     # 🔹 Data Observability Platform
     path("observability/", include("dop_apps.observability.urls")),
+
+    
 
 
 
