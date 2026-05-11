@@ -35,29 +35,79 @@
     jobs, staff workflows, and a dynamic pricebook with custom fields.
   </p>
 
+  <div class="demo-video-list">
 
-
-    <h3>Demo: Creating a New Tenant</h3>
-
-    <p>
-        This short clip shows the demo signup flow for creating a new tenant workspace.
-    </p>
-
-    <video autoplay muted loop playsinline controls preload="metadata" class="project-video">
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating a New Tenant</h3>
+        <p>This short clip shows the demo signup flow for creating a new tenant workspace.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_a_new_tenant.mp4' %}" type="video/mp4">
-    </video>
+      </video>
+    </article>
 
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating Staff</h3>
+        <p>This short clip shows how a new staff member is added to the tenant workspace.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_staff.mp4' %}" type="video/mp4">
+      </video>
+    </article>
 
-    <h3>Demo: Creating Staff</h3>
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating a Client</h3>
+        <p>This short clip shows how a new client is added to the CRM.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_client.mp4' %}" type="video/mp4">
+      </video>
+    </article>
 
-    <p>
-    This short clip shows how a new staff member is added to the tenant workspace.
-    </p>
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating a Job</h3>
+        <p>This short clip shows how a job is created from client and staff data.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_a_job.mp4' %}" type="video/mp4">
+      </video>
+    </article>
 
-    <video autoplay muted loop playsinline controls preload="metadata" class="project-video">
-    <source src="{% static 'videos/trade_crm/creating_staff.mp4' %}" type="video/mp4">
-    </video>
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Job Notes and Activity</h3>
+        <p>This short clip shows how job notes are added and reflected in the activity timeline.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_a_job_note_and_checking_job_activity.mp4' %}" type="video/mp4">
+      </video>
+    </article>
 
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating Pricebook Categories</h3>
+        <p>This short clip shows how pricebook categories are created.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_new_categories.mp4' %}" type="video/mp4">
+      </video>
+    </article>
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Demo: Creating Custom Fields</h3>
+        <p>This short clip shows how category-specific custom fields are added to the pricebook.</p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/trade_crm/creating_custom_fields.mp4' %}" type="video/mp4">
+      </video>
+    </article>
+
+  </div>
 
   <div style="display:flex; gap:1rem; margin:1.5rem 0; flex-wrap:wrap;">
     <a href="https://trade-crm-demo.onrender.com"
@@ -113,13 +163,27 @@
     The repository is private because it contains a full SaaS-style implementation,
     but access can be provided on request.
   </p>
-
-  <h3 style="margin-top:2rem;">Demo Preview</h3>
-
-  <div class="video-grid">
-    <video autoplay muted loop playsinline controls>
-      <source src="{% static 'videos/trade_crm/demo-overview.mp4' %}" type="video/mp4">
-    </video>
-  </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const videos = document.querySelectorAll("[data-lazy-video]");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, {
+    threshold: 0.45
+  });
+
+  videos.forEach((video) => observer.observe(video));
+});
+</script>
 {% endblock %}

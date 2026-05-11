@@ -833,3 +833,52 @@ canvas{
   background: #0b1220;
   margin: 1rem 0 2rem;
 }
+
+
+
+.demo-video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.demo-video-row {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  background: #0b1220;
+}
+
+.demo-video-copy h3 {
+  margin-top: 0;
+}
+
+.demo-video-copy p {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+.project-video {
+  width: 100%;
+  max-width: 34rem;
+  justify-self: end;
+  border-radius: 10px;
+  border: 1px solid #2a2f3a;
+  background: #0b1220;
+}
+
+@media (max-width: 768px) {
+  .demo-video-row {
+    grid-template-columns: 1fr;
+  }
+
+  .project-video {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
