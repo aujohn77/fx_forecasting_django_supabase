@@ -83,3 +83,7 @@ def download_file(request, file_key: str):
 
 def project_trade_crm(request):
     return render(request, "portfolio/project_trade_crm.html")
+
+
+def project_offcuts_management(request):
+    return render(request, "portfolio/project_offcuts_management.html")

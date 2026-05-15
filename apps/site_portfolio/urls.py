@@ -12,6 +12,7 @@ urlpatterns = [
     path("projects/lead-conversion/", views.project_lead_conversion, name="project_lead_conversion"),
     path("projects/customer-segmentation/", views.project_customer_segmentation, name="project_customer_segmentation"),
     path("projects/trade-crm/", views.project_trade_crm, name="project_trade_crm"),
+    path("projects/offcuts-management/", views.project_offcuts_management, name="project_offcuts_management"),
 
      # NEW KAGGLE CERTIFICATIONS PAGE
     path("kaggle-certifications/", views.kaggle_certs, name="kaggle_certs"),
@@ -19,4 +20,5 @@ urlpatterns = [
     path("download/<slug:file_key>/", views.download_file, name="download_file"),
     
 
-]
+] 
+  

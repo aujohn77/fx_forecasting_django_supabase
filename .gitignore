@@ -3,3 +3,25 @@
 .env.*
 *.env
 .env.supabase
+
+
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+fx_env/
+venv/
+.env/
+.venv/
+
+# Django
+db.sqlite3
+staticfiles/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Offcuts — Factory Inventory Tracking System{% endblock %}
+
+{% block nav_projects_active %}nav-link-active{% endblock %}
+
+{% block nav_row2 %}
+<nav class="subnav">
+  <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">ML Deployment Platform</a>
+  <a href="{% url 'portfolio:project_trade_crm' %}" class="nav-link">Trade CRM</a>
+  <a href="{% url 'portfolio:project_offcuts_management' %}" class="nav-link nav-link-active">Offcuts</a>
+  <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">Amazon-style Product Recommender</a>
+  <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">Lead Conversion Prediction</a>
+  <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">Customer Segmentation</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+
+<div class="project-banner">
+  <img src="{% static 'images/projects/offcuts_inventory_system/offcuts_banner.png' %}"
+       alt="Offcuts factory inventory tracking banner">
+</div>
+
+<section class="card">
+  <h2>Offcuts Inventory System</h2>
+
+  <p>
+    This is a Django-based inventory system for tracking reusable board offcuts
+    in a factory environment. Staff can store, search, relocate, and withdraw offcuts
+    using board codes, material details, dimensions, colours, and storage locations.
+  </p>
+
+  <h3>Workflow Demonstrations</h3>
+
+  <div class="demo-video-list">
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Storing a New Offcut</h3>
+        <p>            
+          Open the Store page, enter the offcut details, choose the location where the offcut will be stored, 
+          and click Store. The system assigns the next board code automatically. 
+        </p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/offcuts_management/storing_a_new_offcut_tutorial.mp4' %}" type="video/mp4">
+      </video>
+    </article>
+
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Searching Available Offcuts</h3>
+        <p>
+          Open the Search page and choose the relevant filters, such as colour, thickness, 
+          material, dimensions, G2S, location. After applying the filters, check the result 
+          code and location, then go to that location and look for the offcut with the matching code.
+        </p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/offcuts_management/seraching_for_offcuts_tutorial.mp4' %}" type="video/mp4">
+      </video>
+    </article>
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Relocating and Withdrawing Offcuts</h3>
+        <p>
+          Find the offcut from the Search page, open the action menu, then choose Relocate
+          to move it to another storage position or Withdraw to remove it from active inventory.
+        </p>
+      </div>
+      <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
+        <source src="{% static 'videos/offcuts_management/relocating_and_withdrawing_offcuts_tutorial.mp4' %}" type="video/mp4">
+      </video>
+    </article>
+
+  </div>
+
+  <h3>Factory Implementation Context</h3>
+
+  <div class="demo-video-list">
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Storing a New Offcut in the Factory</h3>
+        <p>
+          Measure the physical offcut, enter its details in the Store page, save it,
+          then write the generated board code on the board so it can be found later.
+        </p>
+      </div>
+
+      <div class="youtube-video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/1Woi3tyHzOA?cc_load_policy=1&cc_lang_pref=en"
+          title="Storing a New Offcut in the Factory"
+          frameborder="0"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </article>
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Searching Available Offcuts in the Factory</h3>
+        <p>
+          Search using the offcut details you know, then check the result code and 
+          match it with the physical board that has the same code written on it.
+        </p>
+      </div>
+
+      <div class="youtube-video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/SfMjkOLlyUA?cc_load_policy=1&cc_lang_pref=en"
+          title="Searching Available Offcuts in the Factory"
+          frameborder="0"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </article>
+
+    <article class="demo-video-row">
+      <div class="demo-video-copy">
+        <h3>Factory Board Codes</h3>
+        <p>
+          These photos show examples of boards after their codes have been written on them; 
+          once the system search gives a code, staff can use it to identify the correct physical board.
+        </p>
+      </div>
+
+      <div class="image-carousel" data-carousel>
+        <button class="carousel-btn carousel-prev" type="button" data-carousel-prev>
+          ‹
+        </button>
+
+        <img
+          class="carousel-image"
+          src="{% static 'images/projects/offcuts_inventory_system/codes_on_boards_1.jpeg' %}"
+          alt="Factory board code example"
+          data-carousel-image
+        >
+
+        <button class="carousel-btn carousel-next" type="button" data-carousel-next>
+          ›
+        </button>
+      </div>
+    </article>
+
+  </div>
+
+    <h3>Additional Features</h3>
+        <ul>
+        <li>
+            Repeated storage tasks are optimized by preserving values such as colour,
+            thickness, material, G2S, and location, so the user only needs to enter
+            length and width for similar offcuts.
+        </li>
+        <li>
+            If a colour is missing, the user can use Add New Colour. Similar existing
+            colours are flagged to help avoid duplicates.
+        </li>
+        </ul>
+
+
+  <h3>Access Control</h3>
+    <p>
+    Access is password-protected, and staff tracking is intentionally omitted so any authorised worker can manage offcuts as needed.
+    </p>
+
+
+  <h3>Tech Stack</h3>
+    <ul>
+    <li><strong>Backend:</strong> Django</li>
+    <li><strong>API layer:</strong> Django views / internal JSON endpoints</li>
+    <li><strong>Database:</strong> PostgreSQL/Neon in production, SQLite locally</li>
+    <li><strong>Frontend rendering:</strong> Django templates, CSS, and JavaScript</li>
+    <li><strong>Deployment:</strong> Render</li>
+    </ul>
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const videos = document.querySelectorAll("[data-lazy-video]");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, {
+    threshold: 0.45
+  });
+
+  videos.forEach((video) => observer.observe(video));
+
+  const carouselImages = [
+    "{% static 'images/projects/offcuts_inventory_system/codes_on_boards_1.jpeg' %}",
+    "{% static 'images/projects/offcuts_inventory_system/codes_on_boards_2.jpeg' %}",
+    "{% static 'images/projects/offcuts_inventory_system/codes_on_boards_3.jpeg' %}",
+  ];
+
+  let carouselIndex = 0;
+
+  const carouselImage = document.querySelector("[data-carousel-image]");
+  const prevButton = document.querySelector("[data-carousel-prev]");
+  const nextButton = document.querySelector("[data-carousel-next]");
+
+  function updateCarouselImage() {
+    carouselImage.src = carouselImages[carouselIndex];
+  }
+
+  prevButton.addEventListener("click", () => {
+    carouselIndex = (carouselIndex - 1 + carouselImages.length) % carouselImages.length;
+    updateCarouselImage();
+  });
+
+  nextButton.addEventListener("click", () => {
+    carouselIndex = (carouselIndex + 1) % carouselImages.length;
+    updateCarouselImage();
+  });
+});
+</script>
+
+{% endblock %}
