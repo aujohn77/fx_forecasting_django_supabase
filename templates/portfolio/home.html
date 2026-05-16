@@ -15,35 +15,44 @@
   </div>
 </section>
 
-<!-- FEATURED PROJECTS (no carousel) -->
-<section class="card" id="projects">
-  <header style="margin-bottom:.75rem;">
-    <h2 style="text-align:center;">Projects</h2>
-    <p class="muted" style="margin:0;">
-      
-    </p>
-  </header>
+<!-- TOP PROJECT SECTIONS -->
+<div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem;">
+
+  <!-- FEATURED PROJECT -->
+  <section class="card project-section">
+    <h2 style="text-align:center;">Featured Project</h2>
+
+    <div class="project-grid">
+      <a href="{% url 'portfolio:project_trade_crm' %}"
+        class="proj-card"
+        data-analytics="project_thumb"
+        data-analytics-label="Trade CRM">
+        <span class="proj-title">Customer Relationship<br> Management</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- APPLIED INDUSTRY PROJECT -->
+  <section class="card project-section">
+    <h2 style="text-align:center;">Real-World Factory Project</h2>
+
+    <div class="project-grid">
+      <a href="{% url 'portfolio:project_offcuts_management' %}"
+        class="proj-card"
+        data-analytics="project_thumb"
+        data-analytics-label="Offcuts Management">
+        <span class="proj-title">Offcuts Inventory<br>System</span>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<!-- INDEPENDENT PROJECTS -->
+<section class="card project-section">
+  <h2 style="text-align:center;">Independent Projects</h2>
 
   <div class="project-grid">
-
-
-    <a href="{% url 'portfolio:project_trade_crm' %}"
-      class="proj-card"
-      data-analytics="project_thumb"
-      data-analytics-label="Trade CRM">
-      <span class="proj-title">Customer Relationship<br> Management</span>
-    </a>
-
-
-    <a href="{% url 'portfolio:project_offcuts_management' %}"
-      class="proj-card"
-      data-analytics="project_thumb"
-      data-analytics-label="Offcuts Management">
-      <span class="proj-title">Offcuts Inventory<br>Management</span>
-    </a>
-
-
-    <!-- FX Model Deployment -->
     <a href="{% url 'portfolio:project_model_deploy' %}"
       class="proj-card"
       data-analytics="project_thumb"
@@ -51,17 +60,20 @@
       <span class="proj-title">Machine Learning <br> Deployment Platform</span>
     </a>
 
-
-    <!-- Data Observability -->
     <a href="/observability/overview/"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Data Observability">
       <span class="proj-title">Data Observability Platform</span>
     </a>
+  </div>
+</section>
 
+<!-- MIT DATA SCIENCE CAPSTONE PROJECTS -->
+<section class="card project-section">
+  <h2 style="text-align:center;">MIT Data Science Capstone Projects</h2>
 
-    <!-- Amazon Recommender -->
+  <div class="project-grid">
     <a href="{% url 'portfolio:project_amazon_recommender' %}"
       class="proj-card"
       data-analytics="project_thumb"
@@ -69,7 +81,6 @@
       <span class="proj-title">Amazon Product<br>Recommender</span>
     </a>
 
-    <!-- Lead Conversion -->
     <a href="{% url 'portfolio:project_lead_conversion' %}"
       class="proj-card"
       data-analytics="project_thumb"
@@ -77,19 +88,12 @@
       <span class="proj-title">Lead Conversion<br>Prediction</span>
     </a>
 
-    <!-- Customer Segmentation -->
     <a href="{% url 'portfolio:project_customer_segmentation' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Customer Personality Segmentation">
       <span class="proj-title">Customer Personality<br>Segmentation</span>
     </a>
-
-
-
-
-
-
   </div>
 </section>
 
