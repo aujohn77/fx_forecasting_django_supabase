@@ -263,5 +263,5 @@ Frankfurter API
 Optional: R models via Rscript
 
 
-Last updated on Feb 26, 2026
+Last updated on June 17, 2026
 
