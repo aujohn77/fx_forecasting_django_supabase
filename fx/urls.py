@@ -19,12 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from apps.forecasting import views as fviews
 from django.conf import settings   # ← IMPORTANT FOR DEBUG CHECK
+from django.conf.urls.i18n import i18n_patterns
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    # 🔹 Portfolio site at root (/ , /projects/, /about/, etc.)
-    path("", include("apps.site_portfolio.urls", namespace="portfolio")),
 
     # 🔹 Existing FX dashboards
     path("home/",    fviews.overview,       name="overview"),
@@ -39,13 +38,17 @@ urlpatterns = [
 
     # 🔹 Data Observability Platform
     path("observability/", include("dop_apps.observability.urls")),
-
-    
-
-
+    path("i18n/", include("django.conf.urls.i18n")),
 
 ]
 
+
+
+
+urlpatterns += i18n_patterns(
+    path("", include("apps.site_portfolio.urls", namespace="portfolio")),
+    prefix_default_language=False,
+)
 
 
 # =======================================

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -155,12 +155,12 @@
           <nav class="nav-main">
             <a href="{% url 'portfolio:home' %}"
                class="nav-link {% block nav_home_active %}{% endblock %}">
-              Home
+              {% translate "Home" %}
             </a>
 
             <a href="{% url 'portfolio:about' %}"
                class="nav-link {% block nav_about_active %}{% endblock %}">
-              About
+              {% translate "About" %}
             </a>
           </nav>
 
@@ -187,13 +187,13 @@
         <a href="{% url 'portfolio:home' %}"
            class="nav-link"
            onclick="toggleMobileNav()">
-          Home
+          {% translate "Home" %}
         </a>
 
         <a href="{% url 'portfolio:about' %}"
            class="nav-link"
            onclick="toggleMobileNav()">
-          About
+          {% translate "About" %}
         </a>
       </nav>
 
