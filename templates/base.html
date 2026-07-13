@@ -1,6 +1,8 @@
 {% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
-<html lang="en">
+
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -164,6 +166,21 @@
             </a>
           </nav>
 
+          <form action="{% url 'set_language' %}" method="post" style="margin-left:1rem;">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+            <select name="language" onchange="switchLanguage(this)">
+              <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>
+                English
+              </option>
+              <option value="pt-br" {% if LANGUAGE_CODE == "pt-br" %}selected{% endif %}>
+                Português
+              </option>
+            </select>
+          </form>
+
+
           <!-- Hamburger button (mobile only) -->
           <button class="hamburger" type="button"
                   aria-label="Toggle navigation"
@@ -211,6 +228,21 @@
       if (!nav) return;
       nav.classList.toggle('open');
     }
+  </script>
+
+  <script>
+  function switchLanguage(select) {
+    const path = window.location.pathname
+      .replace(/^\/pt-br(?=\/|$)/, "") || "/";
+
+    const nextPath =
+      select.value === "pt-br" ? "/pt-br" + path : path;
+
+    select.form.querySelector('[name="next"]').value =
+      nextPath + window.location.search;
+
+    select.form.submit();
+  }
   </script>
 
 </body>
