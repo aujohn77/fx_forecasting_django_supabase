@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Data Analytics & Machine Learning Projects{% endblock %}
+{% block title %}{% translate "Data Analytics & Machine Learning Projects" %}{% endblock %}
 {% block nav_home_active %}nav-link-active{% endblock %}
 
 {% block content %}
@@ -10,8 +10,8 @@
 <section class="hero hero-bg">
   <div class="hero-overlay"></div>
   <div class="hero-inner">
-    <h1>Machine Learning & Web Development Practitioner</h1><br><br>
-    <h2>PhD in Mathematics</h2>
+    <h1>{% translate "Machine Learning & Web Development Practitioner" %}</h1><br><br>
+    <h2>{% translate "PhD in Mathematics" %}</h2>
   </div>
 </section>
 
@@ -20,28 +20,28 @@
 
   <!-- FEATURED PROJECT -->
   <section class="card project-section">
-    <h2 style="text-align:center;">Featured Project</h2>
+    <h2 style="text-align:center;">{% translate "Featured Project" %}</h2>
 
     <div class="project-grid">
       <a href="{% url 'portfolio:project_trade_crm' %}"
         class="proj-card"
         data-analytics="project_thumb"
         data-analytics-label="Trade CRM">
-        <span class="proj-title">Customer Relationship<br> Management</span>
+        <span class="proj-title">{% translate "Customer Relationship Management" %}</span>
       </a>
     </div>
   </section>
 
   <!-- APPLIED INDUSTRY PROJECT -->
   <section class="card project-section">
-    <h2 style="text-align:center;">Real-World Factory Project</h2>
+    <h2 style="text-align:center;">{% translate "Real-World Factory Project" %}</h2>
 
     <div class="project-grid">
       <a href="{% url 'portfolio:project_offcuts_management' %}"
         class="proj-card"
         data-analytics="project_thumb"
         data-analytics-label="Offcuts Management">
-        <span class="proj-title">Offcuts Inventory<br>System</span>
+        <span class="proj-title">{% translate "Offcuts Inventory System" %}</span>
       </a>
     </div>
   </section>
@@ -50,49 +50,49 @@
 
 <!-- INDEPENDENT PROJECTS -->
 <section class="card project-section">
-  <h2 style="text-align:center;">Independent Projects</h2>
+  <h2 style="text-align:center;">{% translate "Independent Projects" %}</h2>
 
   <div class="project-grid">
     <a href="{% url 'portfolio:project_model_deploy' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="ML Deployment Platform">
-      <span class="proj-title">Machine Learning <br> Deployment Platform</span>
+      <span class="proj-title">{% translate "Machine Learning Deployment Platform" %}</span>
     </a>
 
-    <a href="/observability/overview/"
+    <a href="{% url 'observability:overview' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Data Observability">
-      <span class="proj-title">Data Observability Platform</span>
+      <span class="proj-title">{% translate "Data Observability Platform" %}</span>
     </a>
   </div>
 </section>
 
 <!-- MIT DATA SCIENCE CAPSTONE PROJECTS -->
 <section class="card project-section">
-  <h2 style="text-align:center;">MIT Data Science Capstone Projects</h2>
+  <h2 style="text-align:center;">{% translate "MIT Data Science Capstone Projects" %}</h2>
 
   <div class="project-grid">
     <a href="{% url 'portfolio:project_amazon_recommender' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Amazon Product Recommender">
-      <span class="proj-title">Amazon Product<br>Recommender</span>
+      <span class="proj-title">{% translate "Amazon Product Recommender" %}</span>
     </a>
 
     <a href="{% url 'portfolio:project_lead_conversion' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Lead Conversion Prediction">
-      <span class="proj-title">Lead Conversion<br>Prediction</span>
+      <span class="proj-title">{% translate "Lead Conversion Prediction" %}</span>
     </a>
 
     <a href="{% url 'portfolio:project_customer_segmentation' %}"
       class="proj-card"
       data-analytics="project_thumb"
       data-analytics-label="Customer Personality Segmentation">
-      <span class="proj-title">Customer Personality<br>Segmentation</span>
+      <span class="proj-title">{% translate "Customer Personality Segmentation" %}</span>
     </a>
   </div>
 </section>

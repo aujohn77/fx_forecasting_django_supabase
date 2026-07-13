@@ -1,52 +1,51 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}About – João Reis{% endblock %}
+{% block title %}{% translate "About – João Reis" %}{% endblock %}
+{% block nav_about_active %}nav-link-active{% endblock %}
 
 {% block content %}
 <section class="card">
-  <h2>About Me</h2>
+  <h2>{% translate "About Me" %}</h2>
 
+  <p><strong>João Eduardo Reis</strong></p>
 
+  <p>
+    {% blocktranslate trimmed %}
+      Machine learning and Web Development practitioner working on end-to-end systems,
+      from data ingestion and modeling to deployment and automation.
+    {% endblocktranslate %}
+  </p>
 
-<p><strong>João Eduardo Reis</strong></p>
+  <p>
+    {% blocktranslate trimmed %}
+      PhD in Mathematics, with capstone projects from an MIT certificate program
+      in applied machine learning.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  Machine learning and Web Development practitioner working on end-to-end systems,
-  from data ingestion and modeling to deployment and automation.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      I’m particularly interested in automating workflows to operate
+      with minimal manual effort.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  PhD in Mathematics, with capstone projects from an MIT certificate program
-  in applied machine learning.
-</p>
+  <p>
+    <a href="{% url 'portfolio:download_file' 'cv' %}"
+       class="project-cta"
+       data-track-download
+       data-download-name="Joao_Eduardo_CV.pdf">
+      {% translate "Download CV" %}
+    </a>
+  </p>
 
-<p>
-  I’m particularly interested in automating workflows to operate
-  with minimal manual effort.
-</p>
-
-</section>
-
-
-
-
-<p>
-  <a href="{% url 'portfolio:download_file' 'cv' %}"
-      class="project-cta"
-      data-track-download
-      data-download-name="Joao_Eduardo_CV.pdf">
-      Download CV
-  </a>
-</p>
-
-
-
-<p class="download-list">
-  <a href="https://github.com/aujohn77" target="_blank">GitHub</a>
-  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://www.linkedin.com/in/jo%C3%A3o-eduardo-reis-john-a46a8734/"
-     target="_blank">Linkedin</a>
-</p>
+  <p class="download-list">
+    <a href="https://github.com/aujohn77" target="_blank" rel="noopener">GitHub</a>
+    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="https://www.linkedin.com/in/jo%C3%A3o-eduardo-reis-john-a46a8734/"
+       target="_blank"
+       rel="noopener">LinkedIn</a>
+  </p>
 </section>
 {% endblock %}

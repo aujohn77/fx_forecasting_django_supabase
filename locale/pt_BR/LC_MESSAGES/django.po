@@ -1,26 +1,116 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Portuguese (Brazil) translations for the portfolio.
+# Copyright (C) 2026
+# This file is distributed under the same license as the project.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Portfolio\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 18:14+1000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-07-13 20:53+1000\n"
+"PO-Revision-Date: 2026-07-13 00:00+1000\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: .\templates\base.html:158 .\templates\base.html:190
-msgid "Home"
-msgstr "Inicio"
 
-#: .\templates\base.html:163 .\templates\base.html:196
+#: .\templates\base.html:160 .\templates\base.html:207
+msgid "Home"
+msgstr "Início"
+
+#: .\templates\base.html:165 .\templates\base.html:213
 msgid "About"
 msgstr "Sobre"
+
+#: .\templates\portfolio\about.html:4
+msgid "About – João Reis"
+msgstr "Sobre – João Reis"
+
+#: .\templates\portfolio\about.html:9
+msgid "About Me"
+msgstr "Sobre mim"
+
+#: .\templates\portfolio\about.html:14
+msgid ""
+"Machine learning and Web Development practitioner working on end-to-end "
+"systems, from data ingestion and modeling to deployment and automation."
+msgstr ""
+"Profissional de machine learning e desenvolvimento web, com atuação em "
+"sistemas de ponta a ponta, desde a ingestão e a modelagem de dados até a "
+"implantação e a automação."
+
+#: .\templates\portfolio\about.html:21
+msgid ""
+"PhD in Mathematics, with capstone projects from an MIT certificate program "
+"in applied machine learning."
+msgstr ""
+"Doutor em Matemática, com projetos finais desenvolvidos em um programa de "
+"certificação do MIT em machine learning aplicado."
+
+#: .\templates\portfolio\about.html:28
+msgid ""
+"I’m particularly interested in automating workflows to operate with minimal "
+"manual effort."
+msgstr ""
+"Tenho especial interesse em automatizar fluxos de trabalho para que operem "
+"com o mínimo de intervenção manual."
+
+#: .\templates\portfolio\about.html:39
+msgid "Download CV"
+msgstr "Baixar CV"
+
+#: .\templates\portfolio\home.html:4
+msgid "Data Analytics & Machine Learning Projects"
+msgstr "Projetos de Análise de Dados e Aprendizado de Máquina"
+
+#: .\templates\portfolio\home.html:13
+msgid "Machine Learning & Web Development Practitioner"
+msgstr "Profissional de Machine Learning e Desenvolvimento Web"
+
+#: .\templates\portfolio\home.html:14
+msgid "PhD in Mathematics"
+msgstr "Doutor em Matemática"
+
+#: .\templates\portfolio\home.html:23
+msgid "Featured Project"
+msgstr "Projeto em Destaque"
+
+#: .\templates\portfolio\home.html:30
+msgid "Customer Relationship Management"
+msgstr "Gestão de Relacionamento com Clientes"
+
+#: .\templates\portfolio\home.html:37
+msgid "Real-World Factory Project"
+msgstr "Projeto Real em Ambiente Industrial"
+
+#: .\templates\portfolio\home.html:44
+msgid "Offcuts Inventory System"
+msgstr "Sistema de Inventário de Sobras de Material"
+
+#: .\templates\portfolio\home.html:53
+msgid "Independent Projects"
+msgstr "Projetos Independentes"
+
+#: .\templates\portfolio\home.html:60
+msgid "Machine Learning Deployment Platform"
+msgstr "Plataforma de Implantação de Machine Learning"
+
+#: .\templates\portfolio\home.html:67
+msgid "Data Observability Platform"
+msgstr "Plataforma de Observabilidade de Dados"
+
+#: .\templates\portfolio\home.html:74
+msgid "MIT Data Science Capstone Projects"
+msgstr "Projetos de Conclusão em Ciência de Dados do MIT"
+
+#: .\templates\portfolio\home.html:81
+msgid "Amazon Product Recommender"
+msgstr "Recomendador de Produtos da Amazon"
+
+#: .\templates\portfolio\home.html:88
+msgid "Lead Conversion Prediction"
+msgstr "Previsão de Conversão de Leads"
+
+#: .\templates\portfolio\home.html:95
+msgid "Customer Personality Segmentation"
+msgstr "Segmentação de Perfis de Clientes"
