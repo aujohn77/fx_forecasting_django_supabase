@@ -1,78 +1,87 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}ML Deployment Platform (FX Example){% endblock %}
+{% block title %}{% translate "ML Deployment Platform (FX Example)" %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
-    ML Deployment Platform (FX Example)
+    {% translate "ML Deployment Platform (FX Example)" %}
   </a>
-  
+
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block nav_row3 %}
 <nav class="subnav">
-  <a href="{% url 'market' %}" class="nav-link">Market</a>
-  <a href="{% url 'forecast' %}" class="nav-link">Forecasts</a>
+  <a href="{% url 'market' %}" class="nav-link">{% translate "Market" %}</a>
+  <a href="{% url 'forecast' %}" class="nav-link">{% translate "Forecasts" %}</a>
 </nav>
 {% endblock %}
 
 {% block content %}
 <section class="card">
-  <h2>ML Deployment Platform (Independent Project)</h2>
-
+  <h2>{% translate "ML Deployment Platform (Independent Project)" %}</h2>
 
   <!-- Project Architecture Banner -->
   <div class="project-banner">
     <img src="{% static 'images/ml_deployment_architecture.png' %}"
-        alt="Automated ML Deployment & Forecasting Architecture">
+         alt="{% translate 'Automated ML Deployment & Forecasting Architecture' %}">
   </div>
-
-
 
   <!-- AUTOPILOT BADGE -->
   <div class="autopilot-badge">
-    Fully automated • No manual steps
+    {% translate "Fully automated • No manual steps" %}
   </div>
 
   <p>
-    This project is a fully automated ML deployment platform for FX forecasting.
-    Every model registered in the system runs on autopilot: new FX closing rates are ingested daily,
-    all models are executed automatically via GitHub Actions, and their predictions are stored and pushed
-    straight into a live dashboard. The result is a hands-free, production-grade forecasting workflow —
-    built end-to-end from data ingestion to model execution, storage, and visualization.
+    {% blocktranslate trimmed %}
+      This project is a fully automated ML deployment platform for FX forecasting.
+      Every model registered in the system runs on autopilot: new FX closing rates are ingested daily,
+      all models are executed automatically via GitHub Actions, and their predictions are stored and pushed
+      straight into a live dashboard. The result is a hands-free, production-grade forecasting workflow —
+      built end-to-end from data ingestion to model execution, storage, and visualization.
+    {% endblocktranslate %}
   </p>
 
   <!-- FLOWING PIPELINE LINE -->
   <div class="pipeline-line"></div>
 
-  <h3>Features</h3>
+  <h3>{% translate "Features" %}</h3>
   <ul>
-    <li><strong>Infrastructure:</strong> Supabase Postgres + Django web interface</li>
-    <li><strong>Automation:</strong> Daily ingestion and forecasting pipelines via GitHub Actions</li>
-    <li><strong>Model Layer:</strong> Plug-and-play registry for Python and R models</li>
-    <li><strong>Outputs:</strong> Stored predictions, live dashboards, and visualized backtests</li>
+    <li>
+      <strong>{% translate "Infrastructure:" %}</strong>
+      {% translate "Supabase Postgres + Django web interface" %}
+    </li>
+    <li>
+      <strong>{% translate "Automation:" %}</strong>
+      {% translate "Daily ingestion and forecasting pipelines via GitHub Actions" %}
+    </li>
+    <li>
+      <strong>{% translate "Model Layer:" %}</strong>
+      {% translate "Plug-and-play registry for Python and R models" %}
+    </li>
+    <li>
+      <strong>{% translate "Outputs:" %}</strong>
+      {% translate "Stored predictions, live dashboards, and visualized backtests" %}
+    </li>
   </ul>
 
-  <p>
-    You can access the live FX views through the buttons below.
-  </p>
+  <p>{% translate "You can access the live FX views through the buttons below." %}</p>
 
   <!-- Project Links section -->
-  <h3 style="margin-top:2rem;">Project Links</h3>
+  <h3 style="margin-top:2rem;">{% translate "Project Links" %}</h3>
 
   <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
 
@@ -82,7 +91,7 @@
        class="project-cta"
        data-analytics="cta_button"
        data-analytics-label="GitHub Repository">
-      GitHub Repository
+      {% translate "GitHub Repository" %}
     </a>
 
     <!-- Market -->
@@ -91,7 +100,7 @@
        class="project-cta project-cta-secondary"
        data-analytics="cta_button"
        data-analytics-label="Market Dashboard">
-      Market Dashboard
+      {% translate "Market Dashboard" %}
     </a>
 
     <!-- Forecast -->
@@ -100,74 +109,73 @@
        class="project-cta project-cta-tertiary"
        data-analytics="cta_button"
        data-analytics-label="Forecast Dashboard">
-      Forecast Dashboard
+      {% translate "Forecast Dashboard" %}
     </a>
 
   </div>
 
   <!-- Plug-and-Play -->
-  <h3 style="margin-top:2rem;">Plug-and-Play Model Integration</h3>
+  <h3 style="margin-top:2rem;">{% translate "Plug-and-Play Model Integration" %}</h3>
 
-  <p>You can plug in your own forecasting model by following these steps:</p>
+  <p>{% translate "You can plug in your own forecasting model by following these steps:" %}</p>
 
   <div class="template-downloads">
-    <p>Download the template for your language:</p>
+    <p>{% translate "Download the template for your language:" %}</p>
     <ul class="download-list">
       <li>
         <a href="{% url 'portfolio:download_file' 'python_template' %}"
            data-track-download
            data-download-name="Python model template (.py)">
-          Python model template (.py)
+          {% translate "Python model template (.py)" %}
         </a>
       </li>
       <li>
         <a href="{% url 'portfolio:download_file' 'r_template' %}"
            data-track-download
            data-download-name="R model template (.R)">
-          R model template (.R)
+          {% translate "R model template (.R)" %}
         </a>
       </li>
     </ul>
   </div>
 
-  <pre class="code-block">
-Open the template and edit only the section marked:
+  <pre class="code-block">{% translate "Open the template and edit only the section marked:" %}
 "PART 2 — MODEL LOGIC (THIS IS YOUR AREA)"
 
-In "PART 3", you will see where to set your model name (e.g., 'my_model').
+{% blocktranslate trimmed %}In "PART 3", you will see where to set your model name (e.g., 'my_model').{% endblocktranslate %}
 
-Then:
+{% translate "Then:" %}
 
-Python models
+{% translate "Python models" %}
 -------------
-Save the file to:
+{% translate "Save the file to:" %}
 apps/forecasting/<span style="color:#4ade80;">models_lib</span>/
 
-Rename it to match your model name (e.g., my_model.py).
+{% translate "Rename it to match your model name (e.g., my_model.py)." %}
 
-Open:
+{% translate "Open:" %}
 apps/forecasting/models_lib/registry.py
 
-Add at the top:
+{% translate "Add at the top:" %}
 from . import my_model
 
-Add this to _REGISTRY:
+{% translate "Add this to _REGISTRY:" %}
 "my_model": my_model.predict,
 
 
-R models
+{% translate "R models" %}
 --------
-Save the file to:
+{% translate "Save the file to:" %}
 apps/forecasting/<span style="color:#facc15;">r_models</span>/
 
-Rename it to match your model name (e.g., my_model.R).
+{% translate "Rename it to match your model name (e.g., my_model.R)." %}
 
-Open:
+{% translate "Open:" %}
 apps/forecasting/models_lib/registry.py
 
-(You do NOT add an import at the top for R models.)
+{% translate "(You do NOT add an import at the top for R models.)" %}
 
-Add this to _REGISTRY:
+{% translate "Add this to _REGISTRY:" %}
 "my_model": make_r_predictor("my_model.R"),
   </pre>
 
@@ -175,92 +183,127 @@ Add this to _REGISTRY:
   <!-- Friendly Notes for Developers -->
   <!-- ============================= -->
 
-  <h3 style="margin-top:2rem;">Setup notes</h3>
+  <h3 style="margin-top:2rem;">{% translate "Setup notes" %}</h3>
 
-  <p><strong>• One model, all currencies</strong><br>
-  Just a heads-up: to keep things simple, any model you add will automatically forecast all currencies. In real FX work you’d normally have one model per currency pair, but I simplified it here so you don’t have to manage dozens of models.</p>
-
-  <p><strong>• Models run from their logic (not serialized files)</strong><br>
-  FX data changes fast, so instead of freezing a trained model and loading it later, this platform runs the model directly from its logic every day.
-  That’s actually how most FX forecasting agencies do it.</p>
-
-  <p><strong>• Don’t forget the packages</strong><br>
-  If your model needs extra libraries, just add them:<br>
-  – Python packages → <code>requirements.txt</code><br>
-  – R packages → inside the GitHub Actions workflow.<br>
+  <p>
+    <strong>• {% translate "One model, all currencies" %}</strong><br>
+    {% blocktranslate trimmed %}
+      Just a heads-up: to keep things simple, any model you add will automatically forecast all currencies.
+      In real FX work you’d normally have one model per currency pair, but I simplified it here so you don’t
+      have to manage dozens of models.
+    {% endblocktranslate %}
   </p>
 
-  <p><strong>• The default models are just placeholders</strong><br>
-  The models that come with the system are super basic — just enough to demonstrate the workflow.
-  They usually just repeat yesterday’s rate, which is why the variation column is usually zero. So don’t use them for anything serious.</p>
+  <p>
+    <strong>• {% translate "Models run from their logic (not serialized files)" %}</strong><br>
+    {% blocktranslate trimmed %}
+      FX data changes fast, so instead of freezing a trained model and loading it later, this platform runs
+      the model directly from its logic every day. That’s actually how most FX forecasting agencies do it.
+    {% endblocktranslate %}
+  </p>
 
+  <p>
+    <strong>• {% translate "Don’t forget the packages" %}</strong><br>
+    {% translate "If your model needs extra libraries, just add them:" %}<br>
+    – {% translate "Python packages" %} → <code>requirements.txt</code><br>
+    – {% translate "R packages" %} → {% translate "inside the GitHub Actions workflow." %}<br>
+  </p>
 
-  <p><strong>• Evaluating Your Own Models</strong><br>
-  This project intentionally does not include a model-comparison page.
-  Any evaluation or comparison between models should be performed in your own notebook.
-  For forecasting theory, the book by Hyndman and Athanasopoulos has helped me a lot,
-  and I strongly recommend it. In that book, the authors highlight the use of AICc as a practical criterion for selecting models. <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">(link)</a>
-</p>
+  <p>
+    <strong>• {% translate "The default models are just placeholders" %}</strong><br>
+    {% blocktranslate trimmed %}
+      The models that come with the system are super basic — just enough to demonstrate the workflow.
+      They usually just repeat yesterday’s rate, which is why the variation column is usually zero.
+      So don’t use them for anything serious.
+    {% endblocktranslate %}
+  </p>
 
+  <p>
+    <strong>• {% translate "Evaluating Your Own Models" %}</strong><br>
+    {% blocktranslate trimmed %}
+      This project intentionally does not include a model-comparison page.
+      Any evaluation or comparison between models should be performed in your own notebook.
+      For forecasting theory, the book by Hyndman and Athanasopoulos has helped me a lot,
+      and I strongly recommend it. In that book, the authors highlight the use of AICc as a
+      practical criterion for selecting models.
+    {% endblocktranslate %}
+    <a href="https://otexts.com/fpp3/selecting-predictors.html" target="_blank">{% translate "(link)" %}</a>
+  </p>
 
-  <p><strong>• Use the Ops Console for full control</strong><br>
-  There’s a small Ops Console where you can:<br>
-  – pull new FX rates<br>
-  – run forecasts<br>
-  – run backtests<br>
-  It writes directly to the database, so it’s password-protected and only enabled locally.</p>
+  <p>
+    <strong>• {% translate "Use the Ops Console for full control" %}</strong><br>
+    {% translate "There’s a small Ops Console where you can:" %}<br>
+    – {% translate "pull new FX rates" %}<br>
+    – {% translate "run forecasts" %}<br>
+    – {% translate "run backtests" %}<br>
+    {% translate "It writes directly to the database, so it’s password-protected and only enabled locally." %}
+  </p>
 
   <!-- Ops Console Screenshot -->
   <div style="margin:1rem 0 2rem 0; text-align:center;">
-    <img src="{% static 'images/ops_console.png' %}" 
-         alt="Ops Console Screenshot"
+    <img src="{% static 'images/ops_console.png' %}"
+         alt="{% translate 'Ops Console Screenshot' %}"
          style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
   </div>
 
-  <p><strong>• About timeframes (Daily, Weekly, Monthly)</strong><br>
-  The original idea was to support three timeframes — daily, weekly, and monthly. 
-  Most of the backend work for weekly and monthly is already there, which is why you’ll see “Week” options in the Ops Console. 
-  But they still need a few adjustments to be fully ready. For now, I’d recommend sticking to the daily timeframe — it’s the most complete and stable.</p>
+  <p>
+    <strong>• {% translate "About timeframes (Daily, Weekly, Monthly)" %}</strong><br>
+    {% blocktranslate trimmed %}
+      The original idea was to support three timeframes — daily, weekly, and monthly.
+      Most of the backend work for weekly and monthly is already there, which is why you’ll see “Week”
+      options in the Ops Console. But they still need a few adjustments to be fully ready. For now,
+      I’d recommend sticking to the daily timeframe — it’s the most complete and stable.
+    {% endblocktranslate %}
+  </p>
 
-  <p><strong>• Dashboards are cached</strong><br>
-  Rates come in every day around 16:15 CET, and the dashboards stay cached for 45 minutes.
-  If you’re tweaking a model and want to see the change immediately, just hit the “Clear Django Cache” button in the Ops Console.</p>
+  <p>
+    <strong>• {% translate "Dashboards are cached" %}</strong><br>
+    {% blocktranslate trimmed %}
+      Rates come in every day around 16:15 CET, and the dashboards stay cached for 45 minutes.
+      If you’re tweaking a model and want to see the change immediately, just hit the
+      “Clear Django Cache” button in the Ops Console.
+    {% endblocktranslate %}
+  </p>
 
-  <p><strong>• Dictionary vs Database (REGISTRY vs Model Specs)</strong><br>
-  When you add a model to the <code>_REGISTRY</code> dictionary, it immediately becomes available in the Ops Console.
-  From there, you should run a forecast (or any model task) at least once — this first run automatically creates an entry 
-  for the model in the <em>ModelSpec</em> table in the database. Once the model exists in <em>ModelSpec</em>, it becomes an 
-  official part of the platform and will be executed automatically by GitHub Actions on the daily schedule. If you want to 
-  completely remove a model from the platform, deleting it from <code>_REGISTRY</code> is not enough — you must also delete its 
-  entry from the <em>ModelSpec</em> table in the database.</p>
+  <p>
+    <strong>• {% translate "Dictionary vs Database (REGISTRY vs Model Specs)" %}</strong><br>
+    {% blocktranslate trimmed %}
+      When you add a model to the <code>_REGISTRY</code> dictionary, it immediately becomes available
+      in the Ops Console. From there, you should run a forecast (or any model task) at least once —
+      this first run automatically creates an entry for the model in the <em>ModelSpec</em> table in
+      the database. Once the model exists in <em>ModelSpec</em>, it becomes an official part of the
+      platform and will be executed automatically by GitHub Actions on the daily schedule. If you want
+      to completely remove a model from the platform, deleting it from <code>_REGISTRY</code> is not
+      enough — you must also delete its entry from the <em>ModelSpec</em> table in the database.
+    {% endblocktranslate %}
+  </p>
 
   <!-- REGISTRY screenshot -->
   <div style="margin:1rem 0; text-align:center;">
     <img src="{% static 'images/registry_dict.png' %}"
-         alt="REGISTRY dictionary screenshot"
+         alt="{% translate 'REGISTRY dictionary screenshot' %}"
          style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
   </div>
 
   <!-- Model Spec screenshot -->
   <div style="margin:1rem 0 2rem 0; text-align:center;">
     <img src="{% static 'images/model_specs_table.png' %}"
-         alt="Model Specs table screenshot"
+         alt="{% translate 'Model Specs table screenshot' %}"
          style="max-width:100%; border-radius:12px; border:1px solid #2a2f3a;">
   </div>
 
+  <p>
+    <strong>• {% translate "A small note of gratitude" %}</strong><br>
+    {% blocktranslate trimmed %}
+      I want to thank everyone who has ever contributed code to the world. Modern AI may have been
+      created by scientists, but it was trained on code written and shared by generations of developers,
+      hobbyists, and open-source contributors — work from which we all benefit. I’m also grateful to the
+      researchers whose work laid the foundations of machine learning. Modern AI tools significantly
+      accelerated development, enabling me to build this system within a few months.
+    {% endblocktranslate %}
+  </p>
 
-<p><strong>• A small note of gratitude</strong><br>
-I want to thank everyone who has ever contributed code to the world. Modern AI may have been created by scientists, 
-but it was trained on code written and shared by generations of developers, hobbyists, and open-source 
-contributors — work from which we all benefit. I’m also grateful to the researchers whose work laid the
- foundations of machine learning. Modern AI tools significantly accelerated development, enabling me to 
- build this system within a few months.
-
-
-<p><em>Thanks for reading — hope this overview sparks ideas for your own ML deployments.</em></p>
-
-
-
+  <p><em>{% translate "Thanks for reading — hope this overview sparks ideas for your own ML deployments." %}</em></p>
 
 </section>
 {% endblock %}

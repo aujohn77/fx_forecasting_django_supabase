@@ -6,13 +6,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Portfolio\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 20:53+1000\n"
-"PO-Revision-Date: 2026-07-13 00:00+1000\n"
+"POT-Creation-Date: 2026-07-14 21:40+1000\n"
+"PO-Revision-Date: 2026-07-14 21:40+1000\n"
 "Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: .\templates\base.html:160 .\templates\base.html:207
 msgid "Home"
@@ -104,13 +104,931 @@ msgid "MIT Data Science Capstone Projects"
 msgstr "Projetos de Conclusão em Ciência de Dados do MIT"
 
 #: .\templates\portfolio\home.html:81
+#: .\templates\portfolio\project_amazon_recommender.html:4
 msgid "Amazon Product Recommender"
 msgstr "Recomendador de Produtos da Amazon"
 
 #: .\templates\portfolio\home.html:88
+#: .\templates\portfolio\project_amazon_recommender.html:17
+#: .\templates\portfolio\project_model_deploy.html:18
+#: .\templates\portfolio\project_trade_crm.html:20
 msgid "Lead Conversion Prediction"
 msgstr "Previsão de Conversão de Leads"
 
 #: .\templates\portfolio\home.html:95
 msgid "Customer Personality Segmentation"
 msgstr "Segmentação de Perfis de Clientes"
+
+#: .\templates\portfolio\project_trade_crm.html:4
+msgid "Trade CRM — Multi-Tenant SaaS CRM MVP"
+msgstr "Trade CRM — MVP de CRM SaaS Multi-tenant"
+
+#: .\templates\portfolio\project_trade_crm.html:11
+msgid "ML Deployment Platform"
+msgstr "Plataforma de Implantação de ML"
+
+#: .\templates\portfolio\project_amazon_recommender.html:14
+#: .\templates\portfolio\project_model_deploy.html:15
+#: .\templates\portfolio\project_trade_crm.html:17
+msgid "Amazon-style Product Recommender"
+msgstr "Recomendador de Produtos no Estilo Amazon"
+
+#: .\templates\portfolio\project_amazon_recommender.html:20
+#: .\templates\portfolio\project_model_deploy.html:21
+#: .\templates\portfolio\project_trade_crm.html:23
+msgid "Customer Segmentation"
+msgstr "Segmentação de Clientes"
+
+#: .\templates\portfolio\project_trade_crm.html:32
+msgid "Trade CRM multi-tenant SaaS workflow banner"
+msgstr "Banner do fluxo de trabalho SaaS multi-tenant do Trade CRM"
+
+#: .\templates\portfolio\project_trade_crm.html:36
+msgid "Multi-Tenant SaaS Customer Relationship Management (CRM)"
+msgstr "Gestão de Relacionamento com Clientes (CRM) SaaS Multi-tenant"
+
+#: .\templates\portfolio\project_trade_crm.html:39
+msgid ""
+"Trade CRM is a Django-based multi-tenant CRM solution for trade and service "
+"businesses. The project is currently in MVP development, with tenant signup,"
+" authentication, role-based permissions, clients, jobs, staff workflows, and"
+" a dynamic pricebook already implemented."
+msgstr ""
+"O Trade CRM é uma solução de CRM multi-tenant baseada em Django para "
+"empresas prestadoras de serviços e profissionais de campo. O projeto está "
+"atualmente em desenvolvimento como MVP, com cadastro de tenants, "
+"autenticação, permissões baseadas em função, clientes, ordens de serviço, "
+"fluxos de trabalho da equipe e um catálogo de preços dinâmico já "
+"implementados."
+
+#: .\templates\portfolio\project_trade_crm.html:51
+msgid "Creating a New Tenant Workspace"
+msgstr "Criando o Espaço de Trabalho de uma Nova Organização"
+
+#: .\templates\portfolio\project_trade_crm.html:52
+msgid "Shows the signup flow for creating a new tenant workspace."
+msgstr ""
+"Mostra o fluxo de cadastro para criar o espaço de trabalho de uma nova "
+"organização."
+
+#: .\templates\portfolio\project_trade_crm.html:61
+msgid "Adding Staff Members"
+msgstr "Adicionando Membros da Equipe"
+
+#: .\templates\portfolio\project_trade_crm.html:63
+msgid ""
+"Adds a staff member to the tenant workspace. Password setup is not included "
+"yet; in a future version, staff users should receive an email link to create"
+" their own password."
+msgstr ""
+"Adiciona um membro da equipe ao espaço de trabalho da organização. A "
+"configuração de senha ainda não está incluída; em uma versão futura, os "
+"usuários da equipe deverão receber um link por e-mail para criar a própria "
+"senha."
+
+#: .\templates\portfolio\project_trade_crm.html:76
+msgid "Adding a Client"
+msgstr "Adicionando um Cliente"
+
+#: .\templates\portfolio\project_trade_crm.html:77
+msgid "Adds a new client record to the CRM."
+msgstr "Adiciona um novo cadastro de cliente ao CRM."
+
+#: .\templates\portfolio\project_trade_crm.html:86
+msgid "Creating a Job"
+msgstr "Criando uma Ordem de Serviço"
+
+#: .\templates\portfolio\project_trade_crm.html:87
+msgid ""
+"Creates a job using the selected client, assigned staff member, priority, "
+"schedule, and job details."
+msgstr ""
+"Cria uma ordem de serviço usando o cliente selecionado, o membro da equipe "
+"responsável, a prioridade, o agendamento e os detalhes do serviço."
+
+#: .\templates\portfolio\project_trade_crm.html:96
+msgid "Adding Job Notes and Checking Activity"
+msgstr "Adicionando Notas à Ordem de Serviço e Verificando a Atividade"
+
+#: .\templates\portfolio\project_trade_crm.html:97
+msgid ""
+"Adds notes to a job and shows how those notes appear in the job activity "
+"timeline."
+msgstr ""
+"Adiciona notas a uma ordem de serviço e mostra como elas aparecem na linha "
+"do tempo de atividades."
+
+#: .\templates\portfolio\project_trade_crm.html:106
+msgid "Creating Pricebook Categories"
+msgstr "Criando Categorias do Catálogo de Preços"
+
+#: .\templates\portfolio\project_trade_crm.html:107
+msgid "Creates categories used to organize pricebook/catalog items."
+msgstr "Cria categorias usadas para organizar os itens do catálogo de preços."
+
+#: .\templates\portfolio\project_trade_crm.html:116
+msgid "Creating Custom Fields"
+msgstr "Criando Campos Personalizados"
+
+#: .\templates\portfolio\project_trade_crm.html:117
+msgid ""
+"Adds category-specific custom fields that can later be used when creating "
+"catalog items."
+msgstr ""
+"Adiciona campos personalizados específicos da categoria, que poderão ser "
+"usados posteriormente na criação de itens do catálogo."
+
+#: .\templates\portfolio\project_trade_crm.html:126
+msgid "Adding a Catalog Item"
+msgstr "Adicionando um Item ao Catálogo"
+
+#: .\templates\portfolio\project_trade_crm.html:127
+msgid "Adds a catalog item using a category and its configured custom fields."
+msgstr ""
+"Adiciona um item ao catálogo usando uma categoria e os campos personalizados"
+" configurados para ela."
+
+#: .\templates\portfolio\project_trade_crm.html:141
+msgid "Try Live Demo"
+msgstr "Testar Demonstração ao Vivo"
+
+#: .\templates\portfolio\project_trade_crm.html:145
+msgid ""
+"Use fake data only. Demo data is automatically deleted every day. First load"
+" may take up to 50 seconds due to Render's free tier cold start."
+msgstr ""
+"Use apenas dados fictícios. Os dados da demonstração são excluídos "
+"automaticamente todos os dias. O primeiro carregamento pode levar até 50 "
+"segundos devido à inicialização a frio do plano gratuito do Render."
+
+#: .\templates\portfolio\project_trade_crm.html:152
+msgid "Completed Features"
+msgstr "Funcionalidades Concluídas"
+
+#: .\templates\portfolio\project_trade_crm.html:154
+msgid ""
+"Multi-tenant signup, session authentication, and tenant-scoped data "
+"isolation."
+msgstr ""
+"Cadastro multi-tenant, autenticação por sessão e isolamento de dados por "
+"tenant."
+
+#: .\templates\portfolio\project_trade_crm.html:155
+msgid "Role-based access for owner, admin, manager, and staff users."
+msgstr ""
+"Acesso baseado em função para usuários proprietários, administradores, "
+"gerentes e membros da equipe."
+
+#: .\templates\portfolio\project_trade_crm.html:156
+msgid ""
+"Client, job, activity timeline, and pricebook workflows with dynamic custom "
+"fields."
+msgstr ""
+"Fluxos de clientes, ordens de serviço, linha do tempo de atividades e "
+"catálogo de preços com campos personalizados dinâmicos."
+
+#: .\templates\portfolio\project_trade_crm.html:159
+msgid "In Progress / Missing Features"
+msgstr "Em Andamento / Funcionalidades Pendentes"
+
+#: .\templates\portfolio\project_trade_crm.html:161
+msgid "Quotes, invoices, and scheduling modules."
+msgstr "Módulos de orçamentos, faturas e agendamento."
+
+#: .\templates\portfolio\project_trade_crm.html:162
+msgid "Dashboard analytics and notifications."
+msgstr "Análises no painel e notificações."
+
+#: .\templates\portfolio\project_trade_crm.html:163
+msgid ""
+"Production-grade billing/subscription layer and further desktop/mobile UI "
+"refinement."
+msgstr ""
+"Camada de cobrança e assinaturas pronta para produção, além de refinamentos "
+"adicionais da interface para desktop e dispositivos móveis."
+
+#: .\templates\portfolio\project_trade_crm.html:166
+msgid "Tech Stack"
+msgstr "Stack Tecnológica"
+
+#: .\templates\portfolio\project_trade_crm.html:168
+msgid "Backend:"
+msgstr "Back-end:"
+
+#: .\templates\portfolio\project_trade_crm.html:169
+msgid "API layer:"
+msgstr "Camada de API:"
+
+#: .\templates\portfolio\project_trade_crm.html:170
+msgid "Database:"
+msgstr "Banco de dados:"
+
+#: .\templates\portfolio\project_trade_crm.html:172
+msgid "Frontend rendering:"
+msgstr "Renderização no front-end:"
+
+#: .\templates\portfolio\project_trade_crm.html:173
+msgid "Django templates"
+msgstr "Templates do Django"
+
+#: .\templates\portfolio\project_trade_crm.html:174
+msgid "(planned migration to Next.js)"
+msgstr "(migração planejada para Next.js)"
+
+#: .\templates\portfolio\project_trade_crm.html:176
+msgid "Deployment:"
+msgstr "Deploy:"
+
+#: .\templates\portfolio\project_offcuts_management.html:4
+msgid "Offcuts — Factory Inventory Tracking System"
+msgstr "Sobras de Material — Sistema de Rastreamento de Inventário da Fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:17
+msgid "Offcuts"
+msgstr "Sobras de Material"
+
+#: .\templates\portfolio\project_offcuts_management.html:35
+msgid "Offcuts factory inventory tracking banner"
+msgstr ""
+"Banner do sistema de rastreamento de inventário de sobras de material na "
+"fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:42
+msgid ""
+"This is a Django-based inventory system for tracking reusable board offcuts "
+"in a factory environment. Staff can store, search, relocate, and withdraw "
+"offcuts using board codes, material details, dimensions, colours, and "
+"storage locations."
+msgstr ""
+"Este é um sistema de inventário baseado em Django para rastrear sobras "
+"reutilizáveis de chapas em um ambiente industrial. A equipe pode armazenar, "
+"pesquisar, realocar e retirar sobras usando códigos das chapas, detalhes do "
+"material, dimensões, cores e locais de armazenamento."
+
+#: .\templates\portfolio\project_offcuts_management.html:49
+msgid "Workflow Demonstrations"
+msgstr "Demonstrações do Fluxo de Trabalho"
+
+#: .\templates\portfolio\project_offcuts_management.html:55
+msgid "Storing a New Offcut"
+msgstr "Armazenando uma Nova Sobra"
+
+#: .\templates\portfolio\project_offcuts_management.html:57
+msgid ""
+"Open the Store page, enter the offcut details, choose the location where the"
+" offcut will be stored, and click Store. The system assigns the next board "
+"code automatically."
+msgstr ""
+"Abra a página Armazenar, insira os detalhes da sobra, escolha o local onde "
+"ela será armazenada e clique em Armazenar. O sistema atribui automaticamente"
+" o próximo código de chapa."
+
+#: .\templates\portfolio\project_offcuts_management.html:70
+msgid "Searching Available Offcuts"
+msgstr "Pesquisando Sobras Disponíveis"
+
+#: .\templates\portfolio\project_offcuts_management.html:72
+msgid ""
+"Open the Search page and choose the relevant filters. Then, check the result"
+" code and location, go to that location and look for the offcut with the "
+"matching code."
+msgstr ""
+"Abra a página de Pesquisa e selecione os filtros relevantes. Em seguida, "
+"verifique o código e o local exibidos no resultado, vá até esse local e "
+"procure a sobra com o código correspondente."
+
+#: .\templates\portfolio\project_offcuts_management.html:85
+msgid "Relocating and Withdrawing Offcuts"
+msgstr "Realocando e Retirando Sobras"
+
+#: .\templates\portfolio\project_offcuts_management.html:87
+msgid ""
+"Find the offcut from the Search page, open the action menu, then choose "
+"Relocate to move it to another storage position or Withdraw to remove it "
+"from active inventory."
+msgstr ""
+"Localize a sobra na página de Pesquisa, abra o menu de ações e escolha "
+"Realocar para movê-la para outra posição de armazenamento ou Retirar para "
+"removê-la do inventário ativo."
+
+#: .\templates\portfolio\project_offcuts_management.html:100
+msgid "Factory Implementation Context"
+msgstr "Contexto de Implementação na Fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:106
+#: .\templates\portfolio\project_offcuts_management.html:118
+msgid "Storing a New Offcut in the Factory"
+msgstr "Armazenando uma Nova Sobra na Fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:108
+msgid ""
+"Measure the physical offcut, enter its details in the Store page, save it, "
+"then write the generated board code on the board so it can be found later."
+msgstr ""
+"Meça a sobra física, insira seus detalhes na página Armazenar, salve-a e, em"
+" seguida, escreva o código de chapa gerado na própria chapa para que ela "
+"possa ser localizada posteriormente."
+
+#: .\templates\portfolio\project_offcuts_management.html:129
+#: .\templates\portfolio\project_offcuts_management.html:141
+msgid "Searching Available Offcuts in the Factory"
+msgstr "Pesquisando Sobras Disponíveis na Fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:131
+msgid ""
+"Search using the offcut details you know, then check the result code and "
+"match it with the physical board that has the same code written on it."
+msgstr ""
+"Faça a pesquisa usando os detalhes conhecidos da sobra, verifique o código "
+"exibido no resultado e compare-o com a chapa física que possui o mesmo "
+"código escrito nela."
+
+#: .\templates\portfolio\project_offcuts_management.html:152
+msgid "Factory Board Codes"
+msgstr "Códigos nas Chapas da Fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:154
+msgid ""
+"These photos show examples of boards after their codes have been written on "
+"them; once the system search gives a code, staff can use it to identify the "
+"correct physical board."
+msgstr ""
+"Estas fotos mostram exemplos de chapas após seus códigos terem sido escritos"
+" nelas; quando a pesquisa no sistema fornece um código, a equipe pode usá-lo"
+" para identificar a chapa física correta."
+
+#: .\templates\portfolio\project_offcuts_management.html:169
+msgid "Factory board code example"
+msgstr "Exemplo de código em uma chapa da fábrica"
+
+#: .\templates\portfolio\project_offcuts_management.html:181
+msgid "Additional Features"
+msgstr "Funcionalidades Adicionais"
+
+#: .\templates\portfolio\project_offcuts_management.html:184
+msgid ""
+"Repeated storage tasks are optimized by preserving values such as colour, "
+"thickness, material, G2S, and location, so the user only needs to enter "
+"length and width for similar offcuts."
+msgstr ""
+"As tarefas repetitivas de armazenamento são otimizadas mantendo valores como"
+" cor, espessura, material, G2S e local, de modo que o usuário precise "
+"inserir apenas o comprimento e a largura de sobras semelhantes."
+
+#: .\templates\portfolio\project_offcuts_management.html:191
+msgid ""
+"If a colour is missing, the user can use Add New Colour. Similar existing "
+"colours are flagged to help avoid duplicates."
+msgstr ""
+"Se uma cor não estiver cadastrada, o usuário poderá usar Adicionar Nova Cor."
+" Cores existentes semelhantes são sinalizadas para ajudar a evitar "
+"duplicatas."
+
+#: .\templates\portfolio\project_offcuts_management.html:197
+msgid ""
+"Access is password-protected, and staff tracking is intentionally omitted so"
+" any authorised worker can manage offcuts as needed."
+msgstr ""
+"O acesso é protegido por senha, e o rastreamento individual de funcionários "
+"foi omitido intencionalmente para que qualquer trabalhador autorizado possa "
+"gerenciar as sobras conforme necessário."
+
+#: .\templates\portfolio\project_offcuts_management.html:209
+msgid "Django views / internal JSON endpoints"
+msgstr "Views do Django / endpoints JSON internos"
+
+#: .\templates\portfolio\project_offcuts_management.html:213
+msgid "PostgreSQL/Neon in production, SQLite locally"
+msgstr "PostgreSQL/Neon em produção, SQLite localmente"
+
+#: .\templates\portfolio\project_offcuts_management.html:217
+msgid "Django templates, CSS, and JavaScript"
+msgstr "Templates do Django, CSS e JavaScript"
+
+#: .\templates\portfolio\project_model_deploy.html:4
+#: .\templates\portfolio\project_model_deploy.html:11
+msgid "ML Deployment Platform (FX Example)"
+msgstr "Plataforma de Implantação de ML (Exemplo de Câmbio)"
+
+#: .\templates\portfolio\project_model_deploy.html:28
+msgid "Market"
+msgstr "Mercado"
+
+#: .\templates\portfolio\project_model_deploy.html:29
+msgid "Forecasts"
+msgstr "Previsões"
+
+#: .\templates\portfolio\project_model_deploy.html:35
+msgid "ML Deployment Platform (Independent Project)"
+msgstr "Plataforma de Implantação de ML (Projeto Independente)"
+
+#: .\templates\portfolio\project_model_deploy.html:40
+msgid "Automated ML Deployment & Forecasting Architecture"
+msgstr "Arquitetura Automatizada de Implantação de ML e Previsão"
+
+#: .\templates\portfolio\project_model_deploy.html:45
+msgid "Fully automated • No manual steps"
+msgstr "Totalmente automatizada • Sem etapas manuais"
+
+#: .\templates\portfolio\project_model_deploy.html:49
+msgid ""
+"This project is a fully automated ML deployment platform for FX forecasting."
+" Every model registered in the system runs on autopilot: new FX closing "
+"rates are ingested daily, all models are executed automatically via GitHub "
+"Actions, and their predictions are stored and pushed straight into a live "
+"dashboard. The result is a hands-free, production-grade forecasting workflow"
+" — built end-to-end from data ingestion to model execution, storage, and "
+"visualization."
+msgstr ""
+"Este projeto é uma plataforma totalmente automatizada de implantação de ML "
+"para previsão cambial. Todos os modelos registrados no sistema operam de "
+"forma autônoma: novas cotações de fechamento de câmbio são ingeridas "
+"diariamente, todos os modelos são executados automaticamente via GitHub "
+"Actions e suas previsões são armazenadas e enviadas diretamente para um "
+"painel ao vivo. O resultado é um fluxo de previsão de nível de produção, sem"
+" intervenção manual, desenvolvido de ponta a ponta — da ingestão de dados à "
+"execução dos modelos, ao armazenamento e à visualização."
+
+#: .\templates\portfolio\project_model_deploy.html:61
+msgid "Features"
+msgstr "Funcionalidades"
+
+#: .\templates\portfolio\project_model_deploy.html:64
+msgid "Infrastructure:"
+msgstr "Infraestrutura:"
+
+#: .\templates\portfolio\project_model_deploy.html:65
+msgid "Supabase Postgres + Django web interface"
+msgstr "Supabase Postgres + interface web em Django"
+
+#: .\templates\portfolio\project_model_deploy.html:68
+msgid "Automation:"
+msgstr "Automação:"
+
+#: .\templates\portfolio\project_model_deploy.html:69
+msgid "Daily ingestion and forecasting pipelines via GitHub Actions"
+msgstr "Pipelines diários de ingestão e previsão via GitHub Actions"
+
+#: .\templates\portfolio\project_model_deploy.html:72
+msgid "Model Layer:"
+msgstr "Camada de Modelos:"
+
+#: .\templates\portfolio\project_model_deploy.html:73
+msgid "Plug-and-play registry for Python and R models"
+msgstr "Registro plug-and-play para modelos em Python e R"
+
+#: .\templates\portfolio\project_model_deploy.html:76
+msgid "Outputs:"
+msgstr "Saídas:"
+
+#: .\templates\portfolio\project_model_deploy.html:77
+msgid "Stored predictions, live dashboards, and visualized backtests"
+msgstr "Previsões armazenadas, painéis ao vivo e backtests com visualização gráfica"
+
+#: .\templates\portfolio\project_model_deploy.html:81
+msgid "You can access the live FX views through the buttons below."
+msgstr "Você pode acessar as visualizações de câmbio ao vivo pelos botões abaixo."
+
+#: .\templates\portfolio\project_amazon_recommender.html:71
+#: .\templates\portfolio\project_model_deploy.html:84
+msgid "Project Links"
+msgstr "Links do Projeto"
+
+#: .\templates\portfolio\project_amazon_recommender.html:77
+#: .\templates\portfolio\project_model_deploy.html:94
+msgid "GitHub Repository"
+msgstr "Repositório no GitHub"
+
+#: .\templates\portfolio\project_model_deploy.html:103
+msgid "Market Dashboard"
+msgstr "Painel de Mercado"
+
+#: .\templates\portfolio\project_model_deploy.html:112
+msgid "Forecast Dashboard"
+msgstr "Painel de Previsões"
+
+#: .\templates\portfolio\project_model_deploy.html:118
+msgid "Plug-and-Play Model Integration"
+msgstr "Integração Plug-and-Play de Modelos"
+
+#: .\templates\portfolio\project_model_deploy.html:120
+msgid "You can plug in your own forecasting model by following these steps:"
+msgstr "Você pode integrar seu próprio modelo de previsão seguindo estas etapas:"
+
+#: .\templates\portfolio\project_model_deploy.html:123
+msgid "Download the template for your language:"
+msgstr "Baixe o template correspondente à sua linguagem:"
+
+#: .\templates\portfolio\project_model_deploy.html:129
+msgid "Python model template (.py)"
+msgstr "Template de modelo em Python (.py)"
+
+#: .\templates\portfolio\project_model_deploy.html:136
+msgid "R model template (.R)"
+msgstr "Template de modelo em R (.R)"
+
+#: .\templates\portfolio\project_model_deploy.html:142
+msgid "Open the template and edit only the section marked:"
+msgstr "Abra o template e edite apenas a seção indicada:"
+
+#: .\templates\portfolio\project_model_deploy.html:145
+msgid "In \"PART 3\", you will see where to set your model name (e.g., 'my_model')."
+msgstr ""
+"Em “PART 3”, você verá onde definir o nome do seu modelo (por exemplo, "
+"'my_model')."
+
+#: .\templates\portfolio\project_model_deploy.html:147
+msgid "Then:"
+msgstr "Em seguida:"
+
+#: .\templates\portfolio\project_model_deploy.html:149
+msgid "Python models"
+msgstr "Modelos em Python"
+
+#: .\templates\portfolio\project_model_deploy.html:151
+#: .\templates\portfolio\project_model_deploy.html:168
+msgid "Save the file to:"
+msgstr "Salve o arquivo em:"
+
+#: .\templates\portfolio\project_model_deploy.html:154
+msgid "Rename it to match your model name (e.g., my_model.py)."
+msgstr ""
+"Renomeie-o para corresponder ao nome do seu modelo (por exemplo, "
+"my_model.py)."
+
+#: .\templates\portfolio\project_model_deploy.html:156
+#: .\templates\portfolio\project_model_deploy.html:173
+msgid "Open:"
+msgstr "Abra:"
+
+#: .\templates\portfolio\project_model_deploy.html:159
+msgid "Add at the top:"
+msgstr "Adicione no início:"
+
+#: .\templates\portfolio\project_model_deploy.html:162
+#: .\templates\portfolio\project_model_deploy.html:178
+msgid "Add this to _REGISTRY:"
+msgstr "Adicione isto ao _REGISTRY:"
+
+#: .\templates\portfolio\project_model_deploy.html:166
+msgid "R models"
+msgstr "Modelos em R"
+
+#: .\templates\portfolio\project_model_deploy.html:171
+msgid "Rename it to match your model name (e.g., my_model.R)."
+msgstr "Renomeie-o para corresponder ao nome do seu modelo (por exemplo, my_model.R)."
+
+#: .\templates\portfolio\project_model_deploy.html:176
+msgid "(You do NOT add an import at the top for R models.)"
+msgstr "(Para modelos em R, NÃO adicione uma importação no início.)"
+
+#: .\templates\portfolio\project_model_deploy.html:186
+msgid "Setup notes"
+msgstr "Observações de Configuração"
+
+#: .\templates\portfolio\project_model_deploy.html:189
+msgid "One model, all currencies"
+msgstr "Um modelo, todas as moedas"
+
+#: .\templates\portfolio\project_model_deploy.html:190
+msgid ""
+"Just a heads-up: to keep things simple, any model you add will automatically"
+" forecast all currencies. In real FX work you’d normally have one model per "
+"currency pair, but I simplified it here so you don’t have to manage dozens "
+"of models."
+msgstr ""
+"Apenas um aviso: para manter tudo simples, qualquer modelo adicionado fará "
+"previsões automaticamente para todas as moedas. Em um trabalho real com "
+"câmbio, normalmente haveria um modelo para cada par de moedas, mas "
+"simplifiquei isso aqui para que você não precise gerenciar dezenas de "
+"modelos."
+
+#: .\templates\portfolio\project_model_deploy.html:198
+msgid "Models run from their logic (not serialized files)"
+msgstr ""
+"Os modelos são executados a partir de sua lógica (não de arquivos "
+"serializados)"
+
+#: .\templates\portfolio\project_model_deploy.html:199
+msgid ""
+"FX data changes fast, so instead of freezing a trained model and loading it "
+"later, this platform runs the model directly from its logic every day. "
+"That’s actually how most FX forecasting agencies do it."
+msgstr ""
+"Os dados cambiais mudam rapidamente; portanto, em vez de congelar um modelo "
+"treinado e carregá-lo posteriormente, esta plataforma executa diariamente o "
+"modelo diretamente a partir de sua lógica. Na prática, é assim que a maioria"
+" das agências de previsão cambial trabalha."
+
+#: .\templates\portfolio\project_model_deploy.html:206
+msgid "Don’t forget the packages"
+msgstr "Não se esqueça dos pacotes"
+
+#: .\templates\portfolio\project_model_deploy.html:207
+msgid "If your model needs extra libraries, just add them:"
+msgstr "Se o seu modelo precisar de bibliotecas adicionais, basta adicioná-las:"
+
+#: .\templates\portfolio\project_model_deploy.html:208
+msgid "Python packages"
+msgstr "Pacotes Python"
+
+#: .\templates\portfolio\project_model_deploy.html:209
+msgid "R packages"
+msgstr "Pacotes R"
+
+#: .\templates\portfolio\project_model_deploy.html:209
+msgid "inside the GitHub Actions workflow."
+msgstr "no fluxo de trabalho do GitHub Actions."
+
+#: .\templates\portfolio\project_model_deploy.html:213
+msgid "The default models are just placeholders"
+msgstr "Os modelos padrão são apenas modelos de demonstração"
+
+#: .\templates\portfolio\project_model_deploy.html:214
+msgid ""
+"The models that come with the system are super basic — just enough to "
+"demonstrate the workflow. They usually just repeat yesterday’s rate, which "
+"is why the variation column is usually zero. So don’t use them for anything "
+"serious."
+msgstr ""
+"Os modelos fornecidos com o sistema são muito básicos — apenas o suficiente "
+"para demonstrar o fluxo de trabalho. Em geral, eles simplesmente repetem a "
+"cotação do dia anterior, razão pela qual a coluna de variação costuma ser "
+"zero. Portanto, não os use para nada que exija previsões confiáveis."
+
+#: .\templates\portfolio\project_model_deploy.html:222
+msgid "Evaluating Your Own Models"
+msgstr "Avaliação dos Seus Próprios Modelos"
+
+#: .\templates\portfolio\project_model_deploy.html:223
+msgid ""
+"This project intentionally does not include a model-comparison page. Any "
+"evaluation or comparison between models should be performed in your own "
+"notebook. For forecasting theory, the book by Hyndman and Athanasopoulos has"
+" helped me a lot, and I strongly recommend it. In that book, the authors "
+"highlight the use of AICc as a practical criterion for selecting models."
+msgstr ""
+"Este projeto não inclui intencionalmente uma página de comparação de "
+"modelos. Qualquer avaliação ou comparação entre modelos deve ser realizada "
+"em seu próprio notebook. Para a teoria de previsão, o livro de Hyndman e "
+"Athanasopoulos me ajudou muito e eu o recomendo bastante. Nesse livro, os "
+"autores destacam o uso do AICc como critério prático para a seleção de "
+"modelos."
+
+#: .\templates\portfolio\project_model_deploy.html:230
+msgid "(link)"
+msgstr "(link)"
+
+#: .\templates\portfolio\project_model_deploy.html:234
+msgid "Use the Ops Console for full control"
+msgstr "Use o Console de Operações para ter controle total"
+
+#: .\templates\portfolio\project_model_deploy.html:235
+msgid "There’s a small Ops Console where you can:"
+msgstr "Há um pequeno Console de Operações no qual você pode:"
+
+#: .\templates\portfolio\project_model_deploy.html:236
+msgid "pull new FX rates"
+msgstr "obter novas cotações de câmbio"
+
+#: .\templates\portfolio\project_model_deploy.html:237
+msgid "run forecasts"
+msgstr "executar previsões"
+
+#: .\templates\portfolio\project_model_deploy.html:238
+msgid "run backtests"
+msgstr "executar backtests"
+
+#: .\templates\portfolio\project_model_deploy.html:239
+msgid ""
+"It writes directly to the database, so it’s password-protected and only "
+"enabled locally."
+msgstr ""
+"Ele grava diretamente no banco de dados, por isso é protegido por senha e "
+"habilitado apenas localmente."
+
+#: .\templates\portfolio\project_model_deploy.html:245
+msgid "Ops Console Screenshot"
+msgstr "Captura de tela do Console de Operações"
+
+#: .\templates\portfolio\project_model_deploy.html:250
+msgid "About timeframes (Daily, Weekly, Monthly)"
+msgstr "Sobre as Periodicidades (Diária, Semanal e Mensal)"
+
+#: .\templates\portfolio\project_model_deploy.html:251
+msgid ""
+"The original idea was to support three timeframes — daily, weekly, and "
+"monthly. Most of the backend work for weekly and monthly is already there, "
+"which is why you’ll see “Week” options in the Ops Console. But they still "
+"need a few adjustments to be fully ready. For now, I’d recommend sticking to"
+" the daily timeframe — it’s the most complete and stable."
+msgstr ""
+"A ideia original era oferecer suporte a três periodicidades — diária, "
+"semanal e mensal. A maior parte do trabalho de back-end para as "
+"periodicidades semanal e mensal já está pronta, por isso você verá opções "
+"“Week” no Console de Operações. No entanto, elas ainda precisam de alguns "
+"ajustes para ficarem totalmente prontas. Por enquanto, recomendo usar a "
+"periodicidade diária — ela é a mais completa e estável."
+
+#: .\templates\portfolio\project_model_deploy.html:260
+msgid "Dashboards are cached"
+msgstr "Os painéis usam cache"
+
+#: .\templates\portfolio\project_model_deploy.html:261
+msgid ""
+"Rates come in every day around 16:15 CET, and the dashboards stay cached for"
+" 45 minutes. If you’re tweaking a model and want to see the change "
+"immediately, just hit the “Clear Django Cache” button in the Ops Console."
+msgstr ""
+"As taxas chegam todos os dias por volta das 16h15 CET, e os painéis "
+"permanecem em cache por 45 minutos. Se você estiver ajustando um modelo e "
+"quiser ver a alteração imediatamente, basta clicar no botão “Clear Django "
+"Cache” no Console de Operações."
+
+#: .\templates\portfolio\project_model_deploy.html:269
+msgid "Dictionary vs Database (REGISTRY vs Model Specs)"
+msgstr "Dicionário vs Banco de Dados (REGISTRY vs Model Specs)"
+
+#: .\templates\portfolio\project_model_deploy.html:270
+msgid ""
+"When you add a model to the <code>_REGISTRY</code> dictionary, it "
+"immediately becomes available in the Ops Console. From there, you should run"
+" a forecast (or any model task) at least once — this first run automatically"
+" creates an entry for the model in the <em>ModelSpec</em> table in the "
+"database. Once the model exists in <em>ModelSpec</em>, it becomes an "
+"official part of the platform and will be executed automatically by GitHub "
+"Actions on the daily schedule. If you want to completely remove a model from"
+" the platform, deleting it from <code>_REGISTRY</code> is not enough — you "
+"must also delete its entry from the <em>ModelSpec</em> table in the "
+"database."
+msgstr ""
+"Quando você adiciona um modelo ao dicionário <code>_REGISTRY</code>, ele "
+"fica imediatamente disponível no Console de Operações. A partir daí, execute"
+" uma previsão (ou qualquer tarefa do modelo) pelo menos uma vez — essa "
+"primeira execução cria automaticamente uma entrada para o modelo na tabela "
+"<em>ModelSpec</em> do banco de dados. Depois que o modelo existe em "
+"<em>ModelSpec</em>, ele passa a fazer parte oficialmente da plataforma e "
+"será executado automaticamente via GitHub Actions na programação diária. "
+"Para remover completamente um modelo da plataforma, não basta excluí-lo de "
+"<code>_REGISTRY</code> — também é necessário excluir sua entrada da tabela "
+"<em>ModelSpec</em> no banco de dados."
+
+#: .\templates\portfolio\project_model_deploy.html:284
+msgid "REGISTRY dictionary screenshot"
+msgstr "Captura de tela do dicionário REGISTRY"
+
+#: .\templates\portfolio\project_model_deploy.html:291
+msgid "Model Specs table screenshot"
+msgstr "Captura de tela da tabela Model Specs"
+
+#: .\templates\portfolio\project_model_deploy.html:296
+msgid "A small note of gratitude"
+msgstr "Uma breve nota de agradecimento"
+
+#: .\templates\portfolio\project_model_deploy.html:297
+msgid ""
+"I want to thank everyone who has ever contributed code to the world. Modern "
+"AI may have been created by scientists, but it was trained on code written "
+"and shared by generations of developers, hobbyists, and open-source "
+"contributors — work from which we all benefit. I’m also grateful to the "
+"researchers whose work laid the foundations of machine learning. Modern AI "
+"tools significantly accelerated development, enabling me to build this "
+"system within a few months."
+msgstr ""
+"Quero agradecer a todas as pessoas que já contribuíram com código para o "
+"mundo. A IA moderna pode ter sido criada por cientistas, mas foi treinada "
+"com código escrito e compartilhado por gerações de desenvolvedores, "
+"entusiastas e colaboradores de projetos de código aberto — um trabalho do "
+"qual todos nos beneficiamos. Também sou grato aos pesquisadores cujo "
+"trabalho estabeleceu os fundamentos do machine learning. As ferramentas "
+"modernas de IA aceleraram significativamente o desenvolvimento e me "
+"permitiram construir este sistema em poucos meses."
+
+#: .\templates\portfolio\project_model_deploy.html:306
+msgid ""
+"Thanks for reading — hope this overview sparks ideas for your own ML "
+"deployments."
+msgstr ""
+"Obrigado pela leitura — espero que esta visão geral inspire ideias para suas"
+" próprias implantações de ML."
+
+#: .\templates\portfolio\project_amazon_recommender.html:11
+msgid "FX Model Deployment Demo"
+msgstr "Demonstração de Implantação de Modelo de Câmbio"
+
+#: .\templates\portfolio\project_amazon_recommender.html:27
+msgid "Amazon Product Recommender (MIT IDSS – Capstone Project)"
+msgstr "Recomendador de Produtos da Amazon (MIT IDSS – Projeto de Conclusão)"
+
+#: .\templates\portfolio\project_amazon_recommender.html:30
+msgid ""
+"As part of a capstone project from the Massachusetts Institute of Technology"
+" (MIT) Institute for Data, Systems, and Society (IDSS), this project "
+"developed a product recommendation system using a real-world dataset of "
+"Amazon product reviews. The goal was to design a recommender that improves "
+"customer engagement by suggesting relevant items based on user behaviour."
+msgstr ""
+"Como parte de um projeto de conclusão do Institute for Data, Systems, and "
+"Society (IDSS), do Instituto de Tecnologia de Massachusetts (MIT), este "
+"projeto desenvolveu um sistema de recomendação de produtos usando um "
+"conjunto de dados reais de avaliações de produtos da Amazon. O objetivo foi "
+"criar um recomendador que aumentasse o engajamento dos clientes, sugerindo "
+"itens relevantes com base no comportamento dos usuários."
+
+#: .\templates\portfolio\project_amazon_recommender.html:40
+msgid ""
+"The work began with cleaning and preprocessing the dataset — removing "
+"duplicates, handling missing values, and addressing sparse user–item "
+"interactions. Through exploratory analysis, cold-start issues were "
+"investigated and user and product activity distributions were examined, "
+"establishing minimum rating thresholds to reduce noise from infrequent "
+"interactions."
+msgstr ""
+"O trabalho começou com a limpeza e o pré-processamento do conjunto de dados "
+"— removendo duplicatas, tratando valores ausentes e lidando com interações "
+"esparsas entre usuários e itens. Por meio da análise exploratória, foram "
+"investigados problemas de cold start e examinadas as distribuições de "
+"atividade dos usuários e dos produtos, estabelecendo limites mínimos de "
+"avaliações para reduzir o ruído causado por interações pouco frequentes."
+
+#: .\templates\portfolio\project_amazon_recommender.html:49
+msgid "Multiple models were implemented and evaluated, including:"
+msgstr "Vários modelos foram implementados e avaliados, incluindo:"
+
+#: .\templates\portfolio\project_amazon_recommender.html:52
+msgid "Rank-based recommender based on product popularity."
+msgstr "Recomendador baseado em ranking de popularidade dos produtos."
+
+#: .\templates\portfolio\project_amazon_recommender.html:53
+msgid ""
+"User-based and item-based collaborative filtering with tuned similarity "
+"metrics."
+msgstr ""
+"Filtragem colaborativa baseada em usuários e em itens, com métricas de "
+"similaridade ajustadas."
+
+#: .\templates\portfolio\project_amazon_recommender.html:54
+msgid "Matrix factorisation using SVD."
+msgstr "Fatoração de matrizes usando SVD."
+
+#: .\templates\portfolio\project_amazon_recommender.html:55
+msgid "A hybrid approach combining strengths of different models."
+msgstr "Uma abordagem híbrida que combina os pontos fortes de diferentes modelos."
+
+#: .\templates\portfolio\project_amazon_recommender.html:59
+msgid ""
+"All models were evaluated using <strong>precision@k</strong> and "
+"<strong>recall@k</strong>. The final solution was an on-demand, deployable "
+"recommender using <strong>precomputed predictions</strong> for fast "
+"Streamlit inference."
+msgstr ""
+"Todos os modelos foram avaliados usando <strong>precision@k</strong> e "
+"<strong>recall@k</strong>. A solução final foi um recomendador sob demanda, "
+"pronto para implantação, que utiliza <strong>previsões "
+"pré-calculadas</strong> para realizar inferências rápidas no Streamlit."
+
+#: .\templates\portfolio\project_amazon_recommender.html:67
+msgid "Tech used:"
+msgstr "Tecnologias utilizadas:"
+
+#: .\templates\portfolio\project_amazon_recommender.html:68
+msgid "Python, Google-Colab, Streamlit | Surprise and Pickle (main libraries)."
+msgstr "Python, Google Colab, Streamlit | Surprise e Pickle (principais bibliotecas)."
+
+#: .\templates\portfolio\project_amazon_recommender.html:83
+msgid "Live Streamlit App"
+msgstr "Aplicativo Streamlit Online"
+
+#: .\templates\portfolio\project_amazon_recommender.html:87
+msgid "Notebook Preview"
+msgstr "Prévia do Notebook"
+
+#: .\templates\portfolio\project_amazon_recommender.html:91
+msgid "Amazon recommender notebook screenshot 1"
+msgstr "Captura de tela 1 do notebook do recomendador da Amazon"
+
+#: .\templates\portfolio\project_amazon_recommender.html:94
+msgid "Amazon recommender notebook screenshot 2"
+msgstr "Captura de tela 2 do notebook do recomendador da Amazon"
+
+#: .\templates\portfolio\project_amazon_recommender.html:97
+msgid "Amazon recommender notebook screenshot 3"
+msgstr "Captura de tela 3 do notebook do recomendador da Amazon"
+
+#: .\templates\portfolio\project_amazon_recommender.html:100
+msgid "Amazon recommender notebook screenshot 4"
+msgstr "Captura de tela 4 do notebook do recomendador da Amazon"
+
+#: .\templates\portfolio\project_amazon_recommender.html:105
+msgid ""
+"Due to MIT-IDSS copyright restrictions, the notebook cannot be shared "
+"publicly. I am happy to discuss further details upon request."
+msgstr ""
+"Devido às restrições de direitos autorais do MIT IDSS, o notebook não pode "
+"ser compartilhado publicamente. Fico à disposição para discutir mais "
+"detalhes mediante solicitação."
+
+#: .\templates\portfolio\project_amazon_recommender.html:113
+msgid "Notebook screenshot enlarged"
+msgstr "Captura de tela ampliada do notebook"
+
