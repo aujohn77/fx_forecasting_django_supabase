@@ -1,65 +1,61 @@
-"""
-URL configuration for fx project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-# fx/urls.py
-from django.contrib import admin
-from django.urls import path, include
-from apps.forecasting import views as fviews
-from django.conf import settings   # ← IMPORTANT FOR DEBUG CHECK
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.contrib import admin
+from django.urls import include, path
+
+from apps.forecasting import views as fviews
 
 
+# URLs that should not receive a language prefix
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    # 🔹 Existing FX dashboards
-    path("home/",    fviews.overview,       name="overview"),
-    path("forecast/", fviews.forecast_page, name="forecast"),
-    path("market/",   fviews.market_page,   name="market"),
-
-    # 🔹 Ops console
+    # Internal operations
     path("ops/", include("apps.forecasting.ops.urls")),
 
-    # 🔹 Analytics event tracking
-    path("analytics/", include("apps.analytics.urls", namespace="analytics")),
+    # Analytics endpoint
+    path(
+        "analytics/",
+        include("apps.analytics.urls", namespace="analytics"),
+    ),
 
-    # 🔹 Data Observability Platform
-    path("observability/", include("dop_apps.observability.urls")),
+    # Data Observability Platform
+    path(
+        "observability/",
+        include("dop_apps.observability.urls"),
+    ),
+
+    # Django language-switching endpoint
     path("i18n/", include("django.conf.urls.i18n")),
-
 ]
 
 
-
-
+# Public pages available in English and Brazilian Portuguese
 urlpatterns += i18n_patterns(
-    path("", include("apps.site_portfolio.urls", namespace="portfolio")),
+    path("home/", fviews.overview, name="overview"),
+    path("forecast/", fviews.forecast_page, name="forecast"),
+    path("market/", fviews.market_page, name="market"),
+
+    path(
+        "",
+        include(
+            "apps.site_portfolio.urls",
+            namespace="portfolio",
+        ),
+    ),
+
+    # English remains unprefixed; Portuguese uses /pt-br/
     prefix_default_language=False,
 )
 
 
-# =======================================
-# Debug Toolbar (development only)
-# =======================================
-
+# Django Debug Toolbar — development only
 if settings.DEBUG:
     try:
         import debug_toolbar
     except ModuleNotFoundError:
-        # debug toolbar not installed (e.g. in production) – just skip
         pass
     else:
-        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+        urlpatterns += [
+            path("__debug__/", include(debug_toolbar.urls)),
+        ]
