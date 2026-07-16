@@ -318,7 +318,7 @@ msgstr "Plataforma de Observabilidade de Dados"
 
 #: .\templates\portfolio\home.html:74
 msgid "MIT Data Science Capstone Projects"
-msgstr "Projetos de Conclusão em Ciência de Dados do MIT"
+msgstr "Projetos de Conclusão de Curso em Machine Learning do MIT"
 
 #: .\templates\portfolio\home.html:81
 #: .\templates\portfolio\project_amazon_recommender.html:4
