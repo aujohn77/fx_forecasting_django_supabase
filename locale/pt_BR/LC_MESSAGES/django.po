@@ -281,7 +281,7 @@ msgstr "Projetos de Análise de Dados e Aprendizado de Máquina"
 
 #: .\templates\portfolio\home.html:13
 msgid "Machine Learning & Web Development Practitioner"
-msgstr "Profissional de Machine Learning e Desenvolvimento Web"
+msgstr "Praticante de Machine Learning e Desenvolvimento Web"
 
 #: .\templates\portfolio\home.html:14
 msgid "PhD in Mathematics"
