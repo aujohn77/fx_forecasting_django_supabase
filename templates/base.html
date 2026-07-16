@@ -180,16 +180,6 @@
             </select>
           </form>
 
-
-          <!-- Hamburger button (mobile only) -->
-          <button class="hamburger" type="button"
-                  aria-label="Toggle navigation"
-                  onclick="toggleMobileNav()">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
         </div>
       </div>
 
@@ -222,13 +212,6 @@
     {% block content %}{% endblock %}
   </main>
 
-  <script>
-    function toggleMobileNav() {
-      const nav = document.getElementById('mobile-nav');
-      if (!nav) return;
-      nav.classList.toggle('open');
-    }
-  </script>
 
   <script>
   function switchLanguage(select) {
