@@ -1,110 +1,116 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Amazon Product Recommender {% endblock %}
+{% load static i18n %}
+
+{% block title %}{% translate "Amazon Product Recommender" %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
-    FX Model Deployment Demo
+    {% translate "FX Model Deployment Demo" %}
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link nav-link-active">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block content %}
 <section class="card">
-  <h2>Amazon Product Recommender (MIT IDSS – Capstone Project)</h2>
+  <h2>{% translate "Amazon Product Recommender (MIT IDSS – Capstone Project)" %}</h2>
 
-<p>
-   As part of a capstone project from the Massachusetts Institute of Technology
-  (MIT) Institute for Data, Systems, and Society (IDSS), this project developed a
-  product recommendation system using a real-world dataset of Amazon product reviews. The goal was
-  to design a recommender that improves customer engagement by suggesting relevant items
-  based on user behaviour.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      As part of a capstone project from the Massachusetts Institute of Technology
+      (MIT) Institute for Data, Systems, and Society (IDSS), this project developed a
+      product recommendation system using a real-world dataset of Amazon product reviews. The goal was
+      to design a recommender that improves customer engagement by suggesting relevant items
+      based on user behaviour.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  The work began with cleaning and preprocessing the dataset — removing duplicates,
-  handling missing values, and addressing sparse user–item interactions. Through
-  exploratory analysis, cold-start issues were investigated and user and product activity
-  distributions were examined, establishing minimum rating thresholds to reduce noise from
-  infrequent interactions.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      The work began with cleaning and preprocessing the dataset — removing duplicates,
+      handling missing values, and addressing sparse user–item interactions. Through
+      exploratory analysis, cold-start issues were investigated and user and product activity
+      distributions were examined, establishing minimum rating thresholds to reduce noise from
+      infrequent interactions.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  Multiple models were implemented and evaluated, including:
-</p>
+  <p>{% translate "Multiple models were implemented and evaluated, including:" %}</p>
 
-<ul>
-  <li>Rank-based recommender based on product popularity.</li>
-  <li>User-based and item-based collaborative filtering with tuned similarity metrics.</li>
-  <li>Matrix factorisation using SVD.</li>
-  <li>A hybrid approach combining strengths of different models.</li>
-</ul>
+  <ul>
+    <li>{% translate "Rank-based recommender based on product popularity." %}</li>
+    <li>{% translate "User-based and item-based collaborative filtering with tuned similarity metrics." %}</li>
+    <li>{% translate "Matrix factorisation using SVD." %}</li>
+    <li>{% translate "A hybrid approach combining strengths of different models." %}</li>
+  </ul>
 
-<p>
-  All models were evaluated using <strong>precision@k</strong> and <strong>recall@k</strong>.
-  The final solution was an on-demand, deployable recommender using
-  <strong>precomputed predictions</strong> for fast Streamlit inference.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      All models were evaluated using <strong>precision@k</strong> and <strong>recall@k</strong>.
+      The final solution was an on-demand, deployable recommender using
+      <strong>precomputed predictions</strong> for fast Streamlit inference.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  <strong>Tech used:</strong> Python, Google-Colab, Streamlit | Surprise and Pickle (main libraries).
-</p>
+  <p>
+    <strong>{% translate "Tech used:" %}</strong>
+    {% translate "Python, Google-Colab, Streamlit | Surprise and Pickle (main libraries)." %}
+  </p>
 
-  <h3 style="margin-top:2rem;">Project Links</h3>
+  <h3 style="margin-top:2rem;">{% translate "Project Links" %}</h3>
 
-        <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+  <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+    <a href="https://github.com/aujohn77/recommender"
+       target="_blank"
+       class="project-cta">
+      {% translate "GitHub Repository" %}
+    </a>
 
-        <a href="https://github.com/aujohn77/recommender"
-            target="_blank"
-            class="project-cta">
-            GitHub Repository
-        </a>
+    <a href="https://recommender-mdhdvkrtuekbyhz76ebqdn.streamlit.app/"
+       target="_blank"
+       class="project-cta project-cta-secondary">
+      {% translate "Live Streamlit App" %}
+    </a>
+  </div>
 
-        <a href="https://recommender-mdhdvkrtuekbyhz76ebqdn.streamlit.app/"
-            target="_blank"
-            class="project-cta project-cta-secondary">
-            Live Streamlit App
-        </a>
-
-        </div>
-
-
-  <h3 style="margin-top:2rem;">Notebook Preview</h3>
+  <h3 style="margin-top:2rem;">{% translate "Notebook Preview" %}</h3>
 
   <div class="screenshot-grid">
     <img src="{% static 'images/projects/amazon_recommender/sc1.png' %}"
-         alt="Amazon recommender notebook screenshot 1"
+         alt="{% translate 'Amazon recommender notebook screenshot 1' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/amazon_recommender/sc2.png' %}"
-         alt="Amazon recommender notebook screenshot 2"
+         alt="{% translate 'Amazon recommender notebook screenshot 2' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/amazon_recommender/sc3.png' %}"
-         alt="Amazon recommender notebook screenshot 3"
+         alt="{% translate 'Amazon recommender notebook screenshot 3' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/amazon_recommender/sc4.png' %}"
-         alt="Amazon recommender notebook screenshot 4"
+         alt="{% translate 'Amazon recommender notebook screenshot 4' %}"
          onclick="openScreenshotModal(this.src)">
   </div>
 
   <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
-    Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly. I am happy to discuss further details upon request.
+    {% blocktranslate trimmed %}
+      Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly.
+      I am happy to discuss further details upon request.
+    {% endblocktranslate %}
   </p>
 </section>
 
 <div id="screenshot-modal" class="screenshot-modal" onclick="closeScreenshotModal()">
-  <img id="screenshot-modal-img" alt="Notebook screenshot enlarged">
+  <img id="screenshot-modal-img" alt="{% translate 'Notebook screenshot enlarged' %}">
 </div>
 
 <script>

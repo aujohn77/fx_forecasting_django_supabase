@@ -44,8 +44,14 @@ def kaggle_certs(request):
 # Map simple keys to real files in protected_files/
 FILE_MAP = {
     "cv": {
-        "path": Path(settings.BASE_DIR, "protected_files", "joao_reis_cv.pdf"),
-        "download_name": "Joao_Eduardo_Reis_CV.pdf",
+        "en": {
+            "path": Path(settings.BASE_DIR, "protected_files", "joao_reis_cv_en.pdf"),
+            "download_name": "Joao_Eduardo_Reis_CV_EN.pdf",
+        },
+        "pt-br": {
+            "path": Path(settings.BASE_DIR, "protected_files", "joao_reis_cv_pt_br.pdf"),
+            "download_name": "Joao_Eduardo_Reis_CV_PT_BR.pdf",
+        },
     },
     "python_template": {
         "path": Path(settings.BASE_DIR, "protected_files", "python_model_template.py"),
@@ -67,6 +73,9 @@ FILE_MAP = {
 def download_file(request, file_key: str):
 
     config = FILE_MAP.get(file_key)
+    if file_key == "cv":
+        language = "pt-br" if request.LANGUAGE_CODE.startswith("pt") else "en"
+        config = config[language]
     if not config:
         raise Http404("Unknown file")
 

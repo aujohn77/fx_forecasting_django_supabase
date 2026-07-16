@@ -1,59 +1,55 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Trade CRM — Multi-Tenant SaaS CRM MVP{% endblock %}
+{% block title %}{% translate "Trade CRM — Multi-Tenant SaaS CRM MVP" %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
-
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
-    ML Deployment Platform
+    {% translate "ML Deployment Platform" %}
   </a>
   <a href="{% url 'portfolio:project_trade_crm' %}" class="nav-link nav-link-active">
     Trade CRM
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
-
-
-
 {% block content %}
-
 
 <div class="project-banner">
   <img src="{% static 'images/projects/trade_crm/trade_crm_banner.png' %}"
-       alt="Trade CRM multi-tenant SaaS workflow banner">
+       alt="{% translate 'Trade CRM multi-tenant SaaS workflow banner' %}">
 </div>
 
-
 <section class="card">
-  <h2>Multi-Tenant SaaS Customer Relationship Management (CRM)</h2>
+  <h2>{% translate "Multi-Tenant SaaS Customer Relationship Management (CRM)" %}</h2>
 
-    <p>
-    Trade CRM is a Django-based multi-tenant CRM
-    solution for trade and service businesses. The project is currently in MVP
-    development, with tenant signup, authentication, role-based permissions,
-    clients, jobs, staff workflows, and a dynamic pricebook already implemented.
-    </p>
+  <p>
+    {% blocktranslate trimmed %}
+      Trade CRM is a Django-based multi-tenant CRM solution for trade and service
+      businesses. The project is currently in MVP development, with tenant signup,
+      authentication, role-based permissions, clients, jobs, staff workflows, and a
+      dynamic pricebook already implemented.
+    {% endblocktranslate %}
+  </p>
 
   <div class="demo-video-list">
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Creating a New Tenant workspace</h3>
-        <p>Shows the signup flow for creating a new tenant workspace.</p>
+        <h3>{% translate "Creating a New Tenant Workspace" %}</h3>
+        <p>{% translate "Shows the signup flow for creating a new tenant workspace." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_a_new_tenant.mp4' %}" type="video/mp4">
@@ -62,10 +58,12 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Adding Staff Members</h3>
+        <h3>{% translate "Adding Staff Members" %}</h3>
         <p>
-          Adds a staff member to the tenant workspace. Password setup is not included yet;
-          in a future version, staff users should receive an email link to create their own password.
+          {% blocktranslate trimmed %}
+            Adds a staff member to the tenant workspace. Password setup is not included yet;
+            in a future version, staff users should receive an email link to create their own password.
+          {% endblocktranslate %}
         </p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
@@ -75,8 +73,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Adding a Client</h3>
-        <p>Adds a new client record to the CRM.</p>
+        <h3>{% translate "Adding a Client" %}</h3>
+        <p>{% translate "Adds a new client record to the CRM." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_client.mp4' %}" type="video/mp4">
@@ -85,8 +83,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Creating a Job</h3>
-        <p>Creates a job using the selected client, assigned staff member, priority, schedule, and job details.</p>
+        <h3>{% translate "Creating a Job" %}</h3>
+        <p>{% translate "Creates a job using the selected client, assigned staff member, priority, schedule, and job details." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_a_job.mp4' %}" type="video/mp4">
@@ -95,8 +93,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Adding Job Notes and Checking Activity</h3>
-        <p>Adds notes to a job and shows how those notes appear in the job activity timeline.</p>
+        <h3>{% translate "Adding Job Notes and Checking Activity" %}</h3>
+        <p>{% translate "Adds notes to a job and shows how those notes appear in the job activity timeline." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_a_job_note_and_checking_job_activity.mp4' %}" type="video/mp4">
@@ -105,8 +103,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Creating Pricebook Categories</h3>
-        <p>Creates categories used to organize pricebook/catalog items.</p>
+        <h3>{% translate "Creating Pricebook Categories" %}</h3>
+        <p>{% translate "Creates categories used to organize pricebook/catalog items." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_new_categories.mp4' %}" type="video/mp4">
@@ -115,8 +113,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Creating Custom Fields</h3>
-        <p>Adds category-specific custom fields that can later be used when creating catalog items.</p>
+        <h3>{% translate "Creating Custom Fields" %}</h3>
+        <p>{% translate "Adds category-specific custom fields that can later be used when creating catalog items." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/creating_custom_fields.mp4' %}" type="video/mp4">
@@ -125,8 +123,8 @@
 
     <article class="demo-video-row">
       <div class="demo-video-copy">
-        <h3>Adding a Catalog Item</h3>
-        <p>Adds a catalog item using a category and its configured custom fields.</p>
+        <h3>{% translate "Adding a Catalog Item" %}</h3>
+        <p>{% translate "Adds a catalog item using a category and its configured custom fields." %}</p>
       </div>
       <video muted loop playsinline controls preload="metadata" class="project-video" data-lazy-video>
         <source src="{% static 'videos/trade_crm/adding_a_catalog_item.mp4' %}" type="video/mp4">
@@ -135,45 +133,48 @@
 
   </div>
 
+  <div class="demo-cta-row">
+    <a href="https://trade-crm-demo.onrender.com"
+       target="_blank"
+       rel="noopener"
+       class="project-cta demo-cta-button">
+      {% translate "Try Live Demo" %}
+    </a>
 
+    <p class="demo-cta-note">
+      {% blocktranslate trimmed %}
+        Use fake data only. Demo data is automatically deleted every day. First load may
+        take up to 50 seconds due to Render's free tier cold start.
+      {% endblocktranslate %}
+    </p>
+  </div>
 
-    <div class="demo-cta-row">
-        <a href="https://trade-crm-demo.onrender.com"
-            target="_blank"
-            class="project-cta demo-cta-button">
-            Try Live Demo
-        </a>
+  <h3>{% translate "Completed Features" %}</h3>
+  <ul>
+    <li>{% translate "Multi-tenant signup, session authentication, and tenant-scoped data isolation." %}</li>
+    <li>{% translate "Role-based access for owner, admin, manager, and staff users." %}</li>
+    <li>{% translate "Client, job, activity timeline, and pricebook workflows with dynamic custom fields." %}</li>
+  </ul>
 
-        <p class="demo-cta-note">
-            Use fake data only. Demo data is automatically deleted every day. First load may take up to 50 seconds due to Render's free tier cold start.
-        </p>
-    </div>
+  <h3>{% translate "In Progress / Missing Features" %}</h3>
+  <ul>
+    <li>{% translate "Quotes, invoices, and scheduling modules." %}</li>
+    <li>{% translate "Dashboard analytics and notifications." %}</li>
+    <li>{% translate "Production-grade billing/subscription layer and further desktop/mobile UI refinement." %}</li>
+  </ul>
 
-
-    <h3>Completed Features</h3>
-    <ul>
-        <li>Multi-tenant signup, session authentication, and tenant-scoped data isolation.</li>
-        <li>Role-based access for owner, admin, manager, and staff users.</li>
-        <li>Client, job, activity timeline, and pricebook workflows with dynamic custom fields.</li>
-    </ul>
-
-    <h3>In Progress / Missing Features</h3>
-    <ul>
-        <li>Quotes, invoices, and scheduling modules.</li>
-        <li>Dashboard analytics, and notifications.</li>
-        <li>Production-grade billing/subscription layer and further desktop/mobile UI refinement.</li>
-    </ul>
-
-
-
-  <h3>Tech Stack</h3>
-        <ul>
-        <li><strong>Backend:</strong> Django</li>
-        <li><strong>API layer:</strong> Django REST Framework</li>
-        <li><strong>Database:</strong> PostgreSQL/Neon</li>
-        <li><strong>Frontend rendering:</strong> Django templates <em>(planned migration to Next.js)</em></li>
-        <li><strong>Deployment:</strong> Render</li>
-        </ul>
+  <h3>{% translate "Tech Stack" %}</h3>
+  <ul>
+    <li><strong>{% translate "Backend:" %}</strong> Django</li>
+    <li><strong>{% translate "API layer:" %}</strong> Django REST Framework</li>
+    <li><strong>{% translate "Database:" %}</strong> PostgreSQL/Neon</li>
+    <li>
+      <strong>{% translate "Frontend rendering:" %}</strong>
+      {% translate "Django templates" %}
+      <em>{% translate "(planned migration to Next.js)" %}</em>
+    </li>
+    <li><strong>{% translate "Deployment:" %}</strong> Render</li>
+  </ul>
 </section>
 
 <script>

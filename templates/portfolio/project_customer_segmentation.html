@@ -1,88 +1,103 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Customer Personality Segmentation{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% translate "Customer Personality Segmentation" %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
-    FX Model Deployment Demo
+    {% translate "FX Model Deployment Demo" %}
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link nav-link-active">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block content %}
 <section class="card">
-<h2>Customer Personality Segmentation (MIT IDSS – Capstone Project)</h2>
+  <h2>{% translate "Customer Personality Segmentation (MIT IDSS – Capstone Project)" %}</h2>
 
-<p>
-  As part of a capstone project from the Massachusetts Institute of Technology
-  (MIT) Institute for Data, Systems, and Society (IDSS), a customer segmentation
-  system was developed using a retail dataset containing demographic attributes,
-  purchase behaviour, campaign responses, and spending habits.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      As part of a capstone project from the Massachusetts Institute of Technology
+      (MIT) Institute for Data, Systems, and Society (IDSS), a customer segmentation
+      system was developed using a retail dataset containing demographic attributes,
+      purchase behaviour, campaign responses, and spending habits.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  The process began with data cleaning — handling duplicates, missing values,
-  outliers, and inconsistencies — followed by univariate and bivariate analysis
-  to explore patterns in customer behaviour.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      The process began with data cleaning — handling duplicates, missing values,
+      outliers, and inconsistencies — followed by univariate and bivariate analysis
+      to explore patterns in customer behaviour.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  Features were engineered from purchase history, campaign responses, and
-  household data, and several clustering algorithms were implemented and
-  compared:
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      Features were engineered from purchase history, campaign responses, and
+      household data, and several clustering algorithms were implemented and
+      compared:
+    {% endblocktranslate %}
+  </p>
 
-<ul>
-  <li>K-Means</li>
-  <li>K-Medoids</li>
-  <li>Agglomerative Clustering</li>
-  <li>Gaussian Mixture Models</li>
-</ul>
+  <ul>
+    <li>{% translate "K-Means" %}</li>
+    <li>{% translate "K-Medoids" %}</li>
+    <li>{% translate "Agglomerative Clustering" %}</li>
+    <li>{% translate "Gaussian Mixture Models" %}</li>
+  </ul>
 
-<p>
-  Silhouette scores, the elbow method, and cluster interpretability guided model
-  selection. The final solution produced actionable customer profiles to support
-  tailored marketing campaigns and retention strategies.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      Silhouette scores, the elbow method, and cluster interpretability guided model
+      selection. The final solution produced actionable customer profiles to support
+      tailored marketing campaigns and retention strategies.
+    {% endblocktranslate %}
+  </p>
 
+  <p>
+    <strong>{% translate "Tech Used:" %}</strong>
+    {% translate "Python, Google Colab | Pandas, Scikit-learn and Seaborn (main libraries)." %}
+  </p>
 
-  <p><strong>Tech Used:</strong> Python, Google Colab | Pandas, Scikit-learn and Seaborn (main libraries).</p>
-
-  <h3 style="margin-top:2rem;">Notebook Preview</h3>
+  <h3 style="margin-top:2rem;">{% translate "Notebook Preview" %}</h3>
 
   <div class="screenshot-grid">
     <img src="{% static 'images/projects/customer_segmentation/sc1.png' %}"
-         alt="Customer segmentation notebook screenshot 1"
+         alt="{% translate 'Customer segmentation notebook screenshot 1' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/customer_segmentation/sc2.png' %}"
-         alt="Customer segmentation notebook screenshot 2"
+         alt="{% translate 'Customer segmentation notebook screenshot 2' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/customer_segmentation/sc3.png' %}"
-         alt="Customer segmentation notebook screenshot 3"
+         alt="{% translate 'Customer segmentation notebook screenshot 3' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/customer_segmentation/sc4.png' %}"
-         alt="Customer segmentation notebook screenshot 4"
+         alt="{% translate 'Customer segmentation notebook screenshot 4' %}"
          onclick="openScreenshotModal(this.src)">
   </div>
 
   <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
-Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly. I am happy to discuss further details upon request.  </p>
+    {% blocktranslate trimmed %}
+      Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly.
+      I am happy to discuss further details upon request.
+    {% endblocktranslate %}
+  </p>
 </section>
 
 <div id="screenshot-modal" class="screenshot-modal" onclick="closeScreenshotModal()">
-  <img id="screenshot-modal-img" alt="Notebook screenshot enlarged">
+  <img id="screenshot-modal-img" alt="{% translate 'Notebook screenshot enlarged' %}">
 </div>
 
 <script>

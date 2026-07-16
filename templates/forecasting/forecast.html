@@ -1,46 +1,65 @@
 {% extends "base.html" %}
-{% block title %}
-  Forecasts{% if forecast_date %} {{ forecast_date|date:"Y-m-d" }} USD Rates{% else %} – USD Rates{% endif %}
-{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% if forecast_date %}{% blocktranslate with forecast_date=forecast_date|date:"Y-m-d" trimmed %}Forecasts {{ forecast_date }} USD Rates{% endblocktranslate %}{% else %}{% translate "Forecasts – USD Rates" %}{% endif %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
-    FX Model Deployment Demo
+    {% translate "FX Model Deployment Demo" %}
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block nav_row3 %}
 <nav class="subnav">
-  <a href="{% url 'market' %}" class="nav-link">Market</a>
-  <a href="{% url 'forecast' %}" class="nav-link nav-link-active">Forecasts</a>
+  <a href="{% url 'market' %}" class="nav-link">{% translate "Market" %}</a>
+  <a href="{% url 'forecast' %}" class="nav-link nav-link-active">{% translate "Forecasts" %}</a>
 </nav>
 {% endblock %}
 
 {% block content %}
 
+{% translate "Eurozone" as forecast_name_eur %}
+{% translate "United Kingdom" as forecast_name_gbp %}
+{% translate "Australia" as forecast_name_aud %}
+{% translate "New Zealand" as forecast_name_nzd %}
+{% translate "Japan" as forecast_name_jpy %}
+{% translate "China" as forecast_name_cny %}
+{% translate "Switzerland" as forecast_name_chf %}
+{% translate "Canada" as forecast_name_cad %}
+{% translate "Mexico" as forecast_name_mxn %}
+{% translate "India" as forecast_name_inr %}
+{% translate "Brazil" as forecast_name_brl %}
+{% translate "South Korea" as forecast_name_krw %}
+{% translate "Actual" as chart_label_actual %}
+{% translate "Backtest" as chart_label_backtest %}
+
 <section class="card">
 
   <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
     <h2>
-        USD Forecast Overview — {% if forecast_date %}{{ forecast_date|date:"Y/m/d" }}{% else %}N/A{% endif %}
+      {% if forecast_date %}
+        {% blocktranslate with forecast_date=forecast_date|date:"Y/m/d" trimmed %}USD Forecast Overview — {{ forecast_date }}{% endblocktranslate %}
+      {% else %}
+        {% translate "USD Forecast Overview — N/A" %}
+      {% endif %}
     </h2>
 
     {% if model_codes %}
     <form method="get" id="model-form" style="display:flex;align-items:center;gap:.4rem;">
-      <label for="model-select">Model:</label>
+      <label for="model-select">{% translate "Model:" %}</label>
       <select id="model-select" name="model" onchange="this.form.submit()">
         {% for m in model_codes %}
           <option value="{{ m }}" {% if m == selected_model %}selected{% endif %}>{{ m }}</option>
@@ -57,9 +76,9 @@
     <table>
       <thead>
         <tr>
-          <th>Currency</th>
-          <th>Current</th>
-          <th>Forecast</th>
+          <th>{% translate "Currency" %}</th>
+          <th>{% translate "Current" %}</th>
+          <th>{% translate "Forecast" %}</th>
           <th>Δ%</th>
         </tr>
       </thead>
@@ -67,13 +86,28 @@
         {% for row in table_rows %}
         <!-- fc-row + data-code so JS can highlight like market page -->
         <tr class="fc-row" data-code="{{ row.code }}">
-          <td>{{ row.label }}</td>
+          <td>
+            {% if row.code == "EUR" %}{{ row.code }} ({{ forecast_name_eur }})
+            {% elif row.code == "GBP" %}{{ row.code }} ({{ forecast_name_gbp }})
+            {% elif row.code == "AUD" %}{{ row.code }} ({{ forecast_name_aud }})
+            {% elif row.code == "NZD" %}{{ row.code }} ({{ forecast_name_nzd }})
+            {% elif row.code == "JPY" %}{{ row.code }} ({{ forecast_name_jpy }})
+            {% elif row.code == "CNY" %}{{ row.code }} ({{ forecast_name_cny }})
+            {% elif row.code == "CHF" %}{{ row.code }} ({{ forecast_name_chf }})
+            {% elif row.code == "CAD" %}{{ row.code }} ({{ forecast_name_cad }})
+            {% elif row.code == "MXN" %}{{ row.code }} ({{ forecast_name_mxn }})
+            {% elif row.code == "INR" %}{{ row.code }} ({{ forecast_name_inr }})
+            {% elif row.code == "BRL" %}{{ row.code }} ({{ forecast_name_brl }})
+            {% elif row.code == "KRW" %}{{ row.code }} ({{ forecast_name_krw }})
+            {% else %}{{ row.label }}
+            {% endif %}
+          </td>
           <td>{{ row.current_rate|floatformat:4 }}</td>
           <td>
             {% if row.forecast_rate %}
               {{ row.forecast_rate|floatformat:4 }}
             {% else %}
-              <span style="color:var(--muted)">n/a</span>
+              <span style="color:var(--muted)">{% translate "n/a" %}</span>
             {% endif %}
           </td>
           <td>
@@ -92,7 +126,7 @@
         </tr>
         {% empty %}
         <tr>
-          <td colspan="4" style="color:var(--muted)">No forecasts available.</td>
+          <td colspan="4" style="color:var(--muted)">{% translate "No forecasts available." %}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -103,13 +137,13 @@
 <section class="card">
   <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
     <h2 style="margin:0;">
-      60-Day Trend —
+      {% translate "60-Day Trend" %} —
       <span id="fc-currency-label">{{ chart_quote }}</span>
-      (Model: {{ selected_model }})
+      ({% translate "Model:" %} {{ selected_model }})
     </h2>
     <div style="display:flex;gap:.4rem;align-items:center;">
-      <button id="fc-prev" type="button">◀</button>
-      <button id="fc-next" type="button">▶</button>
+      <button id="fc-prev" type="button" aria-label="{% translate 'Previous currency' %}">◀</button>
+      <button id="fc-next" type="button" aria-label="{% translate 'Next currency' %}">▶</button>
     </div>
   </header>
 
@@ -124,6 +158,21 @@
   const codes = JSON.parse('{{ available_quotes_json|escapejs }}');
   const names = JSON.parse('{{ currency_names_json|escapejs }}');
   const initialCode = '{{ chart_quote }}';
+
+  const localizedNames = {
+    EUR: '{{ forecast_name_eur|escapejs }}',
+    GBP: '{{ forecast_name_gbp|escapejs }}',
+    AUD: '{{ forecast_name_aud|escapejs }}',
+    NZD: '{{ forecast_name_nzd|escapejs }}',
+    JPY: '{{ forecast_name_jpy|escapejs }}',
+    CNY: '{{ forecast_name_cny|escapejs }}',
+    CHF: '{{ forecast_name_chf|escapejs }}',
+    CAD: '{{ forecast_name_cad|escapejs }}',
+    MXN: '{{ forecast_name_mxn|escapejs }}',
+    INR: '{{ forecast_name_inr|escapejs }}',
+    BRL: '{{ forecast_name_brl|escapejs }}',
+    KRW: '{{ forecast_name_krw|escapejs }}'
+  };
 
   const labelEl = document.getElementById('fc-currency-label');
   const canvas = document.getElementById('forecastChart');
@@ -175,10 +224,11 @@
     const actual = payload.actual || [];
     const backtest = payload.backtest || [];
 
-    const name = names[code] ? `${code} (${names[code]})` : code;
+    const localizedName = localizedNames[code] || names[code];
+    const name = localizedName ? `${code} (${localizedName})` : code;
     labelEl.textContent = name;
 
-    // 🔹 keep table highlight in sync with chart currency
+    // Keep table highlight in sync with chart currency
     highlightForecastRow(code);
 
     const cfg = {
@@ -187,7 +237,7 @@
         labels: labels,
         datasets: [
           {
-            label: 'Actual',
+            label: '{{ chart_label_actual|escapejs }}',
             data: actual,
             borderWidth: 2,
             tension: 0.2,
@@ -197,7 +247,7 @@
             pointHoverRadius: 3
           },
           {
-            label: 'Backtest',
+            label: '{{ chart_label_backtest|escapejs }}',
             data: backtest,
             borderWidth: 2,
             tension: 0.2,

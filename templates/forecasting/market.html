@@ -1,46 +1,61 @@
 {% extends "base.html" %}
-{% block title %}Market {{ latest_date|date:"Y-m-d" }} USD Rates{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% blocktranslate with market_date=latest_date|date:"Y-m-d" trimmed %}Market {{ market_date }} USD Rates{% endblocktranslate %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link nav-link-active">
-    FX Model Deployment Demo
+    {% translate "FX Model Deployment Demo" %}
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block nav_row3 %}
 <nav class="subnav">
-  <a href="{% url 'market' %}" class="nav-link nav-link-active">Market</a>
-  <a href="{% url 'forecast' %}" class="nav-link">Forecasts</a>
+  <a href="{% url 'market' %}" class="nav-link nav-link-active">{% translate "Market" %}</a>
+  <a href="{% url 'forecast' %}" class="nav-link">{% translate "Forecasts" %}</a>
 </nav>
 {% endblock %}
 
 {% block content %}
 
+{% translate "Eurozone" as market_name_eur %}
+{% translate "United Kingdom" as market_name_gbp %}
+{% translate "Australia" as market_name_aud %}
+{% translate "New Zealand" as market_name_nzd %}
+{% translate "Japan" as market_name_jpy %}
+{% translate "China" as market_name_cny %}
+{% translate "Switzerland" as market_name_chf %}
+{% translate "Canada" as market_name_cad %}
+{% translate "Mexico" as market_name_mxn %}
+{% translate "India" as market_name_inr %}
+{% translate "Brazil" as market_name_brl %}
+{% translate "South Korea" as market_name_krw %}
+
 <section class="card" style="margin-bottom:1rem;">
 
-  <h2>USD Market Snapshot — {{ latest_date|date:"Y/m/d" }}</h2>
+  <h2>{% blocktranslate with market_date=latest_date|date:"Y/m/d" trimmed %}USD Market Snapshot — {{ market_date }}{% endblocktranslate %}</h2>
   <div class="table">
     <table>
       <thead>
         <tr>
-            <th>Currency</th>
-            <th>Rate</th>
-            <th>Daily Δ%</th>
-            <th>Weekly Δ%</th>
-            <th>Monthly Δ%</th>
+            <th>{% translate "Currency" %}</th>
+            <th>{% translate "Rate" %}</th>
+            <th>{% blocktranslate with delta_percent="Δ%" %}Daily {{ delta_percent }}{% endblocktranslate %}</th>
+            <th>{% blocktranslate with delta_percent="Δ%" %}Weekly {{ delta_percent }}{% endblocktranslate %}</th>
+            <th>{% blocktranslate with delta_percent="Δ%" %}Monthly {{ delta_percent }}{% endblocktranslate %}</th>
         </tr>
       </thead>
 
@@ -48,7 +63,22 @@
         {% for row in table_rows %}
         <!-- NOTE: mk-row class + data-code for JS to target -->
         <tr class="mk-row" data-code="{{ row.code }}">
-            <td>{{ row.label }}</td>
+            <td>
+              {% if row.code == "EUR" %}{{ row.code }} ({{ market_name_eur }})
+              {% elif row.code == "GBP" %}{{ row.code }} ({{ market_name_gbp }})
+              {% elif row.code == "AUD" %}{{ row.code }} ({{ market_name_aud }})
+              {% elif row.code == "NZD" %}{{ row.code }} ({{ market_name_nzd }})
+              {% elif row.code == "JPY" %}{{ row.code }} ({{ market_name_jpy }})
+              {% elif row.code == "CNY" %}{{ row.code }} ({{ market_name_cny }})
+              {% elif row.code == "CHF" %}{{ row.code }} ({{ market_name_chf }})
+              {% elif row.code == "CAD" %}{{ row.code }} ({{ market_name_cad }})
+              {% elif row.code == "MXN" %}{{ row.code }} ({{ market_name_mxn }})
+              {% elif row.code == "INR" %}{{ row.code }} ({{ market_name_inr }})
+              {% elif row.code == "BRL" %}{{ row.code }} ({{ market_name_brl }})
+              {% elif row.code == "KRW" %}{{ row.code }} ({{ market_name_krw }})
+              {% else %}{{ row.label }}
+              {% endif %}
+            </td>
             <td>{{ row.rate|floatformat:4 }}</td>
 
             <td>
@@ -102,12 +132,12 @@
 <section class="card">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
     <h2 style="margin:0;">
-      1-Year Exchange Rate Trend —
+      {% translate "1-Year Exchange Rate Trend" %} —
       <span id="mk-currency-label"></span>
     </h2>
     <div style="display:flex;gap:.5rem;align-items:center;">
-      <button id="mk-prev" type="button">◀</button>
-      <button id="mk-next" type="button">▶</button>
+      <button id="mk-prev" type="button" aria-label="{% translate 'Previous currency' %}">◀</button>
+      <button id="mk-next" type="button" aria-label="{% translate 'Next currency' %}">▶</button>
     </div>
   </div>
 
@@ -122,6 +152,21 @@ document.addEventListener('DOMContentLoaded', function () {
   const series = JSON.parse('{{ series_json|escapejs }}');
   const names  = JSON.parse('{{ currency_names_json|escapejs }}');
   const codes  = JSON.parse('{{ all_quotes_json|escapejs }}');
+
+  const localizedNames = {
+    EUR: '{{ market_name_eur|escapejs }}',
+    GBP: '{{ market_name_gbp|escapejs }}',
+    AUD: '{{ market_name_aud|escapejs }}',
+    NZD: '{{ market_name_nzd|escapejs }}',
+    JPY: '{{ market_name_jpy|escapejs }}',
+    CNY: '{{ market_name_cny|escapejs }}',
+    CHF: '{{ market_name_chf|escapejs }}',
+    CAD: '{{ market_name_cad|escapejs }}',
+    MXN: '{{ market_name_mxn|escapejs }}',
+    INR: '{{ market_name_inr|escapejs }}',
+    BRL: '{{ market_name_brl|escapejs }}',
+    KRW: '{{ market_name_krw|escapejs }}'
+  };
 
   const labelEl = document.getElementById('mk-currency-label');
   const ctx     = document.getElementById('mk-chart').getContext('2d');
@@ -176,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const labels = pts.map(p => p.date);
     const data   = pts.map(p => p.rate);
 
-    const name = names[code] ? `${code} (${names[code]})` : code;
+    const localizedName = localizedNames[code] || names[code];
+    const name = localizedName ? `${code} (${localizedName})` : code;
     labelEl.textContent = name;
 
     // update table highlight

@@ -1,85 +1,100 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Lead Conversion Prediction{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% translate "Lead Conversion Prediction" %}{% endblock %}
 
 {% block nav_projects_active %}nav-link-active{% endblock %}
 
 {% block nav_row2 %}
 <nav class="subnav">
   <a href="{% url 'portfolio:project_model_deploy' %}" class="nav-link">
-    FX Model Deployment Demo
+    {% translate "FX Model Deployment Demo" %}
   </a>
   <a href="{% url 'portfolio:project_amazon_recommender' %}" class="nav-link">
-    Amazon-style Product Recommender
+    {% translate "Amazon-style Product Recommender" %}
   </a>
   <a href="{% url 'portfolio:project_lead_conversion' %}" class="nav-link nav-link-active">
-    Lead Conversion Prediction
+    {% translate "Lead Conversion Prediction" %}
   </a>
   <a href="{% url 'portfolio:project_customer_segmentation' %}" class="nav-link">
-    Customer Segmentation
+    {% translate "Customer Segmentation" %}
   </a>
 </nav>
 {% endblock %}
 
 {% block content %}
 <section class="card">
-<h2>Lead Conversion Prediction (MIT IDSS – Capstone Project)</h2>
+  <h2>{% translate "Lead Conversion Prediction (MIT IDSS – Capstone Project)" %}</h2>
 
-<p>
-  As part of a capstone project from the Massachusetts Institute of Technology
-  (MIT) Institute for Data, Systems, and Society (IDSS), a predictive analytics
-  system was built to identify leads most likely to convert into paying customers
-  for the fictional EdTech company ExtraaLearn.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      As part of a capstone project from the Massachusetts Institute of Technology
+      (MIT) Institute for Data, Systems, and Society (IDSS), a predictive analytics
+      system was built to identify leads most likely to convert into paying customers
+      for the fictional EdTech company ExtraaLearn.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  The workflow began with data cleaning — removing duplicates, reconciling inconsistencies,
-  validating ranges, and addressing anomalies — followed by univariate and bivariate
-  exploratory analysis.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      The workflow began with data cleaning — removing duplicates, reconciling inconsistencies,
+      validating ranges, and addressing anomalies — followed by univariate and bivariate
+      exploratory analysis.
+    {% endblocktranslate %}
+  </p>
 
-<p>
-  Feature engineering was performed to create engagement scores, interaction ratios, and
-  normalised lead scores that better represent user behaviour, then multiple models were evaluated:
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      Feature engineering was performed to create engagement scores, interaction ratios, and
+      normalised lead scores that better represent user behaviour, then multiple models were evaluated:
+    {% endblocktranslate %}
+  </p>
 
-<ul>
-  <li>Decision Trees, Random Forest, Gradient Boosting</li>
-  <li>Logistic Regression, SVM</li>
-</ul>
+  <ul>
+    <li>{% translate "Decision Trees, Random Forest, Gradient Boosting" %}</li>
+    <li>{% translate "Logistic Regression, SVM" %}</li>
+  </ul>
 
-<p>
-  This was followed by hyperparameter tuning, threshold optimisation, and precision–recall
-  tradeoff analysis. From the best-performing model, feature-importance insights were extracted
-  and lead profiles were developed to support targeted marketing.
-</p>
+  <p>
+    {% blocktranslate trimmed %}
+      This was followed by hyperparameter tuning, threshold optimisation, and precision–recall
+      tradeoff analysis. From the best-performing model, feature-importance insights were extracted
+      and lead profiles were developed to support targeted marketing.
+    {% endblocktranslate %}
+  </p>
 
-<p><strong>Tech Used:</strong> Python, Google Colab | Scikit-learn, Pandas and Seaborn (main libraries)</p>
+  <p>
+    <strong>{% translate "Tech Used:" %}</strong>
+    {% translate "Python, Google Colab | Scikit-learn, Pandas and Seaborn (main libraries)" %}
+  </p>
 
-  <h3 style="margin-top:2rem;">Notebook Preview</h3>
+  <h3 style="margin-top:2rem;">{% translate "Notebook Preview" %}</h3>
 
   <div class="screenshot-grid">
     <img src="{% static 'images/projects/lead_conversion/sc1.png' %}"
-         alt="Lead conversion notebook screenshot 1"
+         alt="{% translate 'Lead conversion notebook screenshot 1' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/lead_conversion/sc2.png' %}"
-         alt="Lead conversion notebook screenshot 2"
+         alt="{% translate 'Lead conversion notebook screenshot 2' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/lead_conversion/sc3.png' %}"
-         alt="Lead conversion notebook screenshot 3"
+         alt="{% translate 'Lead conversion notebook screenshot 3' %}"
          onclick="openScreenshotModal(this.src)">
     <img src="{% static 'images/projects/lead_conversion/sc4.png' %}"
-         alt="Lead conversion notebook screenshot 4"
+         alt="{% translate 'Lead conversion notebook screenshot 4' %}"
          onclick="openScreenshotModal(this.src)">
   </div>
 
   <p style="font-size:.9em;color:#aaa;margin-top:1.4rem;">
-    Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly. I am happy to discuss further details upon request.
+    {% blocktranslate trimmed %}
+      Due to MIT-IDSS copyright restrictions, the notebook cannot be shared publicly.
+      I am happy to discuss further details upon request.
+    {% endblocktranslate %}
   </p>
 </section>
 
 <div id="screenshot-modal" class="screenshot-modal" onclick="closeScreenshotModal()">
-  <img id="screenshot-modal-img" alt="Notebook screenshot enlarged">
+  <img id="screenshot-modal-img" alt="{% translate 'Notebook screenshot enlarged' %}">
 </div>
 
 <script>
