@@ -251,7 +251,7 @@ msgid ""
 "Machine learning and Web Development practitioner working on end-to-end "
 "systems, from data ingestion and modeling to deployment and automation."
 msgstr ""
-"Profissional de machine learning e desenvolvimento web, com atuação em "
+"Praticante de machine learning e desenvolvimento web, com atuação em "
 "sistemas de ponta a ponta, desde a ingestão e a modelagem de dados até a "
 "implantação e a automação."
 
